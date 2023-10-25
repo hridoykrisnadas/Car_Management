@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Registration | Car Management</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+    <div class="row">
+        <div class = "col-md-2 col-sm-2 col-lg-2" id="sidebar_div" th:insert="~{sidebar :: sidebar}"></div>
+        <div class="col-md-10" id="content_div">
+            <div class = ""  th:insert="~{navbar :: navbar}"></div>
+            <div class="row p-1 m-0">
+                <h2 class="justify-content-center d-flex">Employee Registration</h2>
+                <hr>
+                <!--              Employee Registration  Form -->
+                <button type="button" class="btn py-2 btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#empRegModel">Add New Employee</button>
+            </div>
+            <hr>
+<!--            Employee Report-->
+            <div class="row p-2 m-0 ">
+                <div class="card bg-base text-white col-md-4">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="tex-white">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="empRegModel" tabindex="-1" aria-labelledby="empRegModelLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="empRegModelLabel">Employee Registration Form</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-3">
+                    <form class="row g-3" action= "/employee-registration-form" method ="POST" th:object="${employee}">
+                        <div class="col-md-6 px-2">
+                            <label for="name" class="form-label">Full Name</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" name="name" class="form-control" required id="name">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="image" class="form-label">Image</label>
+                            <span class="text-danger">*</span>
+                            <input type="file" accept="image/*" name="image" class="form-control" required id="image">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="email" class="form-label">Email</label>
+                            <span class="text-danger">*</span>
+                            <input type="email" name="email" class="form-control" required id="email">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="password" class="form-label">Password</label>
+                            <span class="text-danger">*</span>
+                            <input type="password" name="password" class="form-control" required id="password">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="designation" class="form-label">Designation</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" name="designation" class="form-control" required id="designation">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="mobile_no" class="form-label">Mobile No.</label>
+                            <span class="text-danger">*</span>
+                            <input type="number" name="mobile_no" class="form-control" required id="mobile_no">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="salary" class="form-label">Salary.</label>
+                            <span class="text-danger">*</span>
+                            <input type="number" name="salary" class="form-control" required id="salary">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="district" class="form-label">Home District</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" name="district" class="form-control" required id="district">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="nid" class="form-label">NID No</label>
+                            <span class="text-danger">*</span>
+                            <input type="number" name="nid" class="form-control" required id="nid">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="passport" class="form-label">Passport No</label>
+                            <input type="text" name="passport" class="form-control"  id="passport">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="driving_license" class="form-label">Driving License No</label>
+                            <input type="text" name="driving_license" class="form-control"  id="driving_license">
+                        </div>
+                        <div class="col-md-6 px-2 date">
+                            <label for="validityOfDrivingLicense" class="form-label">Validity of Driving License</label>
+                            <input type="date" name="date_of_birth" class="form-control"  id="validityOfDrivingLicense">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="nationality" class="form-label">Nationality</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" name="nationality" class="form-control" required id="nationality">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="inputState" class="form-label">Gender</label>
+                            <span class="text-danger">*</span>
+                            <select id="inputState" name="gender"  required class="form-select">
+                                <option value="0" selected>Choose...</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Transgender</option>
+                                <option value="4">Rather Not Say</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 px-2 date">
+                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                            <span class="text-danger">*</span>
+                            <input type="date" name="date_of_birth" class="form-control" required id="dateOfBirth">
+                        </div>
+                        <div class="col-md-6 px-2 date" id='datetimepicker1_'>
+                            <label for="joiningDate" class="form-label">Joining Date</label>
+                            <span class="text-danger">*</span>
+                            <input type="date" name="joining_date" class="form-control date" required id="joiningDate">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <!-- Popper.JS -->
+    <script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
+    <!-- Bootstrap JS -->
+    <script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+    <script type="text/javascript">
+        //Active Menu
+       document.getElementById('emp-registration').classList.add('active');
+
+    </script>
+</body>
+</html>

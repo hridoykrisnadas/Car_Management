@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | Car Management</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+<div class="row">
+    <div class = "col-md-2 col-sm-2 col-lg-2 vh-100"  th:insert="~{sidebar :: sidebar}"></div>
+    <div class="col-md-10 col-sm-10 col-lg-10">
+        <div class = ""  th:insert="~{navbar :: navbar}"></div>
+        <div class="row p-1 m-0">
+            <h2 class="justify-content-center d-flex">Employee Registration</h2>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<!-- Popper.JS -->
+<script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap JS -->
+<script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript">
+    document.getElementById('dashboard').classList.add('active');
+</script>
+</body>
+</html>
