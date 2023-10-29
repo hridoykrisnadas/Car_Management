@@ -13,21 +13,30 @@
         <div class="col-md-10" id="content_div">
             <div class = ""  th:insert="~{navbar :: navbar}"></div>
             <div class="row p-1 m-0">
-                <h2 class="justify-content-center d-flex">Employee Registration</h2>
+                <h2 class="justify-content-center d-flex">Employee</h2>
                 <hr>
                 <!--              Employee Registration  Form -->
                 <button type="button" class="btn py-2 btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#empRegModel">Add New Employee</button>
+                <span class="bg-success text-white p-5" th:if="${success}" th:text="${success}"></span>
             </div>
             <hr>
 <!--            Employee Report-->
             <div class="row p-2 m-0 ">
-                <div class="card bg-base text-white col-md-4">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="tex-white">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <tr th:each="employee : ${employees}">
+                    <div class="col-md-3 p-2">
+                        <div class="card bg-base text-white">
+                            <img th:src="${employee.imagePath}" class="card-img-top" width="100%" height="200px" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold d-flex justify-content-center"><span th:text="${employee.name}"> Title </span></h6>
+                                <h6 class="card-title d-flex justify-content-center"><span th:text="${employee.designation}"> Title </span></h6>
+                                <div class="text-center">
+                                    <a th:href="@{/employee/{id}(id=${employee.id})}"><button type="button" class="btn btn-danger">Details</button></a>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
+                </tr>
             </div>
         </div>
     </div>
@@ -41,7 +50,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body px-3">
-                    <form class="row g-3" action= "/employee-registration-form" method ="POST" th:object="${employee}">
+                    <form class="row g-3" action= "/employee-registration-form" enctype="multipart/form-data" csrf method ="POST" th:object="${employee}">
                         <div class="col-md-6 px-2">
                             <label for="name" class="form-label">Full Name</label>
                             <span class="text-danger">*</span>
@@ -80,7 +89,7 @@
                         <div class="col-md-6 px-2">
                             <label for="district" class="form-label">Home District</label>
                             <span class="text-danger">*</span>
-                            <input type="text" name="district" class="form-control" required id="district">
+                            <input type="text" name="home_district" class="form-control" required id="district">
                         </div>
                         <div class="col-md-6 px-2">
                             <label for="nid" class="form-label">NID No</label>
@@ -88,21 +97,21 @@
                             <input type="number" name="nid" class="form-control" required id="nid">
                         </div>
                         <div class="col-md-6 px-2">
-                            <label for="passport" class="form-label">Passport No</label>
-                            <input type="text" name="passport" class="form-control"  id="passport">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="driving_license" class="form-label">Driving License No</label>
-                            <input type="text" name="driving_license" class="form-control"  id="driving_license">
-                        </div>
-                        <div class="col-md-6 px-2 date">
-                            <label for="validityOfDrivingLicense" class="form-label">Validity of Driving License</label>
-                            <input type="date" name="date_of_birth" class="form-control"  id="validityOfDrivingLicense">
-                        </div>
-                        <div class="col-md-6 px-2">
                             <label for="nationality" class="form-label">Nationality</label>
                             <span class="text-danger">*</span>
                             <input type="text" name="nationality" class="form-control" required id="nationality">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="passport" class="form-label">Passport No</label>
+                            <input type="text" name="passport_no" class="form-control"  id="passport">
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="driving_license" class="form-label">Driving License No</label>
+                            <input type="text" name="driving_license_no" class="form-control"  id="driving_license">
+                        </div>
+                        <div class="col-md-6 px-2 date">
+                            <label for="validityOfDrivingLicense" class="form-label">Validity of Driving License</label>
+                            <input type="date" name="validity_of_driving_license" class="form-control"  id="validityOfDrivingLicense">
                         </div>
                         <div class="col-md-6 px-2">
                             <label for="inputState" class="form-label">Gender</label>
@@ -113,6 +122,16 @@
                                 <option value="2">Female</option>
                                 <option value="3">Transgender</option>
                                 <option value="4">Rather Not Say</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 px-2">
+                            <label for="inputUserRole" class="form-label">Gender</label>
+                            <span class="text-danger">*</span>
+                            <select id="inputUserRole" name="user_type"  required class="form-select">
+                                <option value="0" selected>Choose...</option>
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="USER">USER</option>
+                                <option value="DRIVER">DRIVER</option>
                             </select>
                         </div>
                         <div class="col-md-6 px-2 date">
@@ -146,6 +165,10 @@
     <script type="text/javascript">
         //Active Menu
        document.getElementById('emp-registration').classList.add('active');
+
+       function getDetails(id){
+            console.log(id);
+        }
 
     </script>
 </body>

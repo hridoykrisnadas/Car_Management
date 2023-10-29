@@ -1,21 +1,57 @@
 package com.hridoykrisna.car_management.controller;
 
+import com.hridoykrisna.car_management.Utils.CommonUtils;
+import com.hridoykrisna.car_management.model.Employee;
+import com.hridoykrisna.car_management.service.EmployeeService;
+import com.hridoykrisna.car_management.service.util.FileService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 @ControllerAdvice
-@RequestMapping("/")
-public class Employee {
-    @GetMapping("employee")
-    public String employee( ){
-        return "employee_reg.html";
+@RequiredArgsConstructor
+@RequestMapping("")
+public class EmployeeController {
+    private final EmployeeService employeeService;
+    private final FileService fileService;
+
+    private final String path = CommonUtils.ImagePath;
+    @GetMapping({"/employee", "/employee/"})
+    public String employee(Model map){
+        if (CommonUtils.isAuthenticate){
+            List<Employee> employeeList = null;
+            employeeList = employeeService.employeeList();
+            map.addAttribute("employees", employeeList);
+            return "employee.html";
+        }else {
+            return "redirect:/login";
+        }
+    }
+    @PostMapping("/employee-registration-form")
+    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, @RequestParam MultipartFile image, Model model, RedirectAttributes redirectAttributes) throws IOException {
+
+        // Save Image & Set Image Path
+        String imagePath = fileService.uploadImage(path, image, employee.getName());
+        employee.setImagePath(imagePath);
+
+        //Save to Database
+        employeeService.saveEmployee(employee);
+        redirectAttributes.addFlashAttribute("success", "Success");
+        return "redirect:/employee";
     }
 
-    @PostMapping("employee-registration-form")
-    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee){
-        System.out.println(employee.);
-        return "employee_reg.html";
+    @GetMapping("/employee/{id}")
+    public String getEmpDetails(@Valid @PathVariable("id") int id, Model model){
+        System.out.println(id);
+        return "redirect:/employee";
     }
+
 }

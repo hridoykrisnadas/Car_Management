@@ -16,93 +16,55 @@
 
 <body>
 
-    <div class="wrapper" th:fragment="sidebar">
-        <!-- Sidebar Holder -->
-        <nav id="sidebar">
-            <div class="sidebar-header">
-                <h3>Car Mangement System</h3>
-            </div>
+<div th:fragment="navbar">
+    <!-- Page Content Holder -->
+    <div id="content">
 
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+
+<!--                <button type="button" id="sidebarCollapse" class="navbar-btn">-->
+<!--                    <span></span>-->
+<!--                    <span></span>-->
+<!--                    <span></span>-->
+<!--                </button>-->
+                <button class="navbar-toggler btn-light d-inline-block d-lg-none ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white" href="#">Project Proposal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Our Team</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/logout">Logout</a>
+                        </li>
                     </ul>
-                </li>
-            </ul>
-
-            <ul class="list-unstyled CTAs">
-                <li>
-                    <a href="#" class="article">Demo Button</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Page Content Holder -->
-        <div id="content" th:fragment="content">
-
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <div class="container-fluid">
-
-                    <button type="button" id="sidebarCollapse" class="navbar-btn">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <button class="navbar-toggler btn-light d-inline-block d-lg-none ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                        <ul class="nav navbar-nav ml-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link text-white" href="#">Project Proposal</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="#">Features</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="#">Our Vision & Mission</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="#">Our Team</a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
-            </nav>
-        </div>
+            </div>
+        </nav>
     </div>
+</div>
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script language="JavaScript" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
-    <!-- Popper.JS -->
-    <script language="JavaScript" type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
-    <!-- Bootstrap JS -->
-    <script language="JavaScript" type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<!-- Popper.JS -->
+<script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap JS -->
+<script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-                $(this).toggleClass('active');
-            });
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+            $(this).toggleClass('active');
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>
