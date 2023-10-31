@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="row">
-        <div class = "col-md-2 col-sm-2 col-lg-2"  th:insert="~{sidebar :: sidebar}"></div>
+        <div class = "col-md-2 col-sm-2 col-lg-2"  th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
         <div class="col-md-10 col-sm-10 col-lg-10">
             <div class = ""  th:insert="~{navbar :: navbar}"></div>
             <div class="row p-1 m-0">

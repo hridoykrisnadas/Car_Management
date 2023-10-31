@@ -9,17 +9,19 @@
 </head>
 <body>
     <div class="row">
-        <div class = "col-md-2 col-sm-2 col-lg-2" id="sidebar_div" th:insert="~{sidebar :: sidebar}"></div>
+        <div class = "col-md-2 col-sm-2 col-lg-2" id="sidebar_div" th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
         <div class="col-md-10" id="content_div">
             <div class = ""  th:insert="~{navbar :: navbar}"></div>
             <div class="row p-1 m-0">
                 <h2 class="justify-content-center d-flex">Employee</h2>
                 <hr>
                 <!--              Employee Registration  Form -->
-                <button type="button" class="btn py-2 btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#empRegModel">Add New Employee</button>
-                <span class="bg-success text-white p-5" th:if="${success}" th:text="${success}"></span>
+                <div th:if="${user_type}">
+                    <button type="button" class="btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal" data-bs-target="#empRegModel">Add New Employee</button>
+                    <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}" th:text="${success}"></h6>
+                    <hr>
+                </div>
             </div>
-            <hr>
 <!--            Employee Report-->
             <div class="row p-2 m-0 ">
                 <tr th:each="employee : ${employees}">
@@ -30,18 +32,20 @@
                                 <h6 class="card-title fw-bold d-flex justify-content-center"><span th:text="${employee.name}"> Title </span></h6>
                                 <h6 class="card-title d-flex justify-content-center"><span th:text="${employee.designation}"> Title </span></h6>
                                 <div class="text-center">
-                                    <a th:href="@{/employee/{id}(id=${employee.id})}"><button type="button" class="btn btn-danger">Details</button></a>
+                                    <button class="btn btn-warning details-button"
+                                            th:attr="data-employee-id=${employee.id}" data-bs-toggle="modal" data-bs-target="#empDetailsModel">
+                                        Details
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </tr>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Registration Modal -->
     <div class="modal fade" id="empRegModel" tabindex="-1" aria-labelledby="empRegModelLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -118,14 +122,14 @@
                             <span class="text-danger">*</span>
                             <select id="inputState" name="gender"  required class="form-select">
                                 <option value="0" selected>Choose...</option>
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
-                                <option value="3">Transgender</option>
-                                <option value="4">Rather Not Say</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Transgender">Transgender</option>
+                                <option value="Rather Not Say">Rather Not Say</option>
                             </select>
                         </div>
                         <div class="col-md-6 px-2">
-                            <label for="inputUserRole" class="form-label">Gender</label>
+                            <label for="inputUserRole" class="form-label">User Type</label>
                             <span class="text-danger">*</span>
                             <select id="inputUserRole" name="user_type"  required class="form-select">
                                 <option value="0" selected>Choose...</option>
@@ -155,6 +159,35 @@
         </div>
     </div>
 
+<!--  Employee Details Modal  -->
+    <div class="modal fade" id="empDetailsModel" tabindex="-1" aria-labelledby="empDetailsModelLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="empDetailsModelLabel">Employee Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-3">
+                    <div class="row card bg-base text-white">
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <img id="imageView" src="" class="d-flex card-img-top-c mt-1" height="200px" alt="">
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <h5 class="fw-bold text-white mt-3" id="nameView"></h5>
+                        </div>
+                        <div class="p-2 employee-details">
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <!-- Popper.JS -->
@@ -165,11 +198,35 @@
     <script type="text/javascript">
         //Active Menu
        document.getElementById('emp-registration').classList.add('active');
-
-       function getDetails(id){
-            console.log(id);
-        }
-
+        $(document).ready(function() {
+            $(".details-button").click(function() {
+                const employeeId = $(this).data("employee-id");
+                console.log(employeeId);
+                $.ajax({
+                    type: "GET",
+                    url: "/employee/" + employeeId,
+                    dataType: "json", // Specify JSON data type
+                    success: function(employee) {
+                        console.log(employee);
+                        // Add the employee details as an attribute to your HTML element
+                        document.getElementById("imageView").src = employee.imagePath;
+                        $("#nameView").append($("<h5>").text(employee.name));
+                        $(".employee-details").append($("<h6>").text("Employee ID: " + employee.id));
+                        $(".employee-details").append($("<h6>").text("Name: " + employee.name));
+                        $(".employee-details").append($("<h6>").text("Email: " + employee.email));
+                        $(".employee-details").append($("<h6>").text("Designation: " + employee.designation));
+                        $(".employee-details").append($("<h6>").text("Mobile No: " + employee.mobile_no));
+                        $(".employee-details").append($("<h6>").text("Salary: " + employee.salary));
+                        $(".employee-details").append($("<h6>").text("Gender: " + employee.gender));
+                        $(".employee-details").append($("<h6>").text("NID: " + employee.nid));
+                        $(".employee-details").append($("<h6>").text("Date of Birth: " + employee.date_of_birth));
+                        $(".employee-details").append($("<h6>").text("Date of Joining: " + employee.joining_date));
+                        // Show the modal
+                        $("#empDetailsModel").modal('show');
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

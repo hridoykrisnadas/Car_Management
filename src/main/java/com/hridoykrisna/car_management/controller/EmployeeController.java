@@ -30,6 +30,11 @@ public class EmployeeController {
             List<Employee> employeeList = null;
             employeeList = employeeService.employeeList();
             map.addAttribute("employees", employeeList);
+            map.addAttribute("currentUserName", CommonUtils.employee.getName());
+
+            if (Objects.equals(CommonUtils.employee.getUser_type(), "ADMIN")){
+                map.addAttribute("user_type", "ADMIN");
+            }
             return "employee.html";
         }else {
             return "redirect:/login";
@@ -44,13 +49,7 @@ public class EmployeeController {
 
         //Save to Database
         employeeService.saveEmployee(employee);
-        redirectAttributes.addFlashAttribute("success", "Success");
-        return "redirect:/employee";
-    }
-
-    @GetMapping("/employee/{id}")
-    public String getEmpDetails(@Valid @PathVariable("id") int id, Model model){
-        System.out.println(id);
+        redirectAttributes.addFlashAttribute("success", "Employee Registration Successfully Done.");
         return "redirect:/employee";
     }
 

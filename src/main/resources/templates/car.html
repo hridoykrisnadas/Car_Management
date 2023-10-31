@@ -9,21 +9,23 @@
 </head>
 <body>
 <div class="row">
-    <div class = "col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div" th:insert="~{sidebar :: sidebar}"></div>
+    <div class = "col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div" th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
     <div class="col-md-10" id="content_div">
         <div class = ""  th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
             <h2 class="justify-content-center d-flex">Employee</h2>
             <hr>
             <!--              Car Registration  Form -->
-            <button type="button" class="btn py-2 btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#empRegModel">Add New Car</button>
-            <span class="bg-success text-white p-5" th:if="${success}" th:text="${success}"></span>
+            <div th:if="${user_type}">
+                <button type="button" class="btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal" data-bs-target="#carRegModel">Add New Car</button>
+                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}" th:text="${success}"></h6>
+                <hr>
+            </div>
         </div>
-        <hr>
         <!--            Car Report-->
         <div class="row p-2 m-0 ">
             <table class="table table-hover table-striped table-bordered dataTable no-footer">
-                <thead class="bg-primary text-center">
+                <thead class="thead-dark text-center">
                     <tr role="row">
                         <th class="align-middle">SL#</th>
                         <th class="align-middle">Car Name</th>
@@ -35,8 +37,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr role="row" th:each="car : ${cars}">
-                        <th scope="row" th:text="${car.id}"></th>
+                    <tr role="row" th:each="car, i : ${cars}">
+                        <th scope="row" th:text="${i.count}"></th>
                         <td th:text="${car.car_name}"></td>
                         <td th:text="${car.car_no}"></td>
                         <td th:text="${car.engine_no}"></td>
@@ -51,13 +53,12 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="empRegModel" tabindex="-1" aria-labelledby="empRegModelLabel" aria-hidden="true">
+<div class="modal fade" id="carRegModel" tabindex="-1" aria-labelledby="empRegModelLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="empRegModelLabel">Car Registration Form</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h6 class="bg-success" th:if="${success}" th:text="${success}"></h6>
             </div>
             <div class="modal-body px-3">
                 <form class="row g-3" action= "/car-registration-form" csrf method ="POST" th:object="${car}">
@@ -112,6 +113,7 @@
 <script type="text/javascript">
     //Active Menu
     document.getElementById('car-registration').classList.add('active');
+
 
 </script>
 </body>

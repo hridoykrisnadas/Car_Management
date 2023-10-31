@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Registration | Car Management</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+<div class="row">
+    <div class = "col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div" th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
+    <div class="col-md-10" id="content_div">
+        <div class = ""  th:insert="~{navbar :: navbar}"></div>
+        <div class="row p-1 m-0">
+            <h2 class="justify-content-center d-flex">Employee</h2>
+            <hr>
+            <!--              Car Request  Form -->
+            <div th:if="${user_type}">
+                <button type="button" class="btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal" data-bs-target="#carReqModel">Add Car Request</button>
+                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}" th:text="${success}"></h6>
+                <hr>
+            </div>
+        </div>
+        <!--            Car Report-->
+        <div class="row p-2 m-0 ">
+            <table class="table table-hover table-striped table-bordered dataTable no-footer">
+                <thead class="bg-primary text-center">
+                    <tr role="row">
+                        <th class="align-middle">SL#</th>
+                        <th class="align-middle">Employee Name</th>
+                        <th class="align-middle">Schedule Time</th>
+                        <th class="align-middle">Pickup Point</th>
+                        <th class="align-middle">Drop Point</th>
+                        <th class="align-middle">Status</th>
+                        <th class="align-middle">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr role="row" th:each="request, i : ${requestList}">
+                        <th scope="row" th:text="${i.count}"></th>
+                        <td th:text="${request.employee_name}"></td>
+                        <td th:text="${request.schedule_time}"></td>
+                        <td th:text="${request.pickup_point}"></td>
+                        <td th:text="${request.drop_point}"></td>
+                        <td>
+                            <span th:if="${request.status == 0}">Pending</span>
+                            <span th:if="${request.status == 1}">Approve</span>
+                            <span th:if="${request.status == 2}">Cancel</span>
+                        </td>
+                        <td>
+                           <div th:if="${request.status} == 0">
+                               <div class="text-center m-1">
+                                   <button class="btn btn-success details-button"
+                                           th:attr="data-request-id=${request.id}" data-bs-toggle="modal" data-bs-target="#approveBtnModal">
+                                       Approve
+                                   </button>
+                               </div>
+                               <div class="text-center m-1">
+                                   <button class="btn btn-danger details-button"
+                                           th:attr="data-request-id=${request.id}" data-bs-toggle="modal" data-bs-target="#cancelBtnModal">
+                                       Cancel
+                                   </button>
+                               </div>
+                           </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="carReqModel" tabindex="-1" aria-labelledby="carReqModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="carReqModelLabel">Car Request Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-3">
+                <form class="row g-3" action= "/car-request-form" csrf method ="POST" th:object="${carRequest}">
+<!--                    <div class="col-md-12 px-2">-->
+<!--                        <label for="employee_id" class="form-label">Select Employee</label>-->
+<!--                        <span class="text-danger">*</span>-->
+<!--                        <select id="employee_id" name="employee_id"  required class="form-select">-->
+<!--                            <option th:each="employee : ${employees}"-->
+<!--                                    th:value="${employee.id}"-->
+<!--                                    th:text="${employee.name}"></option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+                    <div class="col-md-12 px-1">
+                        <label for="schedule_date" class="form-label">Schedule Date</label>
+                        <span class="text-danger">*</span>
+                        <input type="date" name="schedule_date" class="form-control" required id="schedule_date" placeholder="Enter Schedule Date">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="schedule_time" class="form-label">Schedule Time</label>
+                        <span class="text-danger">*</span>
+                        <input type="time" name="schedule_time" class="form-control" required id="schedule_time" placeholder="Enter Schedule Time">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="pickup_point" class="form-label">Pickup Point</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="pickup_point" class="form-control" required id="pickup_point" placeholder="Enter Pickup Point">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="drop_paint" class="form-label">Drop Point</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="drop_point" class="form-control" required id="drop_paint" placeholder="Enter Drop Point">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<!-- Popper.JS -->
+<script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap JS -->
+<script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript">
+    //Active Menu
+    document.getElementById('car-request').classList.add('active');
+
+
+</script>
+</body>
+</html>

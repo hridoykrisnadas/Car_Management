@@ -27,7 +27,7 @@ public class LoginController {
         if (result==1){
             return "redirect:/";
         } else {
-            redirectAttributes.addFlashAttribute("failed", "failed");
+            redirectAttributes.addFlashAttribute("failed", "Wrong Credentials, Please Enter valid Value");
             return "redirect:/login";
         }
     }

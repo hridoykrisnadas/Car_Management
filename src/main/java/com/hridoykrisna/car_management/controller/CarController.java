@@ -24,6 +24,10 @@ public class CarController {
         if (CommonUtils.isAuthenticate){
             List<Car> carList = carService.getAllCar();
             model.addAttribute("cars", carList);
+            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            if (Objects.equals(CommonUtils.employee.getUser_type(), "ADMIN")){
+                model.addAttribute("user_type", "ADMIN");
+            }
             return "car.html";
         } else {
             return "redirect:/login";
