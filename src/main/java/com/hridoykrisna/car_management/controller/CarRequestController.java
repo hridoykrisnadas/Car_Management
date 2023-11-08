@@ -31,13 +31,19 @@ public class CarRequestController {
     @GetMapping({"/car-request", "/car-request/"})
     public String CarRequest(Model model){
         if (CommonUtils.isAuthenticate){
-            List<Employee> employeeList = employeeService.employeeList();
             List<CarSchedule> carSchedules = carScheduleService.getAllRequest();
             model.addAttribute("requestList", carSchedules);
-            model.addAttribute("employees", employeeList);
             model.addAttribute("currentUserName", CommonUtils.employee.getName());
 
             if (Objects.equals(CommonUtils.employee.getUser_type(), "ADMIN")){
+                List<CarSchedule> pendingList = carScheduleService.getPendingList();
+                model.addAttribute("pendingList", pendingList);
+                List<Employee> driverList = employeeService.driverList();
+                driverList.add(0, new Employee("Select Driver"));
+                model.addAttribute("drivers", driverList);
+                List<Car> carList = carService.getAllCar();
+                carList.add(0, new Car("Select Car"));
+                model.addAttribute("cars", carList);
                 model.addAttribute("user_type", "ADMIN");
             }
             return "car_request.html";
@@ -49,6 +55,18 @@ public class CarRequestController {
     @PostMapping("/car-request-form")
     public String carRequestForm(@Valid @ModelAttribute("carRequest") CarSchedule schedule, Model model, RedirectAttributes redirectAttributes){
         carScheduleService.saveCarSchedule(schedule);
+        return "redirect:/car-request";
+    }
+
+    @PostMapping("/request-approve-form")
+    public String requestApproveForm(@Valid @ModelAttribute("carRequestApprove") CarSchedule carSchedule){
+        carScheduleService.requestApprove(carSchedule);
+        return "redirect:/car-request";
+    }
+
+    @PostMapping("/request-cancel-form/{id}")
+    public String requestCancelForm(@PathVariable("id") int id){
+//        carScheduleService.requestApprove(carSchedule);
         return "redirect:/car-request";
     }
 }

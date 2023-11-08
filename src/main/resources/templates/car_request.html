@@ -9,16 +9,23 @@
 </head>
 <body>
 <div class="row">
-    <div class = "col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div" th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
+    <div class="col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div"
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
     <div class="col-md-10" id="content_div">
-        <div class = ""  th:insert="~{navbar :: navbar}"></div>
+        <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
             <h2 class="justify-content-center d-flex">Employee</h2>
             <hr>
             <!--              Car Request  Form -->
-            <div th:if="${user_type}">
-                <button type="button" class="btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal" data-bs-target="#carReqModel">Add Car Request</button>
-                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}" th:text="${success}"></h6>
+            <div>
+                <button type="button" class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
+                        data-bs-target="#carReqModel">Add Car Request
+                </button>
+                <button th:if="${user_type}" type="button" class="btn py-2 mx-2 btn-warning fw-bold col-md-3 approve-button"
+                        data-bs-toggle="modal" data-bs-target="#approveReqModel">Approve Car Request
+                </button>
+                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
+                    th:text="${success}"></h6>
                 <hr>
             </div>
         </div>
@@ -26,45 +33,28 @@
         <div class="row p-2 m-0 ">
             <table class="table table-hover table-striped table-bordered dataTable no-footer">
                 <thead class="bg-primary text-center">
-                    <tr role="row">
-                        <th class="align-middle">SL#</th>
-                        <th class="align-middle">Employee Name</th>
-                        <th class="align-middle">Schedule Time</th>
-                        <th class="align-middle">Pickup Point</th>
-                        <th class="align-middle">Drop Point</th>
-                        <th class="align-middle">Status</th>
-                        <th class="align-middle">Action</th>
-                    </tr>
+                <tr role="row">
+                    <th class="align-middle">SL#</th>
+                    <th class="align-middle">Employee Name</th>
+                    <th class="align-middle">Schedule Time</th>
+                    <th class="align-middle">Pickup Point</th>
+                    <th class="align-middle">Drop Point</th>
+                    <th class="align-middle">Status</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr role="row" th:each="request, i : ${requestList}">
-                        <th scope="row" th:text="${i.count}"></th>
-                        <td th:text="${request.employee_name}"></td>
-                        <td th:text="${request.schedule_time}"></td>
-                        <td th:text="${request.pickup_point}"></td>
-                        <td th:text="${request.drop_point}"></td>
-                        <td>
-                            <span th:if="${request.status == 0}">Pending</span>
-                            <span th:if="${request.status == 1}">Approve</span>
-                            <span th:if="${request.status == 2}">Cancel</span>
-                        </td>
-                        <td>
-                           <div th:if="${request.status} == 0">
-                               <div class="text-center m-1">
-                                   <button class="btn btn-success details-button"
-                                           th:attr="data-request-id=${request.id}" data-bs-toggle="modal" data-bs-target="#approveBtnModal">
-                                       Approve
-                                   </button>
-                               </div>
-                               <div class="text-center m-1">
-                                   <button class="btn btn-danger details-button"
-                                           th:attr="data-request-id=${request.id}" data-bs-toggle="modal" data-bs-target="#cancelBtnModal">
-                                       Cancel
-                                   </button>
-                               </div>
-                           </div>
-                        </td>
-                    </tr>
+                <tr role="row" th:each="request, i : ${requestList}">
+                    <th scope="row" th:text="${i.count}"></th>
+                    <td th:text="${request.employee.name}"></td>
+                    <td th:text="${request.schedule_time}"></td>
+                    <td th:text="${request.pickup_point}"></td>
+                    <td th:text="${request.drop_point}"></td>
+                    <td>
+                        <span th:if="${request.status == 0}">Pending</span>
+                        <span th:if="${request.status == 1}">Approve</span>
+                        <span th:if="${request.status == 2}">Cancel</span>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -80,35 +70,139 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" action= "/car-request-form" csrf method ="POST" th:object="${carRequest}">
-<!--                    <div class="col-md-12 px-2">-->
-<!--                        <label for="employee_id" class="form-label">Select Employee</label>-->
-<!--                        <span class="text-danger">*</span>-->
-<!--                        <select id="employee_id" name="employee_id"  required class="form-select">-->
-<!--                            <option th:each="employee : ${employees}"-->
-<!--                                    th:value="${employee.id}"-->
-<!--                                    th:text="${employee.name}"></option>-->
-<!--                        </select>-->
-<!--                    </div>-->
+                <form class="row g-3" action="/car-request-form" csrf method="POST" th:object="${carRequest}">
                     <div class="col-md-12 px-1">
                         <label for="schedule_date" class="form-label">Schedule Date</label>
                         <span class="text-danger">*</span>
-                        <input type="date" name="schedule_date" class="form-control" required id="schedule_date" placeholder="Enter Schedule Date">
+                        <input type="date" name="schedule_date" class="form-control" required id="schedule_date"
+                               placeholder="Enter Schedule Date">
                     </div>
                     <div class="col-md-12 px-1">
                         <label for="schedule_time" class="form-label">Schedule Time</label>
                         <span class="text-danger">*</span>
-                        <input type="time" name="schedule_time" class="form-control" required id="schedule_time" placeholder="Enter Schedule Time">
+                        <input type="time" name="schedule_time" class="form-control" required id="schedule_time"
+                               placeholder="Enter Schedule Time">
                     </div>
                     <div class="col-md-12 px-1">
                         <label for="pickup_point" class="form-label">Pickup Point</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="pickup_point" class="form-control" required id="pickup_point" placeholder="Enter Pickup Point">
+                        <input type="text" name="pickup_point" class="form-control" required id="pickup_point"
+                               placeholder="Enter Pickup Point">
                     </div>
                     <div class="col-md-12 px-1">
                         <label for="drop_paint" class="form-label">Drop Point</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="drop_point" class="form-control" required id="drop_paint" placeholder="Enter Drop Point">
+                        <input type="text" name="drop_point" class="form-control" required id="drop_paint"
+                               placeholder="Enter Drop Point">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Approve Report Modal -->
+<div class="modal fade" id="approveReqModel" tabindex="-1" aria-labelledby="approveReqModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="approveReqModelLabel">Car Approve Report</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-3">
+                <div class="row p-2 m-0 ">
+                    <table class="table table-hover table-striped table-bordered dataTable no-footer">
+                        <thead class="bg-primary text-center">
+                        <tr role="row">
+                            <th class="align-middle">SL#</th>
+                            <th class="align-middle">Employee Name</th>
+                            <th class="align-middle">Schedule Time</th>
+                            <th class="align-middle">Pickup Point</th>
+                            <th class="align-middle">Drop Point</th>
+                            <th class="align-middle">Status</th>
+                            <th class="align-middle">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr role="row" th:each="list, i : ${pendingList}">
+                            <th scope="row" th:text="${i.count}"></th>
+                            <td th:text="${list.employee.name}"></td>
+                            <td th:text="${list.schedule_time}"></td>
+                            <td th:text="${list.pickup_point}"></td>
+                            <td th:text="${list.drop_point}"></td>
+                            <td>
+                                <span th:if="${list.status == 0}">Pending</span>
+                                <span th:if="${list.status == 1}">Approve</span>
+                                <span th:if="${list.status == 2}">Cancel</span>
+                            </td>
+                            <td>
+                                <div th:if="${list.status} == 0">
+                                    <div class="text-center m-1">
+                                        <button class="btn btn-success approve-request-button"
+                                                th:attr="data-request-id=${list.id}" data-bs-toggle="modal"
+                                                data-bs-target="#approveBtnModal">
+                                            Approve
+                                        </button>
+                                    </div>
+                                    <div class="text-center m-1">
+                                        <button class="btn btn-danger cancel-request-button"
+                                                th:attr="data-request-id=${list.id}" data-bs-toggle="modal"
+                                                data-bs-target="#cancelBtnModal">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Approve Btn Modal -->
+<div class="modal fade" id="approveBtnModal" tabindex="-1" aria-labelledby="approveBtnModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="approveBtnModalLabel">Approve Request</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-3">
+                <form class="row g-3" action="/request-approve-form" csrf method="POST" name="carRequestApprove" onsubmit="return validateForm()" th:object="${carRequestApprove}">
+                    <div class="col-md-12 px-1">
+                        <label for="schedule_id" class="form-label">Schedule ID</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="id" class="form-control" required id="schedule_id" readonly>
+                    </div>
+                    <div class="col-md-12 px-2">
+                        <label for="driver_id" class="form-label">Select Employee</label>
+                        <span class="text-danger">*</span>
+                        <select id="driver_id" name="driver_id" required class="form-select">
+                            <option th:each="driver : ${drivers}"
+                                    th:value="${driver.id}"
+                                    th:text="${driver.name}">
+                                <input type="hidden" id="driver_name" name="driver_name" th:value="${driver.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 px-2">
+                        <label for="car_id" class="form-label">Select Car</label>
+                        <span class="text-danger">*</span>
+                        <select id="car_id" name="car_id" required class="form-select">
+                            <option th:each="car : ${cars}"
+                                    th:value="${car.id}"
+                                    th:text="${car.car_name} + ' ('+${car.car_no}+')'">
+                                <input type="hidden" id="car_name" name="car_name" th:value="${car.car_name}">
+                            </option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
@@ -124,13 +218,49 @@
 <!-- jQuery CDN - Slim version (=without AJAX) -->
 <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
 <!-- Popper.JS -->
-<script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 <!-- Bootstrap JS -->
-<script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
 <script type="text/javascript">
     //Active Menu
     document.getElementById('car-request').classList.add('active');
+    // For Approve Request
+
+
+    $(document).ready(function() {
+        $(".approve-request-button").click(function (){
+            const scheduleId = $(this).data("request-id");
+            console.log(scheduleId);
+            document.getElementById("schedule_id").value = scheduleId;
+        });
+        $(".cancel-request-button").click(function (){
+            const scheduleId = $(this).data("request-id");
+            console.log(scheduleId);
+            $.ajax({
+                type: "PUT",
+                url: "/api/carSchedule/" + scheduleId,
+                dataType: "json", // Specify JSON data type
+                success: function() {
+                    console.log("Success");
+                }
+            });
+        });
+
+
+        function validateForm() {
+            let driver_id = document.forms["carRequestApprove"]["driver_id"].value;
+            let car_id = document.forms["carRequestApprove"]["car_id"].value;
+            if (driver_id === 0) {
+                alert("Driver must be Selected");
+                return false;
+            }
+            if (car_id === 0) {
+                alert("Car must be Selected");
+                return false;
+            }
+        }
+    });
 
 
 </script>

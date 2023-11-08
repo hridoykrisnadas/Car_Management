@@ -1,8 +1,6 @@
 package com.hridoykrisna.car_management.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.util.*;
@@ -35,9 +33,18 @@ public class Employee extends BaseModel{
     private String date_of_birth;
     private String joining_date;
     private String user_type;
+//    @OneToMany(mappedBy = "employee")
+//    private List<CarSchedule> carSchedules;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
-    private Set<Role> roles;
+    public Employee(String selectCar) {
+        this.name = selectCar;
+        this.setId(0);
+    }
+
+    public Employee(int id){
+        this.setId(id);
+    }
+
     public void setPassword(String password) {
         String generatedPassword = null;
         try

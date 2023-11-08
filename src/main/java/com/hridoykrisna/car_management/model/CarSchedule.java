@@ -1,7 +1,6 @@
 package com.hridoykrisna.car_management.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +13,18 @@ import org.hibernate.annotations.Comment;
 @AllArgsConstructor
 @ToString
 public class CarSchedule extends BaseModel{
+    @ManyToOne
+    @JoinColumn(name = "fk_employee_id")
+    private Employee employee;
     private int employee_id;
-    private String employee_name;
+    @ManyToOne
+    @JoinColumn(name = "fk_car_id")
+    private Car car;
     private int car_id;
-    private String car_name;
+    @ManyToOne
+    @JoinColumn(name = "fk_driver_id")
+    private Employee driver;
     private int driver_id;
-    private String driver_name;
     private String pickup_point;
     private String drop_point;
     private String schedule_date;

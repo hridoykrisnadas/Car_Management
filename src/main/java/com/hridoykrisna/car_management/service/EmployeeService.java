@@ -7,4 +7,6 @@ public interface EmployeeService {
     void saveEmployee(Employee employee);
 
     Employee getEmployeeById(int id);
+
+    List<Employee> driverList();
 }

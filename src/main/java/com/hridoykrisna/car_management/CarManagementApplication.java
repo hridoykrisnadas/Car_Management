@@ -1,16 +1,8 @@
 package com.hridoykrisna.car_management;
 
-import com.hridoykrisna.car_management.model.Role;
-import com.hridoykrisna.car_management.model.Employee;
-import com.hridoykrisna.car_management.repository.EmployeeRepo;
-import com.hridoykrisna.car_management.repository.RoleRepo;
-import jakarta.annotation.PostConstruct;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Collections;
 
 @SpringBootApplication
 @RequiredArgsConstructor

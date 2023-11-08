@@ -1,4 +1,4 @@
-package com.hridoykrisna.car_management.controller;
+package com.hridoykrisna.car_management.controller.Rest;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Employee;
@@ -19,18 +19,17 @@ import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("")
+@RequestMapping("/api/employee/")
 public class EmployeeRestController {
     private final EmployeeService employeeService;
     private final FileService fileService;
 
     private final String path = CommonUtils.ImagePath;
-    @GetMapping("/employee/{id}")
+    @GetMapping("{id}")
     public Employee getEmpDetails(@Valid @PathVariable("id") int id, Model model){
-        Employee employee = employeeService.getEmployeeById(id);
-        System.out.println(employee);
+        //        System.out.println(employee);
 //        model.addAttribute("employee", employee);
-        return employee;
+        return employeeService.getEmployeeById(id);
     }
 
 }

@@ -18,4 +18,13 @@ public class Car extends BaseModel{
     private String chassis_no;
     private String owner_name;
     private String car_color;
+
+    public Car(String selectDriver) {
+        this.car_name = selectDriver;
+        this.setCar_no("...");
+    }
+
+    public Car(int id) {
+        this.setId(id);
+    }
 }

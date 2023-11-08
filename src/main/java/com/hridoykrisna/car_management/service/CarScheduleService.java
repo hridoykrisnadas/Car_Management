@@ -8,4 +8,10 @@ public interface CarScheduleService {
     void saveCarSchedule(CarSchedule carSchedule);
 
     List<CarSchedule> getAllRequest();
+
+    List<CarSchedule> getPendingList();
+
+    void requestApprove(CarSchedule carSchedule);
+
+    void cancelSchedule(int id);
 }

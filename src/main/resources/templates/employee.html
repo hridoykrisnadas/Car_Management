@@ -173,10 +173,19 @@
                             <img id="imageView" src="" class="d-flex card-img-top-c mt-1" height="200px" alt="">
                         </div>
                         <div class="col-md-12 d-flex justify-content-center">
-                            <h5 class="fw-bold text-white mt-3" id="nameView"></h5>
+                            <h4 class="fw-bold text-white mt-3" id="nameView"></h4>
                         </div>
                         <div class="p-2 employee-details">
-
+                            <h6 class="d-flex" id="emp-id"></h6>
+                            <h6 class="d-flex" id="emp-name"></h6>
+                            <h6 class="d-flex" id="emp-email"></h6>
+                            <h6 class="d-flex" id="emp-designation"></h6>
+                            <h6 class="d-flex" id="emp-salary"></h6>
+                            <h6 class="d-flex" id="emp-mobile"></h6>
+                            <h6 class="d-flex" id="emp-gender"></h6>
+                            <h6 class="d-flex" id="emp-nid"></h6>
+                            <h6 class="d-flex" id="emp-birth"></h6>
+                            <h6 class="d-flex" id="joining_date"></h6>
                         </div>
 
                     </div>
@@ -204,23 +213,23 @@
                 console.log(employeeId);
                 $.ajax({
                     type: "GET",
-                    url: "/employee/" + employeeId,
+                    url: "/api/employee/" + employeeId,
                     dataType: "json", // Specify JSON data type
                     success: function(employee) {
-                        console.log(employee);
-                        // Add the employee details as an attribute to your HTML element
                         document.getElementById("imageView").src = employee.imagePath;
-                        $("#nameView").append($("<h5>").text(employee.name));
-                        $(".employee-details").append($("<h6>").text("Employee ID: " + employee.id));
-                        $(".employee-details").append($("<h6>").text("Name: " + employee.name));
-                        $(".employee-details").append($("<h6>").text("Email: " + employee.email));
-                        $(".employee-details").append($("<h6>").text("Designation: " + employee.designation));
-                        $(".employee-details").append($("<h6>").text("Mobile No: " + employee.mobile_no));
-                        $(".employee-details").append($("<h6>").text("Salary: " + employee.salary));
-                        $(".employee-details").append($("<h6>").text("Gender: " + employee.gender));
-                        $(".employee-details").append($("<h6>").text("NID: " + employee.nid));
-                        $(".employee-details").append($("<h6>").text("Date of Birth: " + employee.date_of_birth));
-                        $(".employee-details").append($("<h6>").text("Date of Joining: " + employee.joining_date));
+                        document.getElementById("nameView").innerHTML = employee.name;
+                        document.getElementById("emp-id").innerHTML = "Employee ID: " + employee.id;
+                        document.getElementById("emp-name").innerHTML = "Name: " + employee.name;
+                        document.getElementById("emp-email").innerHTML = "Email: " + employee.email;
+                        document.getElementById("emp-designation").innerHTML = "Designation: " + employee.designation;
+                        document.getElementById("emp-salary").innerHTML = "Salary: " + new Intl.NumberFormat().format(employee.salary) + " BDT Only";
+                        document.getElementById("emp-mobile").innerHTML = "Mobile No: " + employee.mobile_no;
+                        document.getElementById("emp-gender").innerHTML = "Gender: " + employee.gender;
+                        document.getElementById("emp-nid").innerHTML = "NID: " + employee.nid;
+                        document.getElementById("emp-birth").innerHTML = "Date of Birth: " + employee.date_of_birth;
+                        document.getElementById("emp-joining_date").innerHTML = "Joining Date: " + employee.joining_date;
+
+
                         // Show the modal
                         $("#empDetailsModel").modal('show');
                     }
