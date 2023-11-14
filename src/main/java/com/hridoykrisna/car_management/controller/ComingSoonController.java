@@ -11,11 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("")
 public class ComingSoonController {
-
-    @GetMapping("/car-schedule")
-    public String CarSchedule(){
-        return "coming_soon.html";
-    }
     @GetMapping("/car-expense")
     public String CarExpense(){
         return "coming_soon.html";

@@ -10,6 +10,12 @@ import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
 
@@ -66,5 +72,69 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
           carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
           carScheduleRepo.save(carSchedule.get());
        }
+    }
+
+    @Override
+    public List<CarSchedule> getAllScheduleByEmp() {
+        return carScheduleRepo.findAllByDriverIsNotNullAndEmployeeId(CommonUtils.employee.getId());
+    }
+
+    @Override
+    public void addStartTime(String startScheduleDate, String startTime, int scheduleId) {
+        Optional<CarSchedule> carSchedule =  carScheduleRepo.findById(scheduleId);
+        if (carSchedule.isPresent()){
+            carSchedule.get().setStart_time(startScheduleDate + " "+ startTime);
+            carSchedule.get().setStatus(3);
+            carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
+            carScheduleRepo.save(carSchedule.get());
+        }
+    }
+
+    @Override
+    public void addStopTime(String stopScheduleDate, String stopTime, int scheduleId) {
+        Optional<CarSchedule> carSchedule =  carScheduleRepo.findById(scheduleId);
+        if (carSchedule.isPresent()){
+//            Set Data
+
+
+//            Calculation Over time
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date start_Date_time = null;
+            Date stop_Date_time = null;
+
+            try {
+                start_Date_time = dateFormat.parse(carSchedule.get().getStart_time());
+                stop_Date_time = dateFormat.parse(stopScheduleDate + " "+ stopTime);
+                System.out.println(stop_Date_time + " : "+ start_Date_time);
+            } catch (ParseException e) {
+                System.out.println("Exception: "+e.getMessage());
+            }
+
+            assert stop_Date_time != null;
+            long duration = stop_Date_time.getTime() - start_Date_time.getTime();
+            System.out.println(duration);
+
+            long minutes = duration / (1000 * 60);
+            long hours = minutes / 60;
+            minutes = minutes % 60;
+
+            float perHour = 100;
+            float perMinutes = (float) 100 /60;
+            float totalBill = 0;
+            totalBill += hours*perHour;
+            totalBill += minutes * perMinutes;
+
+            // Print the hours and minutes
+            System.out.println("Hours: " + hours);
+            System.out.println("Minutes: " + minutes);
+
+            carSchedule.get().setStop_time(stopScheduleDate + " "+ stopTime);
+            carSchedule.get().setTotal_duty_time(hours+":"+minutes);
+            carSchedule.get().setTotal_bill(totalBill);
+            carSchedule.get().setStatus(4);
+            carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
+            carScheduleRepo.save(carSchedule.get());
+        }
     }
 }

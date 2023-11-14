@@ -36,6 +36,7 @@
                 <tr role="row">
                     <th class="align-middle">SL#</th>
                     <th class="align-middle">Employee Name</th>
+                    <th class="align-middle">Schedule Date</th>
                     <th class="align-middle">Schedule Time</th>
                     <th class="align-middle">Pickup Point</th>
                     <th class="align-middle">Drop Point</th>
@@ -46,13 +47,16 @@
                 <tr role="row" th:each="request, i : ${requestList}">
                     <th scope="row" th:text="${i.count}"></th>
                     <td th:text="${request.employee.name}"></td>
+                    <td th:text="${request.schedule_date}"></td>
                     <td th:text="${request.schedule_time}"></td>
                     <td th:text="${request.pickup_point}"></td>
                     <td th:text="${request.drop_point}"></td>
                     <td>
-                        <span th:if="${request.status == 0}">Pending</span>
-                        <span th:if="${request.status == 1}">Approve</span>
-                        <span th:if="${request.status == 2}">Cancel</span>
+                        <span th:if="${request.status == 0}" th:class="bg-warning">Pending</span>
+                        <span th:if="${request.status == 1}" th:class="bg-success">Approve</span>
+                        <span th:if="${request.status == 2}" th:class="bg-danger">Cancel</span>
+                        <span th:if="${request.status == 3}" th:class="bg-success">Running</span>
+                        <span th:if="${request.status == 4}" th:class="bg-success">Complete</span>
                     </td>
                 </tr>
                 </tbody>
@@ -139,6 +143,8 @@
                                 <span th:if="${list.status == 0}">Pending</span>
                                 <span th:if="${list.status == 1}">Approve</span>
                                 <span th:if="${list.status == 2}">Cancel</span>
+                                <span th:if="${list.status == 3}">Running</span>
+                                <span th:if="${list.status == 4}">Complete</span>
                             </td>
                             <td>
                                 <div th:if="${list.status} == 0">
@@ -153,7 +159,7 @@
                                         <button class="btn btn-danger cancel-request-button"
                                                 th:attr="data-request-id=${list.id}" data-bs-toggle="modal"
                                                 data-bs-target="#cancelBtnModal">
-                                            Cancel
+                                            Cancel Schedule
                                         </button>
                                     </div>
                                 </div>

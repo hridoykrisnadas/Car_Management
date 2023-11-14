@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Registration | Car Management</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div"
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
+    <div class="col-md-10" id="content_div">
+        <div class="" th:insert="~{navbar :: navbar}"></div>
+        <div class="row p-1 m-0">
+            <h2 class="justify-content-center d-flex">Employee</h2>
+            <hr>
+            <div th:if="${success}">
+                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
+                    th:text="${success}"></h6>
+                <hr>
+            </div>
+        </div>
+        <!--            Car Report-->
+        <div class="row p-2 m-0 ">
+            <table class="table table-hover table-striped table-bordered dataTable no-footer">
+                <thead class="bg-primary text-center">
+                <tr role="row">
+                    <th class="align-middle">SL#</th>
+                    <th class="align-middle">Employee Name</th>
+                    <th class="align-middle">Schedule Date</th>
+                    <th class="align-middle">Schedule Time</th>
+                    <th class="align-middle">Pickup Point</th>
+                    <th class="align-middle">Drop Point</th>
+                    <th class="align-middle">Start Time</th>
+                    <th class="align-middle">Stop Time</th>
+                    <th class="align-middle">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr role="row" th:each="schedule, i : ${scheduleList}">
+                    <th scope="row" th:text="${i.count}"></th>
+                    <td th:text="${schedule.employee.name}"></td>
+                    <td th:text="${schedule.schedule_date}"></td>
+                    <td th:text="${schedule.schedule_time}"></td>
+                    <td th:text="${schedule.pickup_point}"></td>
+                    <td th:text="${schedule.drop_point}"></td>
+                    <td>
+                        <button th:if="${schedule.status==1}" th:attr="data-schedule-id=${schedule.id}" type="button"
+                                class="btn py-2 btn-warning fw-bolder start-button"
+                                data-bs-toggle="modal" data-bs-target="#addStartTimeModel">Add Time
+                        </button>
+                        <span th:if="${schedule.status == 3}" th:text="${schedule.start_time}"></span>
+                        <span th:if="${schedule.status == 4}" th:text="${schedule.start_time}"></span>
+                    </td>
+                    <td>
+                        <button th:if="${schedule.status==3}" th:attr="data-schedule-id=${schedule.id}" type="button"
+                                class="btn py-2 btn-warning fw-bolder stop-button"
+                                data-bs-toggle="modal" data-bs-target="#addStopTimeModel">Add Time
+                        </button>
+                        <span th:if="${schedule.status == 4}" th:text="${schedule.stop_time}"></span>
+                    </td>
+                    <td>
+                        <span th:if="${schedule.status == 1}">Not Start</span>
+                        <span th:if="${schedule.status == 3}">Running</span>
+                        <span th:if="${schedule.status == 4}">Complete</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Start Time Modal -->
+<div class="modal fade" id="addStartTimeModel" tabindex="-1" aria-labelledby="addStartTime" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addStartTime">Add Start Time</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-3">
+                <form class="row g-3" action="/add-start-time" csrf method="POST">
+                    <div class="col-md-12 px-1">
+                        <label for="start_schedule_id" class="form-label">Schedule ID</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="id" class="form-control" required id="start_schedule_id" readonly>
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="start_schedule_date" class="form-label">Start Schedule Date</label>
+                        <span class="text-danger">*</span>
+                        <input type="date" name="start_schedule_date" class="form-control" required
+                               id="start_schedule_date"
+                               placeholder="Enter Start Schedule Date">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="start_time" class="form-label">Start Time</label>
+                        <span class="text-danger">*</span>
+                        <input type="time" name="start_start_time" class="form-control" required id="start_time"
+                               placeholder="Enter Start Time">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stop Time Modal -->
+<div class="modal fade" id="addStopTimeModel" tabindex="-1" aria-labelledby="addStopTime" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addStopTime">Add Stop Time</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-3">
+                <form class="row g-3" action="/add-stop-time" csrf method="POST">
+                    <div class="col-md-12 px-1">
+                        <label for="stop_schedule_id" class="form-label">Schedule ID</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="id" class="form-control" required id="stop_schedule_id" readonly>
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="stop_schedule_date" class="form-label">Stop Schedule Date</label>
+                        <span class="text-danger">*</span>
+                        <input type="date" name="stop_schedule_date" class="form-control" required id="stop_schedule_date"
+                               placeholder="Enter Stop Schedule Date">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="stop_time" class="form-label">Start Time</label>
+                        <span class="text-danger">*</span>
+                        <input type="time" name="stop_stop_time" class="form-control" required id="stop_time"
+                               placeholder="Enter Stop Time">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<!-- Popper.JS -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap JS -->
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript">
+    //Active Menu
+    document.getElementById('car-schedule').classList.add('active');
+    // For Approve Request
+
+
+    $(document).ready(function () {
+        $(".start-button").click(function () {
+            const scheduleId = $(this).data("schedule-id");
+            console.log(scheduleId);
+            document.getElementById("start_schedule_id").value = scheduleId;
+        });
+        $(".stop-button").click(function () {
+            const scheduleId = $(this).data("schedule-id");
+            console.log(scheduleId);
+            document.getElementById("stop_schedule_id").value = scheduleId;
+        });
+
+
+    });
+
+
+</script>
+</body>
+</html>

@@ -32,7 +32,7 @@ public class CarSchedule extends BaseModel{
     private String start_time;
     private String stop_time;
     private String total_duty_time;
-    private String total_bill;
+    private double total_bill;
     @Comment("0==Pending, 1== Approve, 2==Cancel")
     private int status;
 

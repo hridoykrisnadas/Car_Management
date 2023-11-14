@@ -18,4 +18,5 @@ public interface CarScheduleRepo extends JpaRepository<CarSchedule, Integer> {
     @Query(value = "from CarSchedule where status=0")
     List<CarSchedule> pendingReport();
 
+    List<CarSchedule> findAllByDriverIsNotNullAndEmployeeId(int employeeId);
 }
