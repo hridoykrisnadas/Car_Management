@@ -27,7 +27,7 @@
                 <tr th:each="employee : ${employees}">
                     <div class="col-md-3 p-2">
                         <div class="card bg-base text-white">
-                            <img th:src="${employee.imagePath}" class="card-img-top" width="100%" height="200px" alt="...">
+                            <img th:src="${employee.imagePath}" class="card-img-top" width="100%" height="200px" th:alt="${employee.name}">
                             <div class="card-body">
                                 <h6 class="card-title fw-bold d-flex justify-content-center"><span th:text="${employee.name}"> Title </span></h6>
                                 <h6 class="card-title d-flex justify-content-center"><span th:text="${employee.designation}"> Title </span></h6>

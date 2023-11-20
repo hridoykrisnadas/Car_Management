@@ -33,6 +33,8 @@ public class Employee extends BaseModel{
     private String date_of_birth;
     private String joining_date;
     private String user_type;
+//    For Driver
+    private float balance;
 //    @OneToMany(mappedBy = "employee")
 //    private List<CarSchedule> carSchedules;
 

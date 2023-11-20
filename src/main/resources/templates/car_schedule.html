@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Car Registration | Car Management</title>
+    <title>Car Schedule | Car Management</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
@@ -14,7 +14,7 @@
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
-            <h2 class="justify-content-center d-flex">Employee</h2>
+            <h2 class="justify-content-center d-flex">Car Schedule</h2>
             <hr>
             <div th:if="${success}">
                 <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
@@ -35,6 +35,8 @@
                     <th class="align-middle">Drop Point</th>
                     <th class="align-middle">Start Time</th>
                     <th class="align-middle">Stop Time</th>
+                    <th class="align-middle">Duty Time</th>
+                    <th class="align-middle">Bill</th>
                     <th class="align-middle">Status</th>
                 </tr>
                 </thead>
@@ -61,6 +63,8 @@
                         </button>
                         <span th:if="${schedule.status == 4}" th:text="${schedule.stop_time}"></span>
                     </td>
+                    <td th:text="${schedule.total_duty_time}"></td>
+                    <td th:text="${schedule.total_bill}"></td>
                     <td>
                         <span th:if="${schedule.status == 1}">Not Start</span>
                         <span th:if="${schedule.status == 3}">Running</span>

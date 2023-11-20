@@ -26,7 +26,6 @@ public class CarRequestController {
     private final CarService carService;
     private final CarScheduleService carScheduleService;
 
-
     @GetMapping({"/car-request", "/car-request/"})
     public String CarRequest(Model model){
         if (CommonUtils.isAuthenticate){

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Expense | Car Management</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div"
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
+    <div class="col-md-10" id="content_div">
+        <div class="" th:insert="~{navbar :: navbar}"></div>
+        <div class="row p-1 m-0">
+            <h2 class="justify-content-center d-flex">Car Expense</h2>
+            <hr>
+            <!--              Car Expense  Form -->
+            <div>
+                <button type="button" class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
+                        data-bs-target="#carExpenseModal">Add Car Expense
+                </button>
+                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
+                    th:text="${success}">
+                </h6>
+                <hr>
+            </div>
+        </div>
+        <!--            Car Report-->
+        <div class="row p-2 m-0 ">
+            <table class="table table-hover table-striped table-bordered dataTable no-footer">
+                <thead class="bg-primary text-center">
+                <tr role="row">
+                    <th class="align-middle">SL#</th>
+                    <th class="align-middle">Date</th>
+                    <th class="align-middle">Car</th>
+                    <th class="align-middle">Driver</th>
+                    <th class="align-middle">Purpose</th>
+                    <th class="align-middle">Amount</th>
+                    <th class="align-middle">Invoice No</th>
+                    <th class="align-middle">Invoice</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr role="row" th:each="list, i : ${expenseList}">
+                    <th scope="row" th:text="${i.count}"></th>
+                    <td th:text="${list.date}"></td>
+                    <td th:text="${list.car.car_name}"></td>
+                    <td th:text="${list.driver.name}"></td>
+                    <td th:text="${list.purpose}"></td>
+                    <td th:text="${list.amount}"></td>
+                    <td th:text="${list.invoice_no}"></td>
+                    <td th:if="${list.memo_image_path}">
+                        <img th:src="${list.memo_image_path}" class="card-img-top" width="100%" height="50px" th:alt="${list.date}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="carExpenseModal" tabindex="-1" aria-labelledby="carExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="carExpenseModalLabel">Car Expense Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-3">
+                <form class="row g-3" action="/car-expense-form" enctype="multipart/form-data" csrf method="POST" th:object="${carExpense}">
+                    <div class="col-md-6 px-1">
+                        <label for="date" class="form-label">Date</label>
+                        <span class="text-danger">*</span>
+                        <input type="date" name="date" class="form-control" required id="date"
+                               placeholder="Enter Date">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label for="driver_id" class="form-label">Select Driver</label>
+                        <span class="text-danger">*</span>
+                        <select id="driver_id" name="driver_id" required class="form-select">
+                            <option th:each="driver : ${drivers}"
+                                    th:value="${driver.id}"
+                                    th:text="${driver.name}">
+                                <input type="hidden" id="driver_name" name="driver_name" th:value="${driver.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label for="car_id" class="form-label">Select Car</label>
+                        <span class="text-danger">*</span>
+                        <select id="car_id" name="car_id" required class="form-select">
+                            <option th:each="car : ${cars}"
+                                    th:value="${car.id}"
+                                    th:text="${car.car_name} + ' ('+${car.car_no}+')'">
+                                <input type="hidden" id="car_name" name="car_name" th:value="${car.car_name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label for="purpose" class="form-label">Purpose</label>
+                        <span class="text-danger">*</span>
+                        <select id="purpose" name="purpose"  required class="form-select">
+                            <option value="0" selected>Choose...</option>
+                            <option value="CNG">CNG</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Service & Repair">Service & Repair</option>
+                            <option value="Toll">Toll</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 px-1">
+                        <label for="amount" class="form-label">Amount</label>
+                        <span class="text-danger">*</span>
+                        <input type="number" min="1" name="amount" class="form-control" required id="amount"
+                               placeholder="Enter Amount">
+                    </div>
+                    <div class="col-md-6 px-1">
+                        <label for="invoice_no" class="form-label">Invoice No</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" min="1" name="invoice_no" class="form-control" required id="invoice_no"
+                               placeholder="Enter Invoice No">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="image" class="form-label">Invoice Image</label>
+                        <span class="text-danger">*</span>
+                        <input type="file" accept="image/*" name="image" class="form-control" required id="image">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<!-- Popper.JS -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap JS -->
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript">
+    //Active Menu
+    document.getElementById('car-expense').classList.add('active');
+    // For Approve Request
+
+
+    $(document).ready(function() {
+        $(".approve-request-button").click(function (){
+            const scheduleId = $(this).data("request-id");
+            console.log(scheduleId);
+            document.getElementById("schedule_id").value = scheduleId;
+        });
+        $(".cancel-request-button").click(function (){
+            const scheduleId = $(this).data("request-id");
+            console.log(scheduleId);
+            $.ajax({
+                type: "PUT",
+                url: "/api/carSchedule/" + scheduleId,
+                dataType: "json", // Specify JSON data type
+                success: function() {
+                    console.log("Success");
+                }
+            });
+        });
+
+
+        function validateForm() {
+            let driver_id = document.forms["carRequestApprove"]["driver_id"].value;
+            let car_id = document.forms["carRequestApprove"]["car_id"].value;
+            if (driver_id === 0) {
+                alert("Driver must be Selected");
+                return false;
+            }
+            if (car_id === 0) {
+                alert("Car must be Selected");
+                return false;
+            }
+        }
+    });
+
+
+</script>
+</body>
+</html>

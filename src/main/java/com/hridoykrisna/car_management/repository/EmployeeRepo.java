@@ -1,6 +1,5 @@
 package com.hridoykrisna.car_management.repository;
 
-import com.hridoykrisna.car_management.model.CarSchedule;
 import com.hridoykrisna.car_management.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +18,8 @@ public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
     List<Employee> findByDriver();
 
 //    @Query(value = "select Employee.name from Employee where id=?")
-    String findNameById(int driverId);
+//    String findNameById(int driverId);
+
+    @Query(value = "select balance from Employee where id =?1")
+    float  getBalanceByEmployeeId(int id);
 }

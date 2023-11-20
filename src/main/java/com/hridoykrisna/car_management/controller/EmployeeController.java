@@ -41,7 +41,8 @@ public class EmployeeController {
         }
     }
     @PostMapping("/employee-registration-form")
-    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, @RequestParam MultipartFile image, Model model, RedirectAttributes redirectAttributes) throws IOException {
+    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, @RequestParam MultipartFile image,  RedirectAttributes redirectAttributes) throws IOException {
+
 
         // Save Image & Set Image Path
         String imagePath = fileService.uploadImage(path, image, employee.getName());

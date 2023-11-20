@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Car Registration | Car Management</title>
+    <title>Car Request | Car Management</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
@@ -14,7 +14,7 @@
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
-            <h2 class="justify-content-center d-flex">Employee</h2>
+            <h2 class="justify-content-center d-flex">Car Request</h2>
             <hr>
             <!--              Car Request  Form -->
             <div>
@@ -189,7 +189,7 @@
                         <input type="text" name="id" class="form-control" required id="schedule_id" readonly>
                     </div>
                     <div class="col-md-12 px-2">
-                        <label for="driver_id" class="form-label">Select Employee</label>
+                        <label for="driver_id" class="form-label">Select Driver</label>
                         <span class="text-danger">*</span>
                         <select id="driver_id" name="driver_id" required class="form-select">
                             <option th:each="driver : ${drivers}"

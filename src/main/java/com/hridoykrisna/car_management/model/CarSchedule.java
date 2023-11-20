@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Comment;
 
+import java.text.DecimalFormat;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -36,4 +38,13 @@ public class CarSchedule extends BaseModel{
     @Comment("0==Pending, 1== Approve, 2==Cancel")
     private int status;
 
+    public void setTotal_bill(double total_bill) {
+        DecimalFormat dec = new DecimalFormat("#0.00");
+        this.total_bill = Double.parseDouble(dec.format(total_bill));
+    }
+
+    public double getTotal_bill() {
+        DecimalFormat dec = new DecimalFormat("#0.00");
+        return Double.parseDouble(dec.format(total_bill));
+    }
 }
