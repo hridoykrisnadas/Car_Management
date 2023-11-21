@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Car Expense Payment | Car Management</title>
+    <title>Driver Duty Payment | Car Management</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
@@ -14,12 +14,12 @@
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
-            <h2 class="justify-content-center d-flex">Car Expense Payment</h2>
+            <h2 class="justify-content-center d-flex">Driver Duty Payment</h2>
             <hr>
             <!--              Car Expense  Form -->
             <div>
                 <button type="button" class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
-                        data-bs-target="#expensePaymentModal">Add Car Expense Payment
+                        data-bs-target="#expensePaymentModal">Add Driver Duty Payment
                 </button>
                 <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
                     th:text="${success}">
@@ -35,7 +35,6 @@
                     <th class="align-middle">SL#</th>
                     <th class="align-middle">Date</th>
                     <th class="align-middle">Driver</th>
-                    <th class="align-middle">Purpose</th>
                     <th class="align-middle">Amount</th>
                     <th class="align-middle">Transaction No</th>
                     <th class="align-middle">Transaction Fee</th>
@@ -44,11 +43,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr role="row" th:each="list, i : ${expensePaymentList}">
+                <tr role="row" th:each="list, i : ${dutyPaymentList}">
                     <th scope="row" th:text="${i.count}"></th>
-                    <td class="text-center" th:text="${list.date}"></td >
+                    <td class="text-center" th:text="${list.payment_date}"></td >
                     <td class="text-center" th:text="${list.driver.name}"></td >
-                    <td class="text-center" th:text="${list.purpose}"></td >
                     <td class="text-center" th:text="${list.amount}"></td >
                     <td class="text-center" th:text="${list.transaction_no}"></td >
                     <td class="text-center" th:text="${list.transaction_fee}"></td >
@@ -62,15 +60,15 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="expensePaymentModal" tabindex="-1" aria-labelledby="carExpenseModalLabel" aria-hidden="true">
+<div class="modal fade" id="expensePaymentModal" tabindex="-1" aria-labelledby="dutyModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="carExpenseModalLabel">Expense Payment Form</h1>
+                <h1 class="modal-title fs-5" id="dutyModalLabel">Duty Payment Form</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" action="/expense-payment-form" enctype="multipart/form-data" csrf method="POST" th:object="${expensePayment}">
+                <form class="row g-3" action="/duty-payment-form" enctype="multipart/form-data" csrf method="POST" th:object="${dutyPayment}">
                     <div class="col-md-6 px-2">
                         <label for="driver_id" class="form-label">Select Driver</label>
                         <span class="text-danger">*</span>
@@ -83,31 +81,20 @@
                         </select>
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="balance_" class="form-label">Current Balance</label>
+                        <label for="balance_" class="form-label">Due Amount</label>
                         <span class="text-danger">*</span>
-                        <input type="number" name="balance" class="form-control" readonly required id="balance_">
+                        <input type="number" name="balance" class="form-control" readonly id="balance_">
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="date" class="form-label">Date</label>
+                        <label for="payment_date" class="form-label">Payment Date</label>
                         <span class="text-danger">*</span>
-                        <input type="date" name="date" class="form-control" required id="date"
+                        <input type="date" name="payment_date" class="form-control" required id="payment_date"
                                placeholder="Enter Date">
-                    </div>
-                    <div class="col-md-6 px-2">
-                        <label for="purpose" class="form-label">Purpose</label>
-                        <span class="text-danger">*</span>
-                        <select id="purpose" name="purpose"  required class="form-select">
-                            <option value="0" selected>Choose...</option>
-                            <option value="CNG">CNG</option>
-                            <option value="Petrol">Petrol</option>
-                            <option value="Service & Repair">Service & Repair</option>
-                            <option value="Toll">Toll</option>
-                        </select>
                     </div>
                     <div class="col-md-6 px-1">
                         <label for="amount" class="form-label">Amount</label>
                         <span class="text-danger">*</span>
-                        <input type="number" min="1" name="amount" class="form-control" id="amount"
+                        <input type="number" min="1" name="amount" class="form-control" required id="amount"
                                placeholder="Enter Amount">
                     </div>
                     <div class="col-md-6 px-1">
@@ -176,8 +163,8 @@
                 url: "/api/employee/" + selectedDriverID,
                 dataType: "json", // Specify JSON data type
                 success: function(employee) {
-                    console.log(employee.balance);
-                    balanceInput.value = employee.balance;
+                    console.log(employee.total_due_amount);
+                    balanceInput.value = employee.total_due_amount;
                 }
             });
 

@@ -17,10 +17,10 @@ public class DutyPayment extends BaseModel{
     @JoinColumn(name = "fk_driver_id")
     private Employee driver;
     private int driver_id;
-    private float total_duty_time;
-    private float total_bill;
-    private float total_payment;
-    private float total_due_amount;
-    private String last_payment_date;
-
+    private String payment_date;
+    private float amount;
+    private float transaction_fee;
+    private String transaction_no;
+    private String payment_method;
+    private String note;
 }

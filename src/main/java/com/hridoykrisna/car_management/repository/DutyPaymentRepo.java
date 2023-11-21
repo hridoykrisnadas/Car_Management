@@ -1,13 +1,11 @@
 package com.hridoykrisna.car_management.repository;
 
-import com.hridoykrisna.car_management.model.CarExpenses;
+import com.hridoykrisna.car_management.model.DutyPayment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CarExpenseRepo extends JpaRepository<CarExpenses, Integer> {
+public interface DutyPaymentRepo extends JpaRepository<DutyPayment, Integer> {
 
-    @Query(value = "select sum(amount) from CarExpenses")
-    float getTotalCarExpense();
 }

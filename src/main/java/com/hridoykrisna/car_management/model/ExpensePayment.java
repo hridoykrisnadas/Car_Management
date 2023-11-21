@@ -23,6 +23,7 @@ public class ExpensePayment extends BaseModel{
     private String purpose;
     private float amount;
     private float transaction_fee;
+    private String transaction_no;
     private String payment_method;
     private String note;
 }

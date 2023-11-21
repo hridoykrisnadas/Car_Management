@@ -35,6 +35,11 @@ public class Employee extends BaseModel{
     private String user_type;
 //    For Driver
     private float balance;
+
+    private float total_bill;
+    private float total_payment;
+    private float total_due_amount;
+    private String last_payment_date;
 //    @OneToMany(mappedBy = "employee")
 //    private List<CarSchedule> carSchedules;
 

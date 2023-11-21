@@ -12,8 +12,40 @@
         <div class = "col-md-2 col-sm-2 col-lg-2"  th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
         <div class="col-md-10 col-sm-10 col-lg-10">
             <div class = ""  th:insert="~{navbar :: navbar}"></div>
-            <div class="row p-1 m-0">
-                <h1 class="justify-content-center d-flex">Dashboard Will Coming Soon.......</h1>
+            <div class="row p-1 m-0 px-2 text-white">
+                <div class="col-md-4">
+                    <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
+                        <span class="d-flex p-1 justify-content-center">Total Employee: &nbsp;<span class="fw-bold" th:text="${totalEmployee}"></span></span>
+                        <span class="d-flex p-1 justify-content-center">Total Officer: &nbsp;<span class="fw-bold" th:text="${totalOfficer}"></span></span>
+                        <span class="d-flex p-1 justify-content-center">Total Driver: &nbsp;<span class="fw-bold" th:text="${totalDriver}"></span></span>
+                        <button class="btn p-1 btn-dark">Goto Report</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
+                        <span class="d-flex align-middle p-1 justify-content-center">Total Car: &nbsp;<span class="fw-bold" th:text="${totalCar}"></span></span>
+                        <button class="btn align-middle p-1 btn-dark">Goto Report</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
+                        <span class="d-flex align-middle p-1 justify-content-center">Total Approve Schedule: &nbsp;<span class="fw-bold" th:text="${totalApproveSchedule}"></span></span>
+                        <span class="d-flex align-middle p-1 justify-content-center fw-bold">Total Non-Approve Schedule: &nbsp;<span class="fw-bold" th:text="${totalNonApproveSchedule}"></span></span>
+                        <button class="btn align-middle p-1 btn-dark">Goto Report</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
+                        <span class="d-flex align-middle p-1 justify-content-center">Total Car Expense: &nbsp;<span class="fw-bold" th:text="${totalCarExpense}"></span></span>
+                        <button class="btn align-middle p-1 btn-dark">Goto Report</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
+                        <span class="d-flex align-middle p-1 justify-content-center">Total Driver Duty Bill: &nbsp;<span class="fw-bold" th:text="${totalDriverBill}"></span></span>
+                        <button class="btn align-middle p-1 btn-dark">Goto Report</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

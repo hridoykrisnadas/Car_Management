@@ -128,13 +128,21 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
             // Print the hours and minutes
             System.out.println("Hours: " + hours);
             System.out.println("Minutes: " + minutes);
+            String totalDutyTime = hours+":"+minutes;
 
             carSchedule.get().setStop_time(stopScheduleDate + " "+ stopTime);
-            carSchedule.get().setTotal_duty_time(hours+":"+minutes);
+            carSchedule.get().setTotal_duty_time(totalDutyTime);
             carSchedule.get().setTotal_bill(totalBill);
             carSchedule.get().setStatus(4);
             carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
             carScheduleRepo.save(carSchedule.get());
+
+//          Set on Driver Billing:
+            Employee employee = carSchedule.get().getDriver();
+            employee.setTotal_bill(employee.getTotal_bill()+totalBill);
+            employee.setTotal_due_amount(employee.getTotal_due_amount()+totalBill);
+            employee.setUpdateBy(CommonUtils.employee.getId());
+            employeeRepo.save(employee);
         }
     }
 }
