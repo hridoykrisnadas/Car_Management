@@ -39,6 +39,6 @@ public class CarExpenseIMPL implements CarExpenseService {
 
     @Override
     public List<CarExpenses> getAllExpenseReport() {
-        return carExpenseRepo.findAll();
+        return carExpenseRepo.findAllByIsActiveTrueOrderByCreatedAtDesc();
     }
 }

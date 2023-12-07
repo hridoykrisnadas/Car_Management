@@ -22,6 +22,6 @@ public class CarServiceIMPL implements CarService {
 
     @Override
     public List<Car> getAllCar() {
-        return carRepo.findAllByIsActiveTrue();
+        return carRepo.findAllByIsActiveTrueOrderByCar_nameAsc();
     }
 }

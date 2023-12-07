@@ -38,6 +38,7 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     @Override
     public List<CarSchedule> getAllRequest() {
         return carScheduleRepo.employeeWiseReport(CommonUtils.employee.getId());
+//        return carScheduleRepo.findAllByIsActiveTrueOrderByCreatedAtDesc(CommonUtils.employee.getId());
     }
 
     @Override
@@ -76,7 +77,7 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
 
     @Override
     public List<CarSchedule> getAllScheduleByEmp() {
-        return carScheduleRepo.findAllByDriverIsNotNullAndEmployeeId(CommonUtils.employee.getId());
+        return carScheduleRepo.findAllByDriverIsNotNullAndEmployeeIdOrderByCreatedAtDesc(CommonUtils.employee.getId());
     }
 
     @Override

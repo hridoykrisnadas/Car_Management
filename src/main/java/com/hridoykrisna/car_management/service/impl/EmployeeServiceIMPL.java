@@ -17,7 +17,7 @@ public class EmployeeServiceIMPL implements EmployeeService {
 
     @Override
     public List<Employee> employeeList() {
-        return employeeRepo.findAllByIsActiveTrue();
+        return employeeRepo.findAllByIsActiveTrueOrderByNameAsc();
     }
 
     @Override

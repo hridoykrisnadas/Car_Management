@@ -27,15 +27,15 @@ public class Dashboard {
         if (CommonUtils.isAuthenticate){
             model.addAttribute("currentUserName", CommonUtils.employee.getName());
             long totalEmp = employeeRepo.count();
-            int totalDriver = employeeRepo.getTotalDriver("Driver");
+            int totalDriver = employeeRepo.getTotalDriver("DRIVER");
             model.addAttribute("totalEmployee", totalEmp);
-//            model.addAttribute("totalDriver", totalDriver);
-//            model.addAttribute("totalOfficer", totalEmp-totalDriver);
-//            model.addAttribute("totalCar", carRepo.count());
-//            model.addAttribute("totalApproveSchedule", carScheduleRepo.getApproveSchedule());
-//            model.addAttribute("totalNonApproveSchedule", carScheduleRepo.getNonApproveSchedule());
-//            model.addAttribute("totalCarExpense", carExpenseRepo.getTotalCarExpense());
-//            model.addAttribute("totalDriverBill", carScheduleRepo.getTotalBill());
+            model.addAttribute("totalDriver", totalDriver);
+            model.addAttribute("totalOfficer", totalEmp-totalDriver);
+            model.addAttribute("totalCar", carRepo.count());
+            model.addAttribute("totalApproveSchedule", carScheduleRepo.getApproveSchedule());
+            model.addAttribute("totalNonApproveSchedule", carScheduleRepo.getNonApproveSchedule());
+            model.addAttribute("totalCarExpense", carExpenseRepo.getTotalCarExpense());
+            model.addAttribute("totalDriverBill", carScheduleRepo.getTotalBill());
             return "dashboard.html";
         } else {
             return "redirect:login";

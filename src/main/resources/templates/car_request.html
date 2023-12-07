@@ -125,6 +125,7 @@
                         <tr role="row">
                             <th class="align-middle">SL#</th>
                             <th class="align-middle">Employee Name</th>
+                            <th class="align-middle">Schedule Date</th>
                             <th class="align-middle">Schedule Time</th>
                             <th class="align-middle">Pickup Point</th>
                             <th class="align-middle">Drop Point</th>
@@ -136,6 +137,7 @@
                         <tr role="row" th:each="list, i : ${pendingList}">
                             <th scope="row" th:text="${i.count}"></th>
                             <td th:text="${list.employee.name}"></td>
+                            <td th:text="${list.schedule_date}"></td>
                             <td th:text="${list.schedule_time}"></td>
                             <td th:text="${list.pickup_point}"></td>
                             <td th:text="${list.drop_point}"></td>
@@ -159,7 +161,7 @@
                                         <button class="btn btn-danger cancel-request-button"
                                                 th:attr="data-request-id=${list.id}" data-bs-toggle="modal"
                                                 data-bs-target="#cancelBtnModal">
-                                            Cancel Schedule
+                                            Reject
                                         </button>
                                     </div>
                                 </div>

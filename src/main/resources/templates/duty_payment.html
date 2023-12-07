@@ -16,8 +16,8 @@
         <div class="row p-1 m-0">
             <h2 class="justify-content-center d-flex">Driver Duty Payment</h2>
             <hr>
-            <!--              Car Expense  Form -->
-            <div>
+            <!--              Duty Payment  Form -->
+            <div th:if="${user_type}">
                 <button type="button" class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
                         data-bs-target="#expensePaymentModal">Add Driver Duty Payment
                 </button>

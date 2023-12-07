@@ -11,6 +11,9 @@ public interface CarRepo extends JpaRepository<Car, Integer> {
 
     List<Car> findAllByIsActiveTrue();
 
+    @Query(value = "from Car where isActive=true order by car_name asc")
+    List<Car> findAllByIsActiveTrueOrderByCar_nameAsc();
+
 //    @Query(value = "Select Car.car_name from Car where id=?1")
     String findNameById(int id);
 }

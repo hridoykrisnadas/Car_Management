@@ -12,13 +12,13 @@ public interface CarScheduleRepo extends JpaRepository<CarSchedule, Integer> {
 
     List<CarSchedule> findAllByIsActiveTrue();
 
-    @Query(value = "from CarSchedule where employee_id=?1")
+    @Query(value = "from CarSchedule where employee_id=?1 order by createdAt desc")
     List<CarSchedule> employeeWiseReport(int id);
 
-    @Query(value = "from CarSchedule where status=0")
+    @Query(value = "from CarSchedule where status=0 order by createdAt desc")
     List<CarSchedule> pendingReport();
 
-    List<CarSchedule> findAllByDriverIsNotNullAndEmployeeId(int employeeId);
+    List<CarSchedule> findAllByDriverIsNotNullAndEmployeeIdOrderByCreatedAtDesc(int employeeId);
 
     @Query(value = "SELECT COUNT(*) FROM CarSchedule WHERE driver is not null")
     int getApproveSchedule();

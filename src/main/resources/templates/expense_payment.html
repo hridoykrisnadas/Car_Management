@@ -17,7 +17,7 @@
             <h2 class="justify-content-center d-flex">Car Expense Payment</h2>
             <hr>
             <!--              Car Expense  Form -->
-            <div>
+            <div th:if="${user_type}">
                 <button type="button" class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
                         data-bs-target="#expensePaymentModal">Add Car Expense Payment
                 </button>

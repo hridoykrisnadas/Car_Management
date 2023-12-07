@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @ControllerAdvice
@@ -31,7 +32,9 @@ public class DutyPaymentController {
             model.addAttribute("dutyPaymentList", dutyPaymentList);
             List<Employee> driverList = employeeService.driverList();
             driverList.add(0, new Employee("Select Driver"));
-            model.addAttribute("drivers", driverList);
+            model.addAttribute("drivers", driverList);if (Objects.equals(CommonUtils.employee.getUser_type(), "ADMIN")){
+                model.addAttribute("user_type", "ADMIN");
+            }
             return "duty_payment.html";
         } else {
             return "redirect:/login";

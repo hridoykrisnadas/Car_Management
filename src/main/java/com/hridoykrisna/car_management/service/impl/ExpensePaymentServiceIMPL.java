@@ -37,6 +37,6 @@ public class ExpensePaymentServiceIMPL implements ExpensePaymentService {
 
     @Override
     public List<ExpensePayment> ExpenseList() {
-        return expensePaymentRepo.findAll();
+        return expensePaymentRepo.findAllByIsActiveTrueOrderByCreatedAtDesc();
     }
 }

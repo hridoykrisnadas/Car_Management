@@ -34,6 +34,6 @@ public class DutyPaymentServiceIMPL implements DutyPaymentService {
 
     @Override
     public List<DutyPayment> getAll() {
-        return dutyPaymentRepo.findAll();
+        return dutyPaymentRepo.getDutyPaymentListByCreatedAtOrderByDesc();
     }
 }
