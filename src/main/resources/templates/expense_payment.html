@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="row">
-    <div class="col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div"
+    <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
          th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
@@ -127,9 +127,9 @@
                         <span class="text-danger">*</span>
                         <select id="payment_method" name="payment_method"  required class="form-select">
                             <option value="0" selected>Choose...</option>
-                            <option value="CNG">Cash</option>
-                            <option value="CNG">Mobile Banking</option>
-                            <option value="Service & Repair">Bank</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Mobile Banking">Mobile Banking</option>
+                            <option value="Bank">Bank</option>
                         </select>
                     </div>
                     <div class="col-md-6 px-1">

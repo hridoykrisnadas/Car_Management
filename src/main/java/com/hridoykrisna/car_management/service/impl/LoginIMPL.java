@@ -19,7 +19,7 @@ public class LoginIMPL implements LoginService {
         if (data.isPresent()){
             CommonUtils.isAuthenticate = true;
             CommonUtils.employee = data.get();
-            System.out.println(data.get());
+//            System.out.println(data.get());
             return 1;
         } else {
             return 0;

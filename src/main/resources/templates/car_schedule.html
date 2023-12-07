@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="row">
-    <div class="col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div"
+    <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
          th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
@@ -29,6 +29,7 @@
                 <tr role="row">
                     <th class="align-middle">SL#</th>
                     <th class="align-middle">Employee Name</th>
+                    <th class="align-middle">Driver Name</th>
                     <th class="align-middle">Schedule Date</th>
                     <th class="align-middle">Schedule Time</th>
                     <th class="align-middle">Pickup Point</th>
@@ -44,6 +45,7 @@
                 <tr role="row" th:each="schedule, i : ${scheduleList}">
                     <th scope="row" th:text="${i.count}"></th>
                     <td th:text="${schedule.employee.name}"></td>
+                    <td th:text="${schedule.driver.name}"></td>
                     <td th:text="${schedule.schedule_date}"></td>
                     <td th:text="${schedule.schedule_time}"></td>
                     <td th:text="${schedule.pickup_point}"></td>

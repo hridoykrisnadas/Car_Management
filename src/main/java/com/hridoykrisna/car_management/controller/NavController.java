@@ -1,7 +1,9 @@
 package com.hridoykrisna.car_management.controller;
 
+import com.hridoykrisna.car_management.Utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,12 @@ public class NavController {
 
 
     @GetMapping("/team")
-    public String team(){
-        return "team.html";
+    public String team(Model model){
+        if (CommonUtils.isAuthenticate){
+            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            return "team.html";
+        } else {
+            return "redirect:login";
+        }
     }
 }

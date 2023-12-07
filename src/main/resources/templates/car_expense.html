@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="row">
-    <div class="col-md-2 col-sm-2 col-lg-2 h-auto vh-100 min-vh-100" id="sidebar_div"
+    <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
          th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
@@ -52,11 +52,30 @@
                     <td th:text="${list.amount}"></td>
                     <td th:text="${list.invoice_no}"></td>
                     <td th:if="${list.memo_image_path}">
-                        <img th:src="${list.memo_image_path}" class="card-img-top" width="100%" height="50px" th:alt="${list.date}">
+                        <button class="img-btn"
+                                th:attr="data-img-src=${list.memo_image_path}" data-bs-toggle="modal" data-bs-target="#imageModal">
+                            <img th:src="${list.memo_image_path}" class="card-img-top" width="100%" height="50px" th:alt="${list.date}">
+                        </button>
                     </td>
                 </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg-700 modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fw-bold fs-5" id="imageModalLabel">Invoice Photo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <img src="" id="imageModalId" class="image-fluid w-100" alt="Invoice">
+            </div>
+
         </div>
     </div>
 </div>
@@ -146,6 +165,14 @@
 <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        $(".img-btn").click(function() {
+            const src = $(this).data("img-src");
+            document.getElementById("imageModalId").src = src;
+            console.log(src);
+        });
+    });
+
     //Active Menu
     document.getElementById('car-expense').classList.add('active');
     // For Approve Request
