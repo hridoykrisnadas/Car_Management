@@ -13,8 +13,8 @@
         <div class="row">
           <div class="col-lg-3 col-md-2"></div>
           <div class="col-lg-6 col-md-8 login-box">
-            <div class="col-lg-12 login-key">
-              <img th:src="@{/images/Gari-Dekho.png}" height="120px">
+            <div class="col-lg-12 login-key my-2">
+              <img th:src="@{/images/Gari-Dekho.png}" height="150px">
             </div>
             <div class="col-lg-12 login-title">
               Login Form
@@ -22,11 +22,11 @@
               <div class="col-lg-12 login-form">
                 <form class="px-5" action= "/login-form" csrf method="POST" th:object="${login}">
                   <div class="form-group">
-                    <label for="email" class="form-control-label">E-MAIL</label>
+                    <label for="email" class="form-control-label text-white">E-MAIL</label>
                     <input type="email" id="email" name="email" class="form-control" autocomplete="off" required>
                   </div>
                   <div class="form-group">
-                    <label for="password" class="form-control-label">PASSWORD</label>
+                    <label for="password" class="form-control-label text-white">PASSWORD</label>
                     <input type="password" id="password" name="password" class="form-control" required>
                   </div>
 

@@ -1,9 +1,9 @@
 package com.hridoykrisna.car_management.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.*;
-import java.util.*;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -14,26 +14,29 @@ import java.security.NoSuchAlgorithmException;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Employee extends BaseModel{
+public class Employee extends BaseModel {
 
     private String name;
     private String imagePath;
+    @Column(unique = true)
     private String email;
     private String password;
     private String designation;
     private String mobile_no;
     private String salary;
     private String home_district;
+    //    @Column(unique=true)
     private String nid;
     private String passport_no;
     private String driving_license_no;
-    private String validity_of_driving_license;;
+    private String validity_of_driving_license;
+    ;
     private String nationality;
     private String gender;
     private String date_of_birth;
     private String joining_date;
     private String user_type;
-//    For Driver
+    //    For Driver
     private float balance;
 
     private float total_bill;
@@ -48,14 +51,13 @@ public class Employee extends BaseModel{
         this.setId(0);
     }
 
-    public Employee(int id){
+    public Employee(int id) {
         this.setId(id);
     }
 
     public void setPassword(String password) {
         String generatedPassword = null;
-        try
-        {
+        try {
             // Create MessageDigest instance for MD5
             MessageDigest md = MessageDigest.getInstance("MD5");
 

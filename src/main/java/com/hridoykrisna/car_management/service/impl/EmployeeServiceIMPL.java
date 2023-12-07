@@ -1,10 +1,10 @@
 package com.hridoykrisna.car_management.service.impl;
 
-import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +22,7 @@ public class EmployeeServiceIMPL implements EmployeeService {
 
     @Override
     public void saveEmployee(Employee employee) {
-        employee.setCreatedBy(CommonUtils.employee.getId());
-        var result = employeeRepo.save(employee);
+
     }
 
     @Override

@@ -3,19 +3,17 @@ package com.hridoykrisna.car_management.service.impl;
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.model.CarSchedule;
-import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.CarRepo;
 import com.hridoykrisna.car_management.repository.CarScheduleRepo;
 import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.hridoykrisna.car_management.model.Employee;
 
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
 

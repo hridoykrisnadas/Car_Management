@@ -2,7 +2,6 @@ package com.hridoykrisna.car_management.service.impl;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
-import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.CarRepo;
 import com.hridoykrisna.car_management.service.CarService;
 import lombok.RequiredArgsConstructor;
