@@ -6,6 +6,9 @@ import com.hridoykrisna.car_management.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
+
+import lombok.extern.slf4j.XSlf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +25,18 @@ public class EmployeeServiceIMPL implements EmployeeService {
 
     @Override
     public void saveEmployee(Employee employee) {
-
+        try {
+            Employee savedEmployee = employeeRepo.save(employee);
+            // Perform actions after successful save, like logging or sending notifications.
+            System.out.println("Employee saved successfully with ID: "+ savedEmployee.getId());
+        } catch (DataIntegrityViolationException e) {
+            // Handle unique constraint violation exception.
+            System.out.println("Error saving employee: "+ e.getMessage());
+            // Perform error handling actions, like displaying a user-friendly message.
+        } catch (Exception e) {
+            // Handle any other unexpected exceptions.
+            System.out.println("Unexpected error saving employee: {}"+ e.getMessage());
+        }
     }
 
     @Override
