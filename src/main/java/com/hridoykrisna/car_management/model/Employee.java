@@ -1,11 +1,13 @@
 package com.hridoykrisna.car_management.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 
@@ -14,8 +16,8 @@ import java.security.NoSuchAlgorithmException;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Employee extends BaseModel {
 
+public class Employee extends BaseModel {
     private String name;
     private String imagePath;
     @Column(unique = true)
@@ -43,6 +45,14 @@ public class Employee extends BaseModel {
     private float total_payment;
     private float total_due_amount;
     private String last_payment_date;
+    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "employee_roles",
+            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name= "role_id", referencedColumnName = "id")
+
+    )
+    private Set<Roles> roles;
 //    @OneToMany(mappedBy = "employee")
 //    private List<CarSchedule> carSchedules;
 
@@ -56,28 +66,7 @@ public class Employee extends BaseModel {
     }
 
     public void setPassword(String password) {
-        String generatedPassword = null;
-        try {
-            // Create MessageDigest instance for MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
-
-            // Add password bytes to digest
-            md.update(password.getBytes());
-
-            // Get the hash's bytes
-            byte[] bytes = md.digest();
-
-            // This bytes[] has bytes in decimal format. Convert it to hexadecimal format
-            StringBuilder sb = new StringBuilder();
-            for (byte aByte : bytes) {
-                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
-            }
-
-            // Get complete hashed password in hex format
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        this.password = generatedPassword;
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        password = passwordEncoder.encode(password);
     }
 }
