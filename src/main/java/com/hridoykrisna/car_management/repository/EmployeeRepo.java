@@ -27,4 +27,10 @@ public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
 //    Dashboard
     @Query(value = "SELECT COUNT(designation) FROM Employee WHERE designation = ?1")
     int getTotalDriver(@Param("user_type") String userType);
+
+//    Employee findByUsernameOrEmail(String usernameOrEmail, String usernameOrEmail1);
+
+    Optional<Employee> findByEmailOrNid(String emailOrNID, String emailOrNID1);
+
+    Optional<Employee> findByEmail(String email);
 }

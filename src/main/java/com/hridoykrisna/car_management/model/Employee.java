@@ -65,8 +65,4 @@ public class Employee extends BaseModel {
         this.setId(id);
     }
 
-    public void setPassword(String password) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        password = passwordEncoder.encode(password);
-    }
 }
