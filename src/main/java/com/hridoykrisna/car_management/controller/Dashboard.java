@@ -32,16 +32,16 @@ public class Dashboard {
             Employee employee = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
             model.addAttribute("currentUserName", employee.getName());
 
-            long totalEmp = employeeRepo.count();
+            long totalEmp = employeeRepo.count()-1; //1 Means Super Admin
             int totalDriver = employeeRepo.getTotalDriver("DRIVER");
-            model.addAttribute("totalEmployee", "totalEmp");
-            model.addAttribute("totalDriver", "totalDriver");
-            model.addAttribute("totalOfficer", "totalEmp-totalDriver");
-            model.addAttribute("totalCar", "carRepo.count()");
-            model.addAttribute("totalApproveSchedule", "carScheduleRepo.getApproveSchedule()");
-            model.addAttribute("totalNonApproveSchedule", "carScheduleRepo.getNonApproveSchedule()");
+            model.addAttribute("totalEmployee", totalEmp);
+            model.addAttribute("totalDriver", totalDriver);
+            model.addAttribute("totalOfficer", totalEmp-totalDriver);
+            model.addAttribute("totalCar", carRepo.count());
+            model.addAttribute("totalApproveSchedule", carScheduleRepo.getApproveSchedule());
+            model.addAttribute("totalNonApproveSchedule", carScheduleRepo.getNonApproveSchedule());
             model.addAttribute("totalCarExpense", "carExpenseRepo.getTotalCarExpense()");
-            model.addAttribute("totalDriverBill","carScheduleRepo.getTotalBill()");
+            model.addAttribute("totalDriverBill", "carScheduleRepo.getTotalBill()");
             return "dashboard.html";
         } else {
             return "redirect:login";

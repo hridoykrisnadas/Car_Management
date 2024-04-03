@@ -9,16 +9,20 @@
 </head>
 <body>
 <div class="row">
-    <div class = "col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div" th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
+    <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
     <div class="col-md-10" id="content_div">
-        <div class = ""  th:insert="~{navbar :: navbar}"></div>
+        <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
             <h2 class="justify-content-center d-flex">Car</h2>
             <hr>
             <!--              Car Registration  Form -->
             <div th:if="${user_type}">
-                <button type="button" class="btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal" data-bs-target="#carRegModel">Add New Car</button>
-                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}" th:text="${success}"></h6>
+                <button type="button" class="btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
+                        data-bs-target="#carRegModel">Add New Car
+                </button>
+                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
+                    th:text="${success}"></h6>
                 <hr>
             </div>
         </div>
@@ -26,26 +30,26 @@
         <div class="row p-2 m-0 ">
             <table class="table table-hover table-striped table-bordered dataTable no-footer">
                 <thead class="thead-dark text-center">
-                    <tr role="row">
-                        <th class="align-middle">SL#</th>
-                        <th class="align-middle">Car Name</th>
-                        <th class="align-middle">Car No</th>
-                        <th class="align-middle">Car Engine No</th>
-                        <th class="align-middle">Car Chassis No</th>
-                        <th class="align-middle">Car Owner Name</th>
-                        <th class="align-middle">Car Color</th>
-                    </tr>
+                <tr role="row">
+                    <th class="align-middle">SL#</th>
+                    <th class="align-middle">Car Name</th>
+                    <th class="align-middle">Car No</th>
+                    <th class="align-middle">Car Engine No</th>
+                    <th class="align-middle">Car Chassis No</th>
+                    <th class="align-middle">Car Owner Name</th>
+                    <th class="align-middle">Car Color</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr role="row" th:each="car, i : ${cars}">
-                        <th scope="row" th:text="${i.count}"></th>
-                        <td th:text="${car.car_name}"></td>
-                        <td th:text="${car.car_no}"></td>
-                        <td th:text="${car.engine_no}"></td>
-                        <td th:text="${car.chassis_no}"></td>
-                        <td th:text="${car.owner_name}"></td>
-                        <td th:text="${car.car_color}"></td>
-                    </tr>
+                <tr role="row" th:each="car, i : ${cars}">
+                    <th scope="row" th:text="${i.count}"></th>
+                    <td th:text="${car.car_name}"></td>
+                    <td th:text="${car.car_no}"></td>
+                    <td th:text="${car.engine_no}"></td>
+                    <td th:text="${car.chassis_no}"></td>
+                    <td th:text="${car.owner_name}"></td>
+                    <td th:text="${car.car_color}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -61,36 +65,42 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" action= "/car-registration-form" csrf method ="POST" th:object="${car}">
+                <form class="row g-3" th:action="@{/car-registration-form}" csrf method="POST" th:object="${car}">
                     <div class="col-md-12 px-1">
                         <label for="car_name" class="form-label">Car Name</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="car_name" class="form-control" required id="car_name" placeholder="Enter Car Name">
+                        <input type="text" name="car_name" class="form-control" required id="car_name"
+                               placeholder="Enter Car Name">
                     </div>
                     <div class="col-md-12 px-1">
                         <label for="car_no" class="form-label">Car No</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="car_no" class="form-control" required id="car_no" placeholder="Enter Car No">
+                        <input type="text" name="car_no" class="form-control" required id="car_no"
+                               placeholder="Enter Car No">
                     </div>
                     <div class="col-md-12 px-1">
                         <label for="engine_no" class="form-label">Car Engine No</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="engine_no" class="form-control" required id="engine_no" placeholder="Enter Car Engine No">
+                        <input type="text" name="engine_no" class="form-control" required id="engine_no"
+                               placeholder="Enter Car Engine No">
                     </div>
                     <div class="col-md-12 px-1">
                         <label for="chassis_no" class="form-label">Car Chassis No</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="chassis_no" class="form-control" required id="chassis_no" placeholder="Enter Car Chassis No">
+                        <input type="text" name="chassis_no" class="form-control" required id="chassis_no"
+                               placeholder="Enter Car Chassis No">
                     </div>
                     <div class="col-md-12 px-1">
                         <label for="owner_name" class="form-label">Car Owner Name</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="owner_name" class="form-control" required id="owner_name" placeholder="Enter Car Owner Name">
+                        <input type="text" name="owner_name" class="form-control" required id="owner_name"
+                               placeholder="Enter Car Owner Name">
                     </div>
                     <div class="col-md-12 px-1">
                         <label for="car_color" class="form-label">Car Color</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="car_color" class="form-control" required id="car_color" placeholder="Enter Car Color">
+                        <input type="text" name="car_color" class="form-control" required id="car_color"
+                               placeholder="Enter Car Color">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
@@ -106,9 +116,9 @@
 <!-- jQuery CDN - Slim version (=without AJAX) -->
 <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
 <!-- Popper.JS -->
-<script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 <!-- Bootstrap JS -->
-<script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
 <script type="text/javascript">
     //Active Menu

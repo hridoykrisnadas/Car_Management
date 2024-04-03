@@ -27,5 +27,5 @@ public interface CarScheduleRepo extends JpaRepository<CarSchedule, Integer> {
     int getNonApproveSchedule();
 
     @Query(value = "SELECT sum(total_bill) FROM CarSchedule WHERE driver is not null")
-    float getTotalBill();
+    double getTotalBill();
 }
