@@ -32,12 +32,12 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/logout")
-    public String logout(){
-        if (CommonUtils.isAuthenticate){
-            CommonUtils.employee = null;
-            CommonUtils.isAuthenticate = false;
-        }
-        return "/login";
-    }
+//    @GetMapping("/logout")
+//    public String logout(){
+//        if (CommonUtils.isAuthenticate){
+//            CommonUtils.employee = null;
+//            CommonUtils.isAuthenticate = false;
+//        }
+//        return "/login";
+//    }
 }

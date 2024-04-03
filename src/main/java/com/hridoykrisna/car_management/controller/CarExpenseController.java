@@ -10,6 +10,7 @@ import com.hridoykrisna.car_management.service.EmployeeService;
 import com.hridoykrisna.car_management.service.util.FileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class CarExpenseController {
 
     @GetMapping({"/car-expense", "/car-expense/"})
     public String getCarExpense(Model model) {
-        if (CommonUtils.isAuthenticate) {
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
             model.addAttribute("currentUserName", CommonUtils.employee.getName());
             List<Employee> driverList = employeeService.driverList();
             driverList.add(0, new Employee("Select Driver"));

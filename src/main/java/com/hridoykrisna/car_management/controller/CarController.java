@@ -5,6 +5,7 @@ import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.service.CarService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class CarController {
 
     @GetMapping({"/car", "/car/"})
     public String Car(Model model){
-        if (CommonUtils.isAuthenticate){
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
             List<Car> carList = carService.getAllCar();
             model.addAttribute("cars", carList);
             model.addAttribute("currentUserName", CommonUtils.employee.getName());

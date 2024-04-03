@@ -2,10 +2,13 @@ package com.hridoykrisna.car_management.controller;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Employee;
+import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.EmployeeService;
 import com.hridoykrisna.car_management.service.util.FileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +25,24 @@ import java.util.*;
 public class EmployeeController {
     private final EmployeeService employeeService;
     private final FileService fileService;
+    private final EmployeeRepo employeeRepo;
+    private final PasswordEncoder passwordEncoder;
+
+    private Employee user;
 
     private final String path = CommonUtils.ImagePath;
     @GetMapping({"/employee", "/employee/"})
-    public String employee(Model map){
-        if (CommonUtils.isAuthenticate){
+    public String getEmployee(Model map){
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
+            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            map.addAttribute("currentUserName", user.getName());
+
             List<Employee> employeeList = null;
             employeeList = employeeService.employeeList();
             map.addAttribute("employees", employeeList);
-            map.addAttribute("currentUserName", CommonUtils.employee.getName());
+            map.addAttribute("currentUserName", user.getName());
 
-            if (Objects.equals(CommonUtils.employee.getUser_type(), "ADMIN")){
+            if (Objects.equals(user.getUser_type(), "ADMIN")){
                 map.addAttribute("user_type", "ADMIN");
             }
             return "employee.html";
@@ -47,6 +57,9 @@ public class EmployeeController {
         // Save Image & Set Image Path
         String imagePath = fileService.uploadImage(path, image, employee.getName());
         employee.setImagePath(imagePath);
+        employee.setCreatedBy(user.getId());
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+
 
         //Save to Database
         employeeService.saveEmployee(employee);

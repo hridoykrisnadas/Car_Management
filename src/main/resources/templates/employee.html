@@ -54,7 +54,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body px-3">
-                    <form class="row g-3" action= "/employee-registration-form" enctype="multipart/form-data" csrf method ="POST" th:object="${employee}">
+                    <form class="row g-3" th:action= "@{/employee-registration-form}" enctype="multipart/form-data" csrf method="POST" th:object="${employee}">
                         <div class="col-md-6 px-2">
                             <label for="name" class="form-label">Full Name</label>
                             <span class="text-danger">*</span>

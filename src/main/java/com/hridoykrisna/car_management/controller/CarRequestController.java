@@ -9,6 +9,7 @@ import com.hridoykrisna.car_management.service.EmployeeService;
 import com.hridoykrisna.car_management.model.Employee;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class CarRequestController {
 
     @GetMapping({"/car-request", "/car-request/"})
     public String CarRequest(Model model){
-        if (CommonUtils.isAuthenticate){
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
             List<CarSchedule> carSchedules = carScheduleService.getAllRequest();
             model.addAttribute("requestList", carSchedules);
             model.addAttribute("currentUserName", CommonUtils.employee.getName());

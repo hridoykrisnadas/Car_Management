@@ -37,7 +37,11 @@ public class SecurityConfig {
                         .permitAll())
                 .authorizeHttpRequests(
                         auth->auth
-                                .requestMatchers(antMatcher("/css/**"), antMatcher("/js/**"), antMatcher("/images/**")).permitAll()
+                                .requestMatchers(
+                                        antMatcher("/css/**"),
+                                        antMatcher("/js/**"),
+                                        antMatcher("/images/**")
+                                ).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .logout(logout -> logout

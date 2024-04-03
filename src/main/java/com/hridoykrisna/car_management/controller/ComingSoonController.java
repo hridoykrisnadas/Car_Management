@@ -2,6 +2,7 @@ package com.hridoykrisna.car_management.controller;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ComingSoonController {
     @GetMapping("/chat")
     public String getAIChat(Model model) {
-        if (CommonUtils.isAuthenticate) {
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
             model.addAttribute("currentUserName", CommonUtils.employee.getName());
             return "coming_soon.html";
         }
@@ -26,7 +27,7 @@ public class ComingSoonController {
 
     @GetMapping("/car-parking")
     public String getCarParking(Model model) {
-        if (CommonUtils.isAuthenticate) {
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
             model.addAttribute("currentUserName", CommonUtils.employee.getName());
             return "coming_soon.html";
         }
@@ -37,7 +38,7 @@ public class ComingSoonController {
 
     @GetMapping("/car-tracking")
     public String getCarTracking(Model model) {
-        if (CommonUtils.isAuthenticate) {
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
             model.addAttribute("currentUserName", CommonUtils.employee.getName());
             return "coming_soon.html";
         }

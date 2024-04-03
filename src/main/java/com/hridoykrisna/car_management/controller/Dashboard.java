@@ -1,6 +1,7 @@
 package com.hridoykrisna.car_management.controller;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
+import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +29,9 @@ public class Dashboard {
     @GetMapping
     public String dashboard(Model model){
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            model.addAttribute("currentUserName", SecurityContextHolder.getContext().getAuthentication());
+            Employee employee = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            model.addAttribute("currentUserName", employee.getName());
+
             long totalEmp = employeeRepo.count();
             int totalDriver = employeeRepo.getTotalDriver("DRIVER");
             model.addAttribute("totalEmployee", "totalEmp");

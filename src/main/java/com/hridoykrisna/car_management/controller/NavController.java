@@ -2,6 +2,7 @@ package com.hridoykrisna.car_management.controller;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,7 +18,7 @@ public class NavController {
 
     @GetMapping("/team")
     public String team(Model model){
-        if (CommonUtils.isAuthenticate){
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
             model.addAttribute("currentUserName", CommonUtils.employee.getName());
             return "team.html";
         } else {

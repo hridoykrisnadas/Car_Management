@@ -7,6 +7,7 @@ import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.service.ExpensePaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ExpensePaymentController {
 
     @GetMapping({"/expense-payment", "/expense-payment/"})
     public String payment(Model model){
-        if (CommonUtils.isAuthenticate){
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
             model.addAttribute("currentUserName", CommonUtils.employee.getName());
             List<ExpensePayment> expensePaymentList = expensePaymentService.ExpenseList();
             model.addAttribute("expensePaymentList", expensePaymentList);
