@@ -9,7 +9,7 @@ public interface CarScheduleService {
 //    Car Request
     void saveCarSchedule(CarSchedule carSchedule);
 
-    List<CarSchedule> getAllRequest();
+    List<CarSchedule> getAllRequest(int id);
 
     List<CarSchedule> getPendingList();
 
@@ -19,9 +19,9 @@ public interface CarScheduleService {
 
 //    Car Schedule
 
-    List<CarSchedule> getAllScheduleByEmp();
+    List<CarSchedule> getAllScheduleByEmp(int id);
 
-    void addStartTime(String startScheduleDate, String startTime, int scheduleId);
+    void addStartTime(String startScheduleDate, String startTime, int scheduleId, int id);
 
-    void addStopTime(String stopScheduleDate, String stopTime, int scheduleId);
+    void addStopTime(String stopScheduleDate, String stopTime, int scheduleId, int id);
 }

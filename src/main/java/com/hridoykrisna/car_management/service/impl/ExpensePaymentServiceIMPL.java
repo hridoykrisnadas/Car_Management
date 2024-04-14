@@ -19,15 +19,15 @@ public class ExpensePaymentServiceIMPL implements ExpensePaymentService {
     private final EmployeeRepo employeeRepo;
 
     @Override
-    public void save(ExpensePayment expensePayment) {
+    public void save(ExpensePayment expensePayment, int id) {
         System.out.println("Expense Payment: "+expensePayment.toString());
         Optional<Employee> employee = employeeRepo.findById(expensePayment.getDriver_id());
+        expensePayment.setCreatedBy(id);
         if (employee.isPresent()){
-            expensePayment.setCreatedBy(CommonUtils.employee.getId());
 //          Balance Update
             Employee driver = employee.get();
             driver.setBalance(driver.getBalance()+expensePayment.getAmount());
-            driver.setUpdateBy(CommonUtils.employee.getId());
+            driver.setUpdateBy(id);
             employeeRepo.save(driver);
             expensePayment.setDriver(driver);
             expensePaymentRepo.save(expensePayment);

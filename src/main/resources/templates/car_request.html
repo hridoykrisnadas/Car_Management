@@ -74,7 +74,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" action="/car-request-form" csrf method="POST" th:object="${carRequest}">
+                <form class="row g-3" th:action="@{/car-request-form}" csrf method="POST" th:object="${carRequest}">
                     <div class="col-md-12 px-1">
                         <label for="schedule_date" class="form-label">Schedule Date</label>
                         <span class="text-danger">*</span>
@@ -184,16 +184,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" action="/request-approve-form" csrf method="POST" name="carRequestApprove" onsubmit="return validateForm()" th:object="${carRequestApprove}">
+                <form class="row g-3" th:action="@{/request-approve-form}" csrf th:method="POST" th:name="carRequestApprove" th:onsubmit="return validateForm()" th:object="${carRequestApprove}">
                     <div class="col-md-12 px-1">
                         <label for="schedule_id" class="form-label">Schedule ID</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="id" class="form-control" required id="schedule_id" readonly>
+                        <input type="text" name="id" class="form-control" th:required="true" id="schedule_id" readonly>
                     </div>
                     <div class="col-md-12 px-2">
                         <label for="driver_id" class="form-label">Select Driver</label>
                         <span class="text-danger">*</span>
-                        <select id="driver_id" name="driver_id" required class="form-select">
+                        <select id="driver_id" name="driver_id" th:required class="form-select">
                             <option th:each="driver : ${drivers}"
                                     th:value="${driver.id}"
                                     th:text="${driver.name}">
@@ -204,7 +204,7 @@
                     <div class="col-md-12 px-2">
                         <label for="car_id" class="form-label">Select Car</label>
                         <span class="text-danger">*</span>
-                        <select id="car_id" name="car_id" required class="form-select">
+                        <select id="car_id" name="car_id" th:required class="form-select">
                             <option th:each="car : ${cars}"
                                     th:value="${car.id}"
                                     th:text="${car.car_name} + ' ('+${car.car_no}+')'">
@@ -235,6 +235,22 @@
     document.getElementById('car-request').classList.add('active');
     // For Approve Request
 
+    function validateForm() {
+        let driver_id = document.getElementById("driver_id").value; // Use getElementById for direct selection
+        let car_id = document.getElementById("car_id").value;
+
+        if (driver_id === "" || driver_id === "0") { // Check for empty string or 0 value
+            alert("Driver must be Selected");
+            return false;
+        }
+        if (car_id === "" || car_id === "0") { // Check for empty string or 0 value
+            alert("Car must be Selected");
+            return false;
+        }
+
+        return true;
+    }
+
 
     $(document).ready(function() {
         $(".approve-request-button").click(function (){
@@ -254,20 +270,6 @@
                 }
             });
         });
-
-
-        function validateForm() {
-            let driver_id = document.forms["carRequestApprove"]["driver_id"].value;
-            let car_id = document.forms["carRequestApprove"]["car_id"].value;
-            if (driver_id === 0) {
-                alert("Driver must be Selected");
-                return false;
-            }
-            if (car_id === 0) {
-                alert("Car must be Selected");
-                return false;
-            }
-        }
     });
 
 

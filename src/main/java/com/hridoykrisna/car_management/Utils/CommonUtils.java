@@ -22,7 +22,6 @@ public class CommonUtils {
     }
 
     public static Employee getEmployeeByEmail(String email, EmployeeRepo employeeRepo){
-
         Optional<Employee> employee = employeeRepo.findByEmail(email);
         return employee.get();
     }

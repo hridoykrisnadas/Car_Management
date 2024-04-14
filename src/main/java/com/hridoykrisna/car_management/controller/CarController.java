@@ -24,7 +24,6 @@ public class CarController {
     private final EmployeeRepo employeeRepo;
     private Employee user;
 
-
     @GetMapping({"/car", "/car/"})
     public String Car(Model model){
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){

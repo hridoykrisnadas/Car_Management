@@ -1,6 +1,8 @@
 package com.hridoykrisna.car_management.controller;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
+import com.hridoykrisna.car_management.model.Employee;
+import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("")
 public class ComingSoonController {
+    private final EmployeeRepo employeeRepo;
+    private Employee user;
+
     @GetMapping("/chat")
     public String getAIChat(Model model) {
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            model.addAttribute("currentUserName", user.getName());
             return "coming_soon.html";
         }
         else {
@@ -28,7 +34,8 @@ public class ComingSoonController {
     @GetMapping("/car-parking")
     public String getCarParking(Model model) {
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            model.addAttribute("currentUserName", user.getName());
             return "coming_soon.html";
         }
         else {
@@ -39,7 +46,8 @@ public class ComingSoonController {
     @GetMapping("/car-tracking")
     public String getCarTracking(Model model) {
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            model.addAttribute("currentUserName", user.getName());
             return "coming_soon.html";
         }
         else {

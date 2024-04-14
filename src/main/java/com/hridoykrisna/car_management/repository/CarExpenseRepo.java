@@ -12,6 +12,6 @@ public interface CarExpenseRepo extends JpaRepository<CarExpenses, Integer> {
     @Query(value = "from CarExpenses where isActive=true order by createdAt desc")
     List<CarExpenses> findAllByIsActiveTrueOrderByCreatedAtDesc();
 
-    @Query(value = "select sum(amount) from CarExpenses")
-    float getTotalCarExpense();
+    @Query(value = "select COALESCE(sum(amount), 0) from CarExpenses")
+    double getTotalCarExpense();
 }

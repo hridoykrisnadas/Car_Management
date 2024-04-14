@@ -40,7 +40,7 @@ public class CarManagementApplication {
 			employee.setTotal_bill(0);
 			employee.setUser_type("ADMIN");
 			employee.setEmail("admin@domain.com");
-			employee.setPassword("$2a$10$gZ7TV3JT5iE.MqgINOGADO2hAHsyajKPDCWAnrdSsGhfrOnfdx1bq");
+			employee.setPassword("$2a$10$gZ7TV3JT5iE.MqgINOGADO2hAHsyajKPDCWAnrdSsGhfrOnfdx1bq"); //admin123
 			Set<Roles> roles = new HashSet<>();
 			roles.add(role);
 			employee.setRoles(roles);

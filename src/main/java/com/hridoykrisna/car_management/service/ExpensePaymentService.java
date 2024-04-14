@@ -5,7 +5,7 @@ import com.hridoykrisna.car_management.model.ExpensePayment;
 import java.util.List;
 
 public interface ExpensePaymentService {
-    void save(ExpensePayment expensePayment);
+    void save(ExpensePayment expensePayment, int id);
 
     List<ExpensePayment> ExpenseList();
 }

@@ -4,7 +4,7 @@ import com.hridoykrisna.car_management.model.DutyPayment;
 import java.util.*;
 
 public interface DutyPaymentService {
-    void save(DutyPayment dutyPayment);
+    void save(DutyPayment dutyPayment, int id);
 
     List<DutyPayment> getAll();
 }

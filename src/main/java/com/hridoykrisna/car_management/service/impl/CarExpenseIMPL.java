@@ -21,14 +21,14 @@ public class CarExpenseIMPL implements CarExpenseService {
     private final EmployeeRepo employeeRepo;
     private final CarRepo carRepo;
     @Override
-    public void save(CarExpenses carExpenses) {
+    public void save(CarExpenses carExpenses, int id) {
         System.out.println("Expense Data: "+ carExpenses);
-        carExpenses.setCreatedBy(CommonUtils.employee.getId());
+        carExpenses.setCreatedBy(id);
         Optional<Employee> driver = employeeRepo.findById(carExpenses.getDriver_id());
         if (driver.isPresent()){
             Employee driver1 = driver.get();
             driver.get().setBalance(driver1.getBalance() - carExpenses.getAmount());
-            driver.get().setUpdateBy(CommonUtils.employee.getId());
+            driver.get().setUpdateBy(id);
             employeeRepo.save(driver1);
             carExpenses.setDriver(driver1);
             Optional<Car> car = carRepo.findById(carExpenses.getCar_id());

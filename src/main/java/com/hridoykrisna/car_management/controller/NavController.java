@@ -1,6 +1,8 @@
 package com.hridoykrisna.car_management.controller;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
+import com.hridoykrisna.car_management.model.Employee;
+import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("")
 public class NavController {
+    private final EmployeeRepo employeeRepo;
+    private Employee user;
 
 
     @GetMapping("/team")
     public String team(Model model){
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            model.addAttribute("currentUserName", user.getName());
             return "team.html";
         } else {
             return "redirect:login";

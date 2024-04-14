@@ -3,6 +3,7 @@ package com.hridoykrisna.car_management.controller;
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.model.CarSchedule;
+import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarScheduleService;
 import com.hridoykrisna.car_management.service.CarService;
 import com.hridoykrisna.car_management.service.EmployeeService;
@@ -26,15 +27,19 @@ public class CarRequestController {
     private final EmployeeService employeeService;
     private final CarService carService;
     private final CarScheduleService carScheduleService;
+    private final EmployeeRepo employeeRepo;
+
+    private Employee user;
 
     @GetMapping({"/car-request", "/car-request/"})
     public String CarRequest(Model model){
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            List<CarSchedule> carSchedules = carScheduleService.getAllRequest();
+            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            List<CarSchedule> carSchedules = carScheduleService.getAllRequest(user.getId());
             model.addAttribute("requestList", carSchedules);
-            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            model.addAttribute("currentUserName", user.getName());
 
-            if (Objects.equals(CommonUtils.employee.getUser_type(), "ADMIN")){
+            if (Objects.equals(user.getUser_type(), "ADMIN")){
                 List<CarSchedule> pendingList = carScheduleService.getPendingList();
                 model.addAttribute("pendingList", pendingList);
                 List<Employee> driverList = employeeService.driverList();
@@ -53,12 +58,16 @@ public class CarRequestController {
 
     @PostMapping("/car-request-form")
     public String carRequestForm(@Valid @ModelAttribute("carRequest") CarSchedule schedule, Model model, RedirectAttributes redirectAttributes){
+        schedule.setEmployee(user);
+        schedule.setEmployee_id(user.getId());
+        schedule.setCreatedBy(user.getId());
         carScheduleService.saveCarSchedule(schedule);
         return "redirect:/car-request";
     }
 
     @PostMapping("/request-approve-form")
     public String requestApproveForm(@Valid @ModelAttribute("carRequestApprove") CarSchedule carSchedule){
+        carSchedule.setUpdateBy(user.getId());
         carScheduleService.requestApprove(carSchedule);
         return "redirect:/car-request";
     }

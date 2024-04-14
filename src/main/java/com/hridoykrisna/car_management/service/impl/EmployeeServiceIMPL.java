@@ -58,7 +58,6 @@ public class EmployeeServiceIMPL implements EmployeeService, UserDetailsService 
         return employeeRepo.findByDriver();
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String email)  {
         Employee employee = employeeRepo.findByEmail(email)

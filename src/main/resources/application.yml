@@ -5,9 +5,9 @@ server:
       enabled: true
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/car_management?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
+    //url: jdbc:mysql://localhost:3306/car_management?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
     username: root
-    password:
+    password: root
 
   jpa:
     properties:
@@ -20,4 +20,3 @@ spring:
     jpa:
       repositories:
         enabled: true
-

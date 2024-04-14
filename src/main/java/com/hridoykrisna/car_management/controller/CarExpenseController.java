@@ -3,6 +3,7 @@ package com.hridoykrisna.car_management.controller;
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.model.CarExpenses;
+import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarExpenseService;
 import com.hridoykrisna.car_management.service.CarService;
 import com.hridoykrisna.car_management.model.Employee;
@@ -26,16 +27,19 @@ import java.util.List;
 @RequestMapping("")
 public class CarExpenseController {
     private final EmployeeService employeeService;
+    private final EmployeeRepo employeeRepo;
     private final CarService carService;
     private final FileService fileService;
     private final CarExpenseService carExpenseService;
 
+    private Employee user;
     private final String path = CommonUtils.ImagePath;
 
     @GetMapping({"/car-expense", "/car-expense/"})
     public String getCarExpense(Model model) {
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            model.addAttribute("currentUserName", user.getName());
             List<Employee> driverList = employeeService.driverList();
             driverList.add(0, new Employee("Select Driver"));
             model.addAttribute("drivers", driverList);
@@ -58,7 +62,7 @@ public class CarExpenseController {
         carExpenses.setMemo_image_path(imagePath);
 
         //Save to Database
-        carExpenseService.save(carExpenses);
+        carExpenseService.save(carExpenses, user.getId());
         redirectAttributes.addFlashAttribute("success", "Car Expense Save Successfully.");
         return "redirect:/car-expense";
     }

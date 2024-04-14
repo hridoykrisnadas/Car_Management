@@ -25,24 +25,20 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     private final CarRepo carRepo;
     @Override
     public void saveCarSchedule(CarSchedule carSchedule) {
-        Employee employee = new Employee(CommonUtils.employee.getId());
-        carSchedule.setEmployee(employee);
-        carSchedule.setEmployee_id(CommonUtils.employee.getId());
         carSchedule.setStatus(0);
-        carSchedule.setCreatedBy(CommonUtils.employee.getId());
         carScheduleRepo.save(carSchedule);
     }
 
     @Override
-    public List<CarSchedule> getAllRequest() {
-        return carScheduleRepo.employeeWiseReport(CommonUtils.employee.getId());
+    public List<CarSchedule> getAllRequest(int id) {
+        return carScheduleRepo.employeeWiseReport(id);
 //        return carScheduleRepo.findAllByIsActiveTrueOrderByCreatedAtDesc(CommonUtils.employee.getId());
     }
 
     @Override
     public List<CarSchedule> getPendingList() {
         List<CarSchedule> carSchedulesList = carScheduleRepo.pendingReport();
-        System.out.println(carSchedulesList.toString());
+
         return carSchedulesList;
 //        return carScheduleRepo.pendingReport();
     }
@@ -58,7 +54,6 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
             getSchedule.get().setDriver(driver);
             getSchedule.get().setDriver_id(carSchedule.getDriver_id());
             getSchedule.get().setStatus(1);
-            getSchedule.get().setUpdateBy(CommonUtils.employee.getId());
             carScheduleRepo.save(getSchedule.get());
         }
     }
@@ -74,23 +69,23 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     }
 
     @Override
-    public List<CarSchedule> getAllScheduleByEmp() {
-        return carScheduleRepo.findAllByDriverIsNotNullAndEmployeeIdOrderByCreatedAtDesc(CommonUtils.employee.getId());
+    public List<CarSchedule> getAllScheduleByEmp(int id) {
+        return carScheduleRepo.findAllByDriverIsNotNullAndEmployeeIdOrderByCreatedAtDesc(id);
     }
 
     @Override
-    public void addStartTime(String startScheduleDate, String startTime, int scheduleId) {
+    public void addStartTime(String startScheduleDate, String startTime, int scheduleId, int id) {
         Optional<CarSchedule> carSchedule =  carScheduleRepo.findById(scheduleId);
         if (carSchedule.isPresent()){
             carSchedule.get().setStart_time(startScheduleDate + " "+ startTime);
             carSchedule.get().setStatus(3);
-            carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
+            carSchedule.get().setUpdateBy(id);
             carScheduleRepo.save(carSchedule.get());
         }
     }
 
     @Override
-    public void addStopTime(String stopScheduleDate, String stopTime, int scheduleId) {
+    public void addStopTime(String stopScheduleDate, String stopTime, int scheduleId, int id) {
         Optional<CarSchedule> carSchedule =  carScheduleRepo.findById(scheduleId);
         if (carSchedule.isPresent()){
 //            Set Data
@@ -133,14 +128,14 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
             carSchedule.get().setTotal_duty_time(totalDutyTime);
             carSchedule.get().setTotal_bill(totalBill);
             carSchedule.get().setStatus(4);
-            carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
+            carSchedule.get().setUpdateBy(id);
             carScheduleRepo.save(carSchedule.get());
 
 //          Set on Driver Billing:
             Employee employee = carSchedule.get().getDriver();
             employee.setTotal_bill(employee.getTotal_bill()+totalBill);
             employee.setTotal_due_amount(employee.getTotal_due_amount()+totalBill);
-            employee.setUpdateBy(CommonUtils.employee.getId());
+            employee.setUpdateBy(id);
             employeeRepo.save(employee);
         }
     }

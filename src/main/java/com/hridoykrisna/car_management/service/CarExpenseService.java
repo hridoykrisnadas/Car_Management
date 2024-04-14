@@ -5,7 +5,7 @@ import com.hridoykrisna.car_management.model.CarExpenses;
 import java.util.List;
 
 public interface CarExpenseService {
-    void save(CarExpenses expense);
+    void save(CarExpenses expense, int id);
 
     List<CarExpenses> getAllExpenseReport();
 }

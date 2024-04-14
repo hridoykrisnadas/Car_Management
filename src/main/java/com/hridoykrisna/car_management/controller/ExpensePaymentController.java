@@ -2,6 +2,7 @@ package com.hridoykrisna.car_management.controller;
 
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.ExpensePayment;
+import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.EmployeeService;
 import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.service.ExpensePaymentService;
@@ -22,18 +23,22 @@ import java.util.Objects;
 @RequestMapping("")
 public class ExpensePaymentController {
     private final EmployeeService employeeService;
+    private final EmployeeRepo employeeRepo;
     private final ExpensePaymentService expensePaymentService;
+
+    private Employee user;
 
     @GetMapping({"/expense-payment", "/expense-payment/"})
     public String payment(Model model){
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            model.addAttribute("currentUserName", CommonUtils.employee.getName());
+            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+            model.addAttribute("currentUserName", user.getName());
             List<ExpensePayment> expensePaymentList = expensePaymentService.ExpenseList();
             model.addAttribute("expensePaymentList", expensePaymentList);
             List<Employee> driverList = employeeService.driverList();
             driverList.add(0, new Employee("Select Driver"));
             model.addAttribute("drivers", driverList);
-            if (Objects.equals(CommonUtils.employee.getUser_type(), "ADMIN")){
+            if (Objects.equals(user.getUser_type(), "ADMIN")){
                 model.addAttribute("user_type", "ADMIN");
             }
             return "expense_payment.html";
@@ -44,7 +49,7 @@ public class ExpensePaymentController {
 
     @PostMapping("/expense-payment-form")
     public String savePayment(@Valid @ModelAttribute("expensePayment") ExpensePayment expensePayment, RedirectAttributes redirectAttributes){
-        expensePaymentService.save(expensePayment);
+        expensePaymentService.save(expensePayment, user.getId());
         redirectAttributes.addFlashAttribute("success", "Expense Payment Insert Successfully.");
         return "redirect:/expense-payment";
     }

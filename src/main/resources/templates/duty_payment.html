@@ -68,7 +68,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" action="/duty-payment-form" enctype="multipart/form-data" csrf method="POST" th:object="${dutyPayment}">
+                <form class="row g-3" th:action="@{/duty-payment-form}" enctype="multipart/form-data" csrf th:method="POST" th:object="${dutyPayment}">
                     <div class="col-md-6 px-2">
                         <label for="driver_id" class="form-label">Select Driver</label>
                         <span class="text-danger">*</span>

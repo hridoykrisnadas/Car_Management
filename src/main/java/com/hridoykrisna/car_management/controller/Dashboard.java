@@ -40,8 +40,8 @@ public class Dashboard {
             model.addAttribute("totalCar", carRepo.count());
             model.addAttribute("totalApproveSchedule", carScheduleRepo.getApproveSchedule());
             model.addAttribute("totalNonApproveSchedule", carScheduleRepo.getNonApproveSchedule());
-            model.addAttribute("totalCarExpense", "carExpenseRepo.getTotalCarExpense()");
-            model.addAttribute("totalDriverBill", "carScheduleRepo.getTotalBill()");
+            model.addAttribute("totalCarExpense", carExpenseRepo.getTotalCarExpense());
+            model.addAttribute("totalDriverBill", carScheduleRepo.getTotalBill());
             return "dashboard.html";
         } else {
             return "redirect:login";
