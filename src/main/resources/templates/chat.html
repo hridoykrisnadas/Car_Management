@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Registration | Car Management</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
+    <div class="col-md-10" id="content_div">
+        <div class="" th:insert="~{navbar :: navbar}"></div>
+
+        <div class="container mt-4">
+            <div class="row">
+                <!-- Message Input -->
+                <div class="col-md-12 mb-3">
+                    <div class="px-3">
+                        <form class="row g-3" th:action="@{/input-chat}" csrf method="POST" th:object="${chat}">
+                            <div class="col-md-12 px-1">
+                                <label for="input-chat" class="form-label">Enter your query</label>
+                                <span class="text-danger">*</span>
+                                <textarea name="input_text" class="form-control" required id="input-chat" placeholder="Enter your Query"></textarea>
+                                <p>Hint: for create schedule: Please make a car schedule from ABC to XYZ at 22-05-2024 02:35 pm</p>
+                            </div>
+                            <div class="">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="carRegModel" tabindex="-1" aria-labelledby="empRegModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="empRegModelLabel">Car Registration Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-3">
+                <form class="row g-3" th:action="@{/car-registration-form}" csrf method="POST" th:object="${car}">
+                    <div class="col-md-12 px-1">
+                        <label for="car_name" class="form-label">Car Name</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="car_name" class="form-control" required id="car_name"
+                               placeholder="Enter Car Name">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="car_no" class="form-label">Car No</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="car_no" class="form-control" required id="car_no"
+                               placeholder="Enter Car No">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="engine_no" class="form-label">Car Engine No</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="engine_no" class="form-control" required id="engine_no"
+                               placeholder="Enter Car Engine No">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="chassis_no" class="form-label">Car Chassis No</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="chassis_no" class="form-control" required id="chassis_no"
+                               placeholder="Enter Car Chassis No">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="owner_name" class="form-label">Car Owner Name</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="owner_name" class="form-control" required id="owner_name"
+                               placeholder="Enter Car Owner Name">
+                    </div>
+                    <div class="col-md-12 px-1">
+                        <label for="car_color" class="form-label">Car Color</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" name="car_color" class="form-control" required id="car_color"
+                               placeholder="Enter Car Color">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<!-- Popper.JS -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap JS -->
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script type="text/javascript">
+    //Active Menu
+    document.getElementById('car-registration').classList.add('active');
+
+
+</script>
+</body>
+</html>

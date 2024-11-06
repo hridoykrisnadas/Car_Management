@@ -19,18 +19,6 @@ public class ComingSoonController {
     private final EmployeeRepo employeeRepo;
     private Employee user;
 
-    @GetMapping("/chat")
-    public String getAIChat(Model model) {
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
-            model.addAttribute("currentUserName", user.getName());
-            return "coming_soon.html";
-        }
-        else {
-            return "redirect:login";
-        }
-    }
-
     @GetMapping("/car-parking")
     public String getCarParking(Model model) {
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
