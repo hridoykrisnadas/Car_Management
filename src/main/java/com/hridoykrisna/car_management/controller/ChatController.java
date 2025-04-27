@@ -31,6 +31,7 @@ public class ChatController {
             user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
             return "chat.html";
+//            return "coming_soon";
         }
         else {
             return "redirect:login";

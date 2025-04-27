@@ -1,9 +1,9 @@
 package com.hridoykrisna.car_management.regular_expression;
-
-import opennlp.tools.namefind.NameFinderME;
-import opennlp.tools.namefind.TokenNameFinderModel;
-import opennlp.tools.tokenize.SimpleTokenizer;
-import opennlp.tools.util.Span;
+//
+//import opennlp.tools.namefind.NameFinderME;
+//import opennlp.tools.namefind.TokenNameFinderModel;
+//import opennlp.tools.tokenize.SimpleTokenizer;
+//import opennlp.tools.util.Span;
 import java.util.regex.*;
 
 

@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
+
 
     <title>Sidebar</title>
 
@@ -20,7 +22,8 @@
         <!-- Sidebar Holder -->
         <nav >
             <div class="p-2">
-                <img th:src="@{/images/Gari-Dekho.png}" height="70px" class="rounded mx-auto d-block">
+                <img th:src="@{/images/car-logo.png}" height="70px" class="rounded mx-auto d-block">
+<!--                <h6>Smart Car Management System</h6>-->
                 <hr>
                 <h6 th:text="${currentUserName}" class="d-flex justify-content-center"></h6>
                 <hr>
