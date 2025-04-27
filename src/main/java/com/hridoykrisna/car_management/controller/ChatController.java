@@ -8,6 +8,7 @@ import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,9 +28,11 @@ public class ChatController {
 
     @GetMapping("/chat")
     public String getAIChat(Model model) {
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
+            model.addAttribute("currentUserLogo", user.getImagePath());
             return "chat.html";
 //            return "coming_soon";
         }
@@ -40,25 +43,31 @@ public class ChatController {
 
     @PostMapping("/input-chat")
     public String carRegistration(@Valid @RequestParam String input_text, RedirectAttributes redirectAttributes) throws Exception {
-        String result = input_text;
         RegularExpression regularExpression = new RegularExpression();
         String startLocation = regularExpression.extractStartLocation(input_text);
         String endLocation = regularExpression.extractDestination(input_text);
         LocalDate date = regularExpression.extractDate(input_text);
         String time = regularExpression.extractTime(input_text);
+
 //        Set Schedule Data
         CarSchedule schedule = new CarSchedule();
-        schedule.setPickup_point(startLocation);
-        schedule.setDrop_point(endLocation);
-        schedule.setSchedule_date(String.valueOf(date));
-        schedule.setSchedule_time(time);
-        schedule.setEmployee(user);
-        schedule.setEmployee_id(user.getId());
-        schedule.setCreatedBy(user.getId());
+        if (startLocation!=null && endLocation!=null && date!=null && time!=null){
+            schedule.setPickup_point(startLocation);
+            schedule.setDrop_point(endLocation);
+            schedule.setSchedule_date(String.valueOf(date));
+            schedule.setSchedule_time(time);
+            schedule.setEmployee(user);
+            schedule.setEmployee_id(user.getId());
+            schedule.setCreatedBy(user.getId());
 
-        carScheduleService.saveCarSchedule(schedule);
-//        redirectAttributes.addFlashAttribute("message", result);
+            carScheduleService.saveCarSchedule(schedule);
 //        redirectAttributes.addFlashAttribute("success", "success");
-        return "redirect:/car-request";
+            return "redirect:/car-request";
+        } else {
+            redirectAttributes.addFlashAttribute("message", input_text);
+            return "redirect:/chat";
+
+        }
+
     }
 }

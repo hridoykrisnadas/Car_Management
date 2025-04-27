@@ -15,8 +15,8 @@ public interface CarScheduleRepo extends JpaRepository<CarSchedule, Integer> {
     @Query(value = "from CarSchedule where employee_id=?1 order by createdAt desc")
     List<CarSchedule> employeeWiseReport(int id);
 
-    @Query(value = "from CarSchedule where status=0 order by createdAt desc")
-    List<CarSchedule> pendingReport();
+    @Query(value = "from CarSchedule where status=?1 and schedule_date is not null and schedule_time is not null order by createdAt desc")
+    List<CarSchedule> pendingReport(int status);
 
     List<CarSchedule> findAllByDriverIsNotNullAndEmployeeIdOrderByCreatedAtDesc(int employeeId);
 

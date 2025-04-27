@@ -15,7 +15,7 @@ public interface CarScheduleService {
 
     void requestApprove(CarSchedule carSchedule);
 
-    void cancelSchedule(int id);
+    CarSchedule cancelSchedule(int id);
 
 //    Car Schedule
 

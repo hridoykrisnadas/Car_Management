@@ -7,6 +7,7 @@ import com.hridoykrisna.car_management.service.EmployeeService;
 import com.hridoykrisna.car_management.service.util.FileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -33,12 +34,20 @@ public class EmployeeController {
     private final String path = CommonUtils.ImagePath;
     @GetMapping({"/employee", "/employee/"})
     public String getEmployee(Model map){
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()){
+            user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             map.addAttribute("currentUserName", user.getName());
+            map.addAttribute("currentUserLogo", user.getImagePath());
 
             List<Employee> employeeList = null;
             employeeList = employeeService.employeeList();
+            for (Employee employee : employeeList) {
+                if (Objects.equals(employee.getDesignation(), "Super Admin")) {
+                    employeeList.remove(employee);
+                    break;
+                }
+            }
             map.addAttribute("employees", employeeList);
             map.addAttribute("currentUserName", user.getName());
 

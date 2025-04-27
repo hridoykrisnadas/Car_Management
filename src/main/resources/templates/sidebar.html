@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
-
-
     <title>Sidebar</title>
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -22,7 +20,8 @@
         <!-- Sidebar Holder -->
         <nav >
             <div class="p-2">
-                <img th:src="@{/images/car-logo.png}" height="70px" class="rounded mx-auto d-block">
+<!--                <img th:src="@{/images/car_logo.png}" height="70px" class="rounded mx-auto d-block">-->
+                <img th:src="${currentUserLogo}" height="70px" class="border border-3 border-white rounded-circle mx-auto d-block">
 <!--                <h6>Smart Car Management System</h6>-->
                 <hr>
                 <h6 th:text="${currentUserName}" class="d-flex justify-content-center"></h6>
@@ -70,16 +69,16 @@
                             <span class="px-1">Duty Payment</span>
                         </a>
                     </li>
-                    <li class="nav-item my-1">
-                        <a href="/car-parking" id="car-parking" class="nav-link text-white fs-700">
-                            <span class="px-1">Car Parking</span>
-                        </a>
-                    </li>
-                    <li class="nav-item my-1">
-                        <a href="/car-tracking" id="car-tracking" class="nav-link text-white fs-700">
-                            <span class="px-1">Car Tracking</span>
-                        </a>
-                    </li>
+<!--                    <li class="nav-item my-1">-->
+<!--                        <a href="/car-parking" id="car-parking" class="nav-link text-white fs-700">-->
+<!--                            <span class="px-1">Car Parking</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item my-1">-->
+<!--                        <a href="/car-tracking" id="car-tracking" class="nav-link text-white fs-700">-->
+<!--                            <span class="px-1">Car Tracking</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
                 </ul>
             </div>
         </nav>

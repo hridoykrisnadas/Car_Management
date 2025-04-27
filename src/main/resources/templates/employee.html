@@ -6,10 +6,12 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
 </head>
 <body>
     <div class="row">
-        <div class = "col-md-2 col-sm-2 col-lg-2" id="sidebar_div" th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
+        <div class = "col-md-2 col-sm-2 col-lg-2" id="sidebar_div"
+             th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
         <div class="col-md-10" id="content_div">
             <div class = ""  th:insert="~{navbar :: navbar}"></div>
             <div class="row p-1 m-0">

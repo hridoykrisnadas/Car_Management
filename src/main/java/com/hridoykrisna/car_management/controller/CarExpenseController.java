@@ -11,6 +11,7 @@ import com.hridoykrisna.car_management.service.EmployeeService;
 import com.hridoykrisna.car_management.service.util.FileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,9 +38,11 @@ public class CarExpenseController {
 
     @GetMapping({"/car-expense", "/car-expense/"})
     public String getCarExpense(Model model) {
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
+            model.addAttribute("currentUserLogo", user.getImagePath());
             List<Employee> driverList = employeeService.driverList();
             driverList.add(0, new Employee("Select Driver"));
             model.addAttribute("drivers", driverList);

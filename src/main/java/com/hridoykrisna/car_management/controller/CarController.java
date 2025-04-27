@@ -7,6 +7,7 @@ import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,10 +27,12 @@ public class CarController {
 
     @GetMapping({"/car", "/car/"})
     public String Car(Model model){
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            System.out.println("Security Context User Email: "+SecurityContextHolder.getContext().getAuthentication().getName());
-            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()){
+//            System.out.println("Security Context User Email: "+SecurityContextHolder.getContext().getAuthentication().getName());
+            user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
+            model.addAttribute("currentUserLogo", user.getImagePath());
 
             List<Car> carList = carService.getAllCar();
             model.addAttribute("cars", carList);

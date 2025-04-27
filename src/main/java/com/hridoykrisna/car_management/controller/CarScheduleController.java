@@ -9,6 +9,7 @@ import com.hridoykrisna.car_management.service.CarService;
 import com.hridoykrisna.car_management.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,12 +32,14 @@ public class CarScheduleController {
 
     @GetMapping({"/car-schedule", "/car-schedule/"})
     public String CarRequest(Model model) {
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
 
             List<CarSchedule> carSchedules = carScheduleService.getAllScheduleByEmp(user.getId());
             model.addAttribute("scheduleList", carSchedules);
             model.addAttribute("currentUserName", user.getName());
+            model.addAttribute("currentUserLogo", user.getImagePath());
             return "car_schedule.html";
         } else {
             return "redirect:/login";

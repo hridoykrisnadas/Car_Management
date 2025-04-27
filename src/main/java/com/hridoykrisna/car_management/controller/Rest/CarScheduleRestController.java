@@ -19,9 +19,8 @@ public class CarScheduleRestController {
     }
 
     @PutMapping("{id}")
-    public String cancelSchedule(@PathVariable("id") int id){
-        carScheduleService.cancelSchedule(id);
-        return "redirect:/car-request";
+    public CarSchedule cancelSchedule(@PathVariable("id") int id){
+        return carScheduleService.cancelSchedule(id);
     }
 
 }

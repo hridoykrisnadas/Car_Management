@@ -37,7 +37,7 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
 
     @Override
     public List<CarSchedule> getPendingList() {
-        List<CarSchedule> carSchedulesList = carScheduleRepo.pendingReport();
+        List<CarSchedule> carSchedulesList = carScheduleRepo.pendingReport(0);
 
         return carSchedulesList;
 //        return carScheduleRepo.pendingReport();
@@ -59,13 +59,13 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     }
 
     @Override
-    public void cancelSchedule(int id) {
+    public CarSchedule cancelSchedule(int id) {
        Optional<CarSchedule> carSchedule =  carScheduleRepo.findById(id);
-       if (carSchedule.isPresent()){
-          carSchedule.get().setStatus(2);
-          carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
-          carScheduleRepo.save(carSchedule.get());
-       }
+       System.out.println("Car Request Reject: "+carSchedule.get().getEmployee().getName());
+        carSchedule.get().setStatus(2);
+        carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
+
+        return carScheduleRepo.save(carSchedule.get());
     }
 
     @Override

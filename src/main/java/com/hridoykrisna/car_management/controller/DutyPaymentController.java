@@ -8,6 +8,7 @@ import com.hridoykrisna.car_management.service.DutyPaymentService;
 import com.hridoykrisna.car_management.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +31,12 @@ public class DutyPaymentController {
 
     @GetMapping({"/duty-payment", "/duty-payment/"})
     public String payment(Model model){
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()){
+            user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
+            model.addAttribute("currentUserLogo", user.getImagePath());
+
             List<DutyPayment> dutyPaymentList = dutyPaymentService.getAll();
             model.addAttribute("dutyPaymentList", dutyPaymentList);
             List<Employee> driverList = employeeService.driverList();

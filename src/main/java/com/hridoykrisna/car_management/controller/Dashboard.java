@@ -5,6 +5,7 @@ import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,17 +23,18 @@ public class Dashboard {
     private final CarScheduleRepo carScheduleRepo;
     private final DutyPaymentRepo dutyPaymentRepo;
     private final CarExpenseRepo carExpenseRepo;
-    private final ExpensePaymentRepo expensePaymentRepo;
-    private final AuthenticationManager authenticationManager;
+
 
 
     @GetMapping
     public String dashboard(Model model){
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            Employee employee = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()){
+            Employee employee = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             model.addAttribute("currentUserName", employee.getName());
+            model.addAttribute("currentUserLogo", employee.getImagePath());
 
-            long totalEmp = employeeRepo.count()-1; //1 Means Super Admin
+            int totalEmp = (int) (employeeRepo.count()-1); //1 Means Super Admin
             int totalDriver = employeeRepo.getTotalDriver("DRIVER");
             model.addAttribute("totalEmployee", totalEmp);
             model.addAttribute("totalDriver", totalDriver);

@@ -42,6 +42,10 @@ public class SecurityConfig {
                                         antMatcher("/js/**"),
                                         antMatcher("/images/**")
                                 ).permitAll()
+                                .requestMatchers(
+                                        AntPathRequestMatcher.antMatcher("/api/**")
+                                )
+                                .permitAll()
                                 .anyRequest().authenticated()
                 )
                 .logout(logout -> logout

@@ -6,11 +6,12 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
 </head>
 <body>
 <div class="row">
     <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
-         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName})}"></div>
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
@@ -22,7 +23,7 @@
                         data-bs-target="#carReqModel">Add Car Request
                 </button>
                 <button th:if="${user_type}" type="button" class="btn py-2 mx-2 btn-warning fw-bold col-md-3 approve-button"
-                        data-bs-toggle="modal" data-bs-target="#approveReqModel">Approve Car Request
+                        data-bs-toggle="modal" data-bs-target="#approveReqModel">Pending Car Request (<span th:text="${pendingCount}">0</span>)
                 </button>
                 <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
                     th:text="${success}"></h6>

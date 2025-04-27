@@ -8,8 +8,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.thymeleaf.expression.Arrays;
 
 import java.util.HashSet;
 import java.util.Set;
