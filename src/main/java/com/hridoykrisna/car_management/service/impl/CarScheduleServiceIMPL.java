@@ -2,6 +2,7 @@ package com.hridoykrisna.car_management.service.impl;
 
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.model.CarSchedule;
+import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.CarRepo;
 import com.hridoykrisna.car_management.repository.CarScheduleRepo;
 import com.hridoykrisna.car_management.repository.EmployeeRepo;
@@ -9,13 +10,12 @@ import com.hridoykrisna.car_management.service.CarScheduleService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.hridoykrisna.car_management.model.Employee;
 
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Optional;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +82,11 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     @Override
     public List<CarSchedule> getAllRequests() {
         return carScheduleRepo.findAllByIsActiveTrue();
+    }
+
+    @Override
+    public List<CarSchedule> getAllSchedule() {
+        return carScheduleRepo.findAllByDriverIsNotNullAndIsActiveTrueOrderByCreatedAtDesc();
     }
 
     @Override

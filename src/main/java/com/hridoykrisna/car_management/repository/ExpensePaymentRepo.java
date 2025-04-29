@@ -10,4 +10,6 @@ import java.util.List;
 public interface ExpensePaymentRepo extends JpaRepository<ExpensePayment, Integer> {
 
     List<ExpensePayment> findAllByIsActiveTrueOrderByCreatedAtDesc();
+
+    List<ExpensePayment> findAllByDriverIdAndIsActiveTrueOrderByCreatedAtDesc(int id);
 }

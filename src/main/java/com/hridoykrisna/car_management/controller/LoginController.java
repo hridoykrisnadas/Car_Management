@@ -17,17 +17,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("")
 public class LoginController {
     private final LoginService loginService;
+
     @GetMapping({"/login", "login/"})
-    public String login(){
+    public String login() {
         return "login.html";
     }
 
     @PostMapping("/login-form")
-    public String loginForm(HttpSession session, @Valid @ModelAttribute("login") Employee employee, Model model, RedirectAttributes redirectAttributes){
+    public String loginForm(HttpSession session, @Valid @ModelAttribute("login") Employee employee, Model model, RedirectAttributes redirectAttributes) {
         int result = loginService.makeLogin(employee);
-        if (result==1){
+        if (result == 1) {
             CommonUtils.employee = employee;
-            session.setAttribute("user", employee);
             return "redirect:/";
         } else {
             redirectAttributes.addFlashAttribute("failed", "Wrong Credentials, Please Enter valid Value");

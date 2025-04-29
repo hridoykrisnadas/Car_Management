@@ -28,8 +28,7 @@ public class ComingSoonController {
             model.addAttribute("currentUserName", user.getName());
             model.addAttribute("currentUserLogo", user.getImagePath());
             return "coming_soon.html";
-        }
-        else {
+        } else {
             return "redirect:login";
         }
     }
@@ -40,8 +39,7 @@ public class ComingSoonController {
             user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
             return "coming_soon.html";
-        }
-        else {
+        } else {
             return "redirect:login";
         }
     }

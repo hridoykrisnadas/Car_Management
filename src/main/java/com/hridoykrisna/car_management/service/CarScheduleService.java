@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CarScheduleService {
 
-//    Car Request
+    //    Car Request
     void saveCarSchedule(CarSchedule carSchedule);
 
     List<CarSchedule> getAllRequest(int id);
@@ -28,4 +28,6 @@ public interface CarScheduleService {
     List<CarSchedule> getAllScheduleByDriver(int id);
 
     List<CarSchedule> getAllRequests();
+
+    List<CarSchedule> getAllSchedule();
 }

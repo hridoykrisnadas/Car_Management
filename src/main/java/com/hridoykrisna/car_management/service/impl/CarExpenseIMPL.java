@@ -1,6 +1,5 @@
 package com.hridoykrisna.car_management.service.impl;
 
-import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.model.CarExpenses;
 import com.hridoykrisna.car_management.model.Employee;
@@ -20,12 +19,13 @@ public class CarExpenseIMPL implements CarExpenseService {
     private final CarExpenseRepo carExpenseRepo;
     private final EmployeeRepo employeeRepo;
     private final CarRepo carRepo;
+
     @Override
     public void save(CarExpenses carExpenses, int id) {
-        System.out.println("Expense Data: "+ carExpenses);
+        System.out.println("Expense Data: " + carExpenses);
         carExpenses.setCreatedBy(id);
         Optional<Employee> driver = employeeRepo.findById(carExpenses.getDriver_id());
-        if (driver.isPresent()){
+        if (driver.isPresent()) {
             Employee driver1 = driver.get();
             driver.get().setBalance(driver1.getBalance() - carExpenses.getAmount());
             driver.get().setUpdateBy(id);
@@ -40,5 +40,10 @@ public class CarExpenseIMPL implements CarExpenseService {
     @Override
     public List<CarExpenses> getAllExpenseReport() {
         return carExpenseRepo.findAllByIsActiveTrueOrderByCreatedAtDesc();
+    }
+
+    @Override
+    public List<CarExpenses> getDriveWiseExpenseReport(int id) {
+        return carExpenseRepo.findAllByDriverIdAndIsActiveTrueOrderByCreatedAtDesc(id);
     }
 }

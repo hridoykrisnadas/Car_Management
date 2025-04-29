@@ -3,8 +3,8 @@ package com.hridoykrisna.car_management.controller;
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.*;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,27 +23,29 @@ public class Dashboard {
     private final CarScheduleRepo carScheduleRepo;
     private final DutyPaymentRepo dutyPaymentRepo;
     private final CarExpenseRepo carExpenseRepo;
-
+    private final HttpSession session;
 
 
     @GetMapping
-    public String dashboard(Model model){
+    public String dashboard(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.isAuthenticated()){
+        if (authentication.isAuthenticated()) {
+
             Employee employee = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             model.addAttribute("currentUserName", employee.getName());
             model.addAttribute("currentUserLogo", employee.getImagePath());
 
-            int totalEmp = (int) (employeeRepo.count()-1); //1 Means Super Admin
+            int totalEmp = (int) (employeeRepo.count() - 1); //1 Means Super Admin
             int totalDriver = employeeRepo.getTotalDriver("DRIVER");
             model.addAttribute("totalEmployee", totalEmp);
             model.addAttribute("totalDriver", totalDriver);
-            model.addAttribute("totalOfficer", totalEmp-totalDriver);
+            model.addAttribute("totalOfficer", totalEmp - totalDriver);
             model.addAttribute("totalCar", carRepo.count());
             model.addAttribute("totalApproveSchedule", carScheduleRepo.getApproveSchedule());
             model.addAttribute("totalNonApproveSchedule", carScheduleRepo.getNonApproveSchedule());
             model.addAttribute("totalCarExpense", carExpenseRepo.getTotalCarExpense());
             model.addAttribute("totalDriverBill", carScheduleRepo.getTotalBill());
+            model.addAttribute("user_type", employee.getUser_type());
             return "dashboard.html";
         } else {
             return "redirect:login";

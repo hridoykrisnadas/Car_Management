@@ -17,7 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 @ControllerAdvice
@@ -28,37 +29,30 @@ public class EmployeeController {
     private final FileService fileService;
     private final EmployeeRepo employeeRepo;
     private final PasswordEncoder passwordEncoder;
-
+    private final String path = CommonUtils.ImagePath;
     private Employee user;
 
-    private final String path = CommonUtils.ImagePath;
     @GetMapping({"/employee", "/employee/"})
-    public String getEmployee(Model map){
+    public String getEmployee(Model map) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.isAuthenticated()){
+        if (authentication.isAuthenticated()) {
             user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             map.addAttribute("currentUserName", user.getName());
             map.addAttribute("currentUserLogo", user.getImagePath());
 
             List<Employee> employeeList = null;
             employeeList = employeeService.employeeList();
-            for (Employee employee : employeeList) {
-                if (Objects.equals(employee.getDesignation(), "Super Admin")) {
-                    employeeList.remove(employee);
-                    break;
-                }
-            }
+            employeeList.removeIf(employee -> Objects.equals(employee.getDesignation(), "Super Admin"));
             map.addAttribute("employees", employeeList);
             map.addAttribute("currentUserName", user.getName());
+            map.addAttribute("user_type", user.getUser_type());
 
-            if (Objects.equals(user.getUser_type(), "ADMIN")){
-                map.addAttribute("user_type", "ADMIN");
-            }
             return "employee.html";
-        }else {
+        } else {
             return "redirect:/login";
         }
     }
+
     @PostMapping("/employee-registration-form")
     public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, @RequestParam MultipartFile image, RedirectAttributes redirectAttributes) throws IOException {
 

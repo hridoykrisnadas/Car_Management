@@ -3,11 +3,11 @@ package com.hridoykrisna.car_management.controller;
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.model.CarSchedule;
+import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarScheduleService;
 import com.hridoykrisna.car_management.service.CarService;
 import com.hridoykrisna.car_management.service.EmployeeService;
-import com.hridoykrisna.car_management.model.Employee;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -33,16 +33,16 @@ public class CarRequestController {
     private Employee user;
 
     @GetMapping({"/car-request", "/car-request/"})
-    public String CarRequest(Model model){
+    public String CarRequest(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.isAuthenticated()){
+        if (authentication.isAuthenticated()) {
             user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             List<CarSchedule> carSchedules = carScheduleService.getAllRequest(user.getId());
             model.addAttribute("requestList", carSchedules);
             model.addAttribute("currentUserName", user.getName());
             model.addAttribute("currentUserLogo", user.getImagePath());
 
-            if (Objects.equals(user.getUser_type(), "ADMIN")){
+            if (Objects.equals(user.getUser_type(), "ADMIN")) {
                 List<CarSchedule> pendingList = carScheduleService.getPendingList();
                 model.addAttribute("pendingList", pendingList);
                 model.addAttribute("pendingCount", pendingList.size());
@@ -52,8 +52,8 @@ public class CarRequestController {
                 List<Car> carList = carService.getAllCar();
                 carList.add(0, new Car("Select Car"));
                 model.addAttribute("cars", carList);
-                model.addAttribute("user_type", "ADMIN");
             }
+            model.addAttribute("user_type", user.getUser_type());
             return "car_request.html";
         } else {
             return "redirect:/login";
@@ -61,7 +61,7 @@ public class CarRequestController {
     }
 
     @PostMapping("/car-request-form")
-    public String carRequestForm(@Valid @ModelAttribute("carRequest") CarSchedule schedule, Model model, RedirectAttributes redirectAttributes){
+    public String carRequestForm(@Valid @ModelAttribute("carRequest") CarSchedule schedule, Model model, RedirectAttributes redirectAttributes) {
         schedule.setEmployee(user);
         schedule.setEmployee_id(user.getId());
         schedule.setCreatedBy(user.getId());
@@ -70,14 +70,14 @@ public class CarRequestController {
     }
 
     @PostMapping("/request-approve-form")
-    public String requestApproveForm(@Valid @ModelAttribute("carRequestApprove") CarSchedule carSchedule){
+    public String requestApproveForm(@Valid @ModelAttribute("carRequestApprove") CarSchedule carSchedule) {
         carSchedule.setUpdateBy(user.getId());
         carScheduleService.requestApprove(carSchedule);
         return "redirect:/car-request";
     }
 
     @PostMapping("/request-cancel-form/{id}")
-    public String requestCancelForm(@PathVariable("id") int id){
+    public String requestCancelForm(@PathVariable("id") int id) {
 //        carScheduleService.requestApprove(carSchedule);
         return "redirect:/car-request";
     }

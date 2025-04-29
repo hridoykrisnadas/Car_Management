@@ -8,39 +8,39 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
-    <div class="row">
-        <div class = "col-md-2 col-sm-2 col-lg-2"
-             th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
-        <div class="col-md-10 col-sm-10 col-lg-10">
-            <div class = ""  th:insert="~{navbar :: navbar}"></div>
-            <div class="row p-1 m-0">
-                <h1 class="text-center">Our Team</h1>
-                <hr>
-                <div class="row gx-0 pb-2">
-                    <div class="col-md-12 px-5">
-                        <h2 class="p-2 fw-bold">Our Honorable Advisor: </h2>
-                        <hr>
-                        <img class="px-5 img-fluid" height="320px" th:src="@{images/mam.jpg}">
-                    </div>
-                    <div class="col-md-12 px-5 mt-5">
-                        <h2 class="p-2 fw-bold">Our Glorious Team: </h2>
-                        <hr>
-                        <img class="px-5 img-fluid" height="320px" th:src="@{images/team.jpg}">
-                    </div>
+<div class="row">
+    <div class="col-md-2 col-sm-2 col-lg-2"
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
+    <div class="col-md-10 col-sm-10 col-lg-10">
+        <div class="" th:insert="~{navbar :: navbar}"></div>
+        <div class="row p-1 m-0">
+            <h1 class="text-center">Our Team</h1>
+            <hr>
+            <div class="row gx-0 pb-2">
+                <div class="col-md-12 px-5">
+                    <h2 class="p-2 fw-bold">Our Honorable Advisor: </h2>
+                    <hr>
+                    <img class="px-5 img-fluid" height="320px" th:src="@{images/mam.jpg}">
+                </div>
+                <div class="col-md-12 px-5 mt-5">
+                    <h2 class="p-2 fw-bold">Our Glorious Team: </h2>
+                    <hr>
+                    <img class="px-5 img-fluid" height="320px" th:src="@{images/team.jpg}">
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
-    <!-- Popper.JS -->
-    <script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
-    <!-- Bootstrap JS -->
-    <script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
+<!-- Popper.JS -->
+<script th:src="@{/js/popper.min.js}" type="text/javascript"></script>
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
 
-    <script type="text/javascript">
-        document.getElementById('team').classList.add('fw-bold');
-    </script>
+<script type="text/javascript">
+    document.getElementById('team').classList.add('fw-bold');
+</script>
 </body>
 </html>

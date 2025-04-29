@@ -1,6 +1,8 @@
 package com.hridoykrisna.car_management.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -9,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CarExpenses extends BaseModel{
+public class CarExpenses extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "fk_car_id")
     private Car car;

@@ -4,13 +4,11 @@ package com.hridoykrisna.car_management.regular_expression;
 //import opennlp.tools.namefind.TokenNameFinderModel;
 //import opennlp.tools.tokenize.SimpleTokenizer;
 //import opennlp.tools.util.Span;
-import java.util.regex.*;
 
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegularExpression {
     public LocalDate extractDate(String prompt) {
@@ -18,13 +16,13 @@ public class RegularExpression {
         Matcher matcher = pattern.matcher(prompt);
         if (matcher.find()) {
             LocalDate result = LocalDate.parse(matcher.group(1), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-            System.out.println("Date: "+result);
+            System.out.println("Date: " + result);
             return result;
         }
         return null;
     }
 
-    public String extractTime(String promt){
+    public String extractTime(String promt) {
         // Define the regular expression for 12-hour format
         String timePattern = "(1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm])";
 
@@ -54,7 +52,7 @@ public class RegularExpression {
         Pattern pattern = Pattern.compile("from\\s+(\\w+)");
         Matcher matcher = pattern.matcher(prompt);
         if (matcher.find()) {
-            System.out.println("Start Location: "+matcher.group(1));
+            System.out.println("Start Location: " + matcher.group(1));
             return matcher.group(1);  // This returns "Office"
         }
         return "Office"; // default if not found
@@ -65,7 +63,7 @@ public class RegularExpression {
         Pattern pattern = Pattern.compile("to\\s+(\\w+)");
         Matcher matcher = pattern.matcher(prompt);
         if (matcher.find()) {
-            System.out.println("End Location: "+matcher.group(1));
+            System.out.println("End Location: " + matcher.group(1));
             return matcher.group(1);  // This returns "XYZ"
         }
         return null;

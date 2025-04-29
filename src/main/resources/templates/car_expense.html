@@ -6,12 +6,12 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
+    <link rel="icon" th:href="@{/images/car-logo.png}" type="image">
 </head>
 <body>
 <div class="row">
     <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
-         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo}, currentUserType=${user_type})}"></div>
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
@@ -19,8 +19,9 @@
             <hr>
             <!--              Car Expense  Form -->
             <div>
-                <button type="button" class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
-                        data-bs-target="#carExpenseModal">Add Car Expense
+                <button class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-target="#carExpenseModal"
+                        data-bs-toggle="modal" th:if="${user_type == 'ACCOUNTS' || user_type == 'DRIVER'}"
+                        type="button">Add Car Expense
                 </button>
                 <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
                     th:text="${success}">
@@ -54,8 +55,10 @@
                     <td th:text="${list.invoice_no}"></td>
                     <td th:if="${list.memo_image_path}">
                         <button class="img-btn"
-                                th:attr="data-img-src=${list.memo_image_path}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                            <img th:src="${list.memo_image_path}" class="card-img-top" width="100%" height="50px" th:alt="${list.date}">
+                                data-bs-target="#imageModal" data-bs-toggle="modal"
+                                th:attr="data-img-src=${list.memo_image_path}">
+                            <img class="card-img-top" height="50px" th:alt="${list.date}" th:src="${list.memo_image_path}"
+                                 width="100%">
                         </button>
                     </td>
                 </tr>
@@ -66,15 +69,15 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="imageModalLabel" class="modal fade" id="imageModal" tabindex="-1">
     <div class="modal-dialog modal-lg-700 modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fw-bold fs-5" id="imageModalLabel">Invoice Photo</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body p-0">
-                <img src="" id="imageModalId" class="image-fluid w-100" alt="Invoice">
+                <img alt="Invoice" class="image-fluid w-100" id="imageModalId" src="">
             </div>
 
         </div>
@@ -82,48 +85,49 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="carExpenseModal" tabindex="-1" aria-labelledby="carExpenseModalLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="carExpenseModalLabel" class="modal fade" id="carExpenseModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="carExpenseModalLabel">Car Expense Form</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" th:action="@{/car-expense-form}" enctype="multipart/form-data" csrf th:method="POST" th:object="${carExpense}">
+                <form class="row g-3" csrf enctype="multipart/form-data" th:action="@{/car-expense-form}"
+                      th:method="POST" th:object="${carExpense}">
                     <div class="col-md-6 px-1">
-                        <label for="date" class="form-label">Date</label>
+                        <label class="form-label" for="date">Date</label>
                         <span class="text-danger">*</span>
-                        <input type="date" name="date" class="form-control" required id="date"
-                               placeholder="Enter Date">
+                        <input class="form-control" id="date" name="date" placeholder="Enter Date" required
+                               type="date">
                     </div>
                     <div class="col-md-6 px-2">
-                        <label for="driver_id" class="form-label">Select Driver</label>
+                        <label class="form-label" for="driver_id">Select Driver</label>
                         <span class="text-danger">*</span>
-                        <select id="driver_id" name="driver_id" required class="form-select">
+                        <select class="form-select" id="driver_id" name="driver_id" required>
                             <option th:each="driver : ${drivers}"
-                                    th:value="${driver.id}"
-                                    th:text="${driver.name}">
-                                <input type="hidden" id="driver_name" name="driver_name" th:value="${driver.name}">
+                                    th:text="${driver.name}"
+                                    th:value="${driver.id}">
+                                <input id="driver_name" name="driver_name" th:value="${driver.name}" type="hidden">
                             </option>
                         </select>
                     </div>
                     <div class="col-md-6 px-2">
-                        <label for="car_id" class="form-label">Select Car</label>
+                        <label class="form-label" for="car_id">Select Car</label>
                         <span class="text-danger">*</span>
-                        <select id="car_id" name="car_id" required class="form-select">
+                        <select class="form-select" id="car_id" name="car_id" required>
                             <option th:each="car : ${cars}"
-                                    th:value="${car.id}"
-                                    th:text="${car.car_name} + ' ('+${car.car_no}+')'">
-                                <input type="hidden" id="car_name" name="car_name" th:value="${car.car_name}">
+                                    th:text="${car.car_name} + ' ('+${car.car_no}+')'"
+                                    th:value="${car.id}">
+                                <input id="car_name" name="car_name" th:value="${car.car_name}" type="hidden">
                             </option>
                         </select>
                     </div>
                     <div class="col-md-6 px-2">
-                        <label for="purpose" class="form-label">Purpose</label>
+                        <label class="form-label" for="purpose">Purpose</label>
                         <span class="text-danger">*</span>
-                        <select id="purpose" name="purpose"  required class="form-select">
-                            <option value="0" selected>Choose...</option>
+                        <select class="form-select" id="purpose" name="purpose" required>
+                            <option selected value="0">Choose...</option>
                             <option value="CNG">CNG</option>
                             <option value="Petrol">Petrol</option>
                             <option value="Service & Repair">Service & Repair</option>
@@ -131,25 +135,25 @@
                         </select>
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="amount" class="form-label">Amount</label>
+                        <label class="form-label" for="amount">Amount</label>
                         <span class="text-danger">*</span>
-                        <input type="number" min="1" name="amount" class="form-control" required id="amount"
-                               placeholder="Enter Amount">
+                        <input class="form-control" id="amount" min="1" name="amount" placeholder="Enter Amount" required
+                               type="number">
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="invoice_no" class="form-label">Invoice No</label>
+                        <label class="form-label" for="invoice_no">Invoice No</label>
                         <span class="text-danger">*</span>
-                        <input type="text" min="1" name="invoice_no" class="form-control" required id="invoice_no"
-                               placeholder="Enter Invoice No">
+                        <input class="form-control" id="invoice_no" min="1" name="invoice_no" placeholder="Enter Invoice No" required
+                               type="text">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="image" class="form-label">Invoice Image</label>
+                        <label class="form-label" for="image">Invoice Image</label>
                         <span class="text-danger">*</span>
-                        <input type="file" accept="image/*" name="image" class="form-control" required id="image">
+                        <input accept="image/*" class="form-control" id="image" name="image" required type="file">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+                        <button class="btn btn-success" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -159,11 +163,11 @@
 </div>
 
 <!-- jQuery CDN - Slim version (=without AJAX) -->
-<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
 <!-- Popper.JS -->
-<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/popper.min.js}" type="text/javascript"></script>
 <!-- Bootstrap JS -->
-<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {

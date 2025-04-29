@@ -22,6 +22,7 @@ public class ImageController {
 
 
     private final String imagePath = CommonUtils.ImagePath;
+
     @GetMapping(value = "/images/{image}", produces = MediaType.IMAGE_JPEG_VALUE)
     public void downloadImage(@PathVariable("image") String imageName,
                               HttpServletResponse response)

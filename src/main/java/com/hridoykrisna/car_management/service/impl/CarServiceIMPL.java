@@ -1,6 +1,5 @@
 package com.hridoykrisna.car_management.service.impl;
 
-import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.repository.CarRepo;
 import com.hridoykrisna.car_management.service.CarService;
@@ -13,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CarServiceIMPL implements CarService {
     private final CarRepo carRepo;
+
     @Override
     public void saveCar(Car car) {
         carRepo.save(car);

@@ -5,10 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.util.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
+public interface EmployeeRepo extends JpaRepository<Employee, Integer> {
 
     List<Employee> findAllByIsActiveTrueOrderByNameAsc();
 
@@ -22,9 +24,9 @@ public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
 //    String findNameById(int driverId);
 
     @Query(value = "select balance from Employee where id =?1")
-    float  getBalanceByEmployeeId(int id);
+    float getBalanceByEmployeeId(int id);
 
-//    Dashboard
+    //    Dashboard
     @Query(value = "SELECT COUNT(designation) FROM Employee WHERE designation = ?1")
     int getTotalDriver(@Param("user_type") String userType);
 

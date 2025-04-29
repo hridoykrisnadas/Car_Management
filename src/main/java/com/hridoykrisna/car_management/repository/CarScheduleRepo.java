@@ -15,18 +15,21 @@ public interface CarScheduleRepo extends JpaRepository<CarSchedule, Integer> {
     @Query(value = "from CarSchedule where employee_id=?1 order by createdAt desc")
     List<CarSchedule> employeeWiseReport(int id);
 
-    @Query(value = "from CarSchedule where status=?1 and schedule_date is not null and schedule_time is not null order by createdAt desc")
+    @Query(value = "from CarSchedule where status=?1 and schedule_date is not null and schedule_time is not null and employee is not null order by createdAt desc")
     List<CarSchedule> pendingReport(int status);
 
     List<CarSchedule> findAllByDriverIsNotNullAndEmployeeIdOrderByCreatedAtDesc(int employeeId);
+
     List<CarSchedule> findAllByDriverIsNotNullAndDriverIdOrderByCreatedAtDesc(int employeeId);
 
     @Query(value = "SELECT COUNT(*) FROM CarSchedule WHERE driver is not null")
     int getApproveSchedule();
 
-    @Query(value = "SELECT COUNT(*) FROM CarSchedule WHERE driver is null")
+    @Query(value = "SELECT COUNT(*) FROM CarSchedule WHERE employee is not null AND status=0")
     int getNonApproveSchedule();
 
     @Query(value = "SELECT COALESCE(sum(total_bill), 0) FROM CarSchedule WHERE driver is not null")
     double getTotalBill();
+
+    List<CarSchedule> findAllByDriverIsNotNullAndIsActiveTrueOrderByCreatedAtDesc();
 }

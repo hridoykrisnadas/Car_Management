@@ -21,8 +21,8 @@ public class NavController {
 
 
     @GetMapping("/team")
-    public String team(Model model){
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
+    public String team(Model model) {
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
             user = CommonUtils.getEmployeeByEmail(SecurityContextHolder.getContext().getAuthentication().getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
             return "team.html";

@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.*;
+import java.util.List;
 
 @Controller
 @ControllerAdvice
@@ -26,9 +26,9 @@ public class CarController {
     private Employee user;
 
     @GetMapping({"/car", "/car/"})
-    public String Car(Model model){
+    public String Car(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.isAuthenticated()){
+        if (authentication.isAuthenticated()) {
 //            System.out.println("Security Context User Email: "+SecurityContextHolder.getContext().getAuthentication().getName());
             user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
@@ -43,8 +43,9 @@ public class CarController {
             return "redirect:/login";
         }
     }
+
     @PostMapping("/car-registration-form")
-    public String carRegistration(@Valid @ModelAttribute("car") Car car, Model model, RedirectAttributes redirectAttributes){
+    public String carRegistration(@Valid @ModelAttribute("car") Car car, Model model, RedirectAttributes redirectAttributes) {
         car.setCreatedBy(user.getId());
         carService.saveCar(car);
         redirectAttributes.addFlashAttribute("success", "success");

@@ -2,11 +2,7 @@ package com.hridoykrisna.car_management.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -45,11 +41,11 @@ public class Employee extends BaseModel {
     private float total_payment;
     private float total_due_amount;
     private String last_payment_date;
-    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "employee_roles",
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name= "role_id", referencedColumnName = "id")
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
 
     )
     private Set<Roles> roles;

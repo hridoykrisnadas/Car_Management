@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @ToString
-public class Car extends BaseModel{
+public class Car extends BaseModel {
     private String car_name;
     private String car_no;
     private String engine_no;

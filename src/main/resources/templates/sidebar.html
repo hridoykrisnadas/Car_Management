@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <link rel="icon" th:href="@{/images/car-logo.png}" type="image">
     <title>Sidebar</title>
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -16,84 +16,85 @@
 
 <body>
 
-    <div class="h-100 min-vh-100 sidebar-header" id="sidebar" th:fragment="sidebar">
-        <!-- Sidebar Holder -->
-        <nav >
-            <div class="p-2">
-<!--                <img th:src="@{/images/car-logo.png}" height="70px" class="rounded mx-auto d-block">-->
-                <img th:src="${currentUserLogo}" height="70px" class="border border-3 border-white rounded-circle mx-auto d-block">
-<!--                <h6>Smart Car Management System</h6>-->
-                <hr>
-                <h6 th:text="${currentUserName}" class="d-flex justify-content-center"></h6>
-                <hr>
-            </div>
-            <div class="mt-2 sidebar-inner px-2 pt-1 nav-item">
-                <ul class="nav nav-pills flex-column pt-1 pt-md-0">
-                    <li class="nav-item my-1">
-                        <a href="/" id="dashboard" class="nav-link text-white fs-700">
-                            <span class="px-1">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item my-1">
-                        <a href="/employee" id="emp-registration" class="nav-link text-white fs-700">
-                            <span class="px-1">Employee</span>
-                        </a>
-                    </li>
-                    <li class="nav-item my-1">
-                        <a href="/car" id="car-registration" class="nav-link text-white fs-700">
-                            <span class="px-1">Car</span>
-                        </a>
-                    </li>
-                    <li class="nav-item my-1">
-                        <a href="/car-request" id="car-request" class="nav-link text-white fs-700">
-                            <span class="px-1">Car Request</span>
-                        </a>
-                    </li>
-                    <li class="nav-item my-1">
-                        <a href="/car-schedule" id="car-schedule" class="nav-link text-white fs-700">
-                            <span class="px-1">Car Schedule</span>
-                        </a>
-                    </li>
-                    <li class="nav-item my-1">
-                        <a href="/car-expense" id="car-expense" class="nav-link text-white fs-700">
-                            <span class="px-1">Car Expense</span>
-                        </a>
-                    </li>
-                    <li class="nav-item my-1">
-                        <a href="/expense-payment" id="expense-payment" class="nav-link text-white fs-700">
-                            <span class="px-1">Expense Payment</span>
-                        </a>
-                    </li>
-                    <li class="nav-item my-1">
-                        <a href="/duty-payment" id="duty-payment" class="nav-link text-white fs-700">
-                            <span class="px-1">Duty Payment</span>
-                        </a>
-                    </li>
-<!--                    <li class="nav-item my-1">-->
-<!--                        <a href="/car-parking" id="car-parking" class="nav-link text-white fs-700">-->
-<!--                            <span class="px-1">Car Parking</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item my-1">-->
-<!--                        <a href="/car-tracking" id="car-tracking" class="nav-link text-white fs-700">-->
-<!--                            <span class="px-1">Car Tracking</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-                </ul>
-            </div>
-        </nav>
-    </div>
+<div class="h-100 min-vh-100 sidebar-header" id="sidebar" th:fragment="sidebar">
+    <!-- Sidebar Holder -->
+    <nav>
+        <div class="p-2">
+            <!--                <img th:src="@{/images/car-logo.png}" height="70px" class="rounded mx-auto d-block">-->
+            <img alt="Logo" class="border border-3 border-white rounded-circle mx-auto d-block"
+                 height="70px" th:src="${currentUserLogo}">
+            <!--                <h6>Smart Car Management System</h6>-->
+            <hr>
+            <h6 class="d-flex justify-content-center" th:text="${currentUserName}"></h6>
+            <hr>
+        </div>
+        <div class="mt-2 sidebar-inner px-2 pt-1 nav-item">
+            <ul class="nav nav-pills flex-column pt-1 pt-md-0">
+                <li class="nav-item my-1">
+                    <a class="nav-link text-white fs-700" href="/" id="dashboard">
+                        <span class="px-1">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item my-1">
+                    <a class="nav-link text-white fs-700" href="/employee" id="emp-registration">
+                        <span class="px-1">Employee</span>
+                    </a>
+                </li>
+                <li class="nav-item my-1">
+                    <a class="nav-link text-white fs-700" href="/car" id="car-registration">
+                        <span class="px-1">Car</span>
+                    </a>
+                </li>
+                <li class="nav-item my-1">
+                    <a class="nav-link text-white fs-700" href="/car-request" id="car-request">
+                        <span class="px-1">Car Request</span>
+                    </a>
+                </li>
+                <li class="nav-item my-1">
+                    <a class="nav-link text-white fs-700" href="/car-schedule" id="car-schedule">
+                        <span class="px-1">Car Schedule</span>
+                    </a>
+                </li>
+                <li class="nav-item my-1">
+                    <a class="nav-link text-white fs-700" href="/car-expense" id="car-expense">
+                        <span class="px-1">Car Expense</span>
+                    </a>
+                </li>
+                <li class="nav-item my-1">
+                    <a class="nav-link text-white fs-700" href="/expense-payment" id="expense-payment">
+                        <span class="px-1">Expense Payment</span>
+                    </a>
+                </li>
+                <li class="nav-item my-1">
+                    <a class="nav-link text-white fs-700" href="/duty-payment" id="duty-payment">
+                        <span class="px-1">Duty Payment</span>
+                    </a>
+                </li>
+                <!--                    <li class="nav-item my-1">-->
+                <!--                        <a href="/car-parking" id="car-parking" class="nav-link text-white fs-700">-->
+                <!--                            <span class="px-1">Car Parking</span>-->
+                <!--                        </a>-->
+                <!--                    </li>-->
+                <!--                    <li class="nav-item my-1">-->
+                <!--                        <a href="/car-tracking" id="car-tracking" class="nav-link text-white fs-700">-->
+                <!--                            <span class="px-1">Car Tracking</span>-->
+                <!--                        </a>-->
+                <!--                    </li>-->
+            </ul>
+        </div>
+    </nav>
+</div>
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
-    <!-- Popper.JS -->
-    <script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
-    <!-- Bootstrap JS -->
-    <script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
+<!-- Popper.JS -->
+<script th:src="@{/js/popper.min.js}" type="text/javascript"></script>
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-    </script>
+</script>
 </body>
 
 </html>

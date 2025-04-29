@@ -6,239 +6,248 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
+    <link rel="icon" th:href="@{/images/car-logo.png}" type="image">
 </head>
 <body>
-    <div class="row">
-        <div class = "col-md-2 col-sm-2 col-lg-2" id="sidebar_div"
-             th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
-        <div class="col-md-10" id="content_div">
-            <div class = ""  th:insert="~{navbar :: navbar}"></div>
-            <div class="row p-1 m-0">
-                <h2 class="justify-content-center d-flex">Employee</h2>
+<div class="row">
+    <div class="col-md-2 col-sm-2 col-lg-2" id="sidebar_div"
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo}, currentUserType=${user_type})}"></div>
+    <div class="col-md-10" id="content_div">
+        <div class="" th:insert="~{navbar :: navbar}"></div>
+        <div class="row p-1 m-0">
+            <h2 class="justify-content-center d-flex">Employee</h2>
+            <hr>
+            <!--              Employee Registration  Form -->
+            <div th:if="${user_type == 'ADMIN'}">
+                <button class="btn py-2 mx-2 btn-dark col-md-3" data-bs-target="#empRegModel" data-bs-toggle="modal"
+                        type="button">Add New Employee
+                </button>
+                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
+                    th:text="${success}"></h6>
                 <hr>
-                <!--              Employee Registration  Form -->
-                <div th:if="${user_type}">
-                    <button type="button" class="btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal" data-bs-target="#empRegModel">Add New Employee</button>
-                    <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}" th:text="${success}"></h6>
-                    <hr>
-                </div>
             </div>
-<!--            Employee Report-->
-            <div class="row p-2 m-0 ">
-                <tr th:each="employee : ${employees}">
-                    <div class="col-md-3 p-2">
-                        <div class="card bg-base text-white">
-                            <img th:src="${employee.imagePath}" class="card-img-top" width="100%" height="200px" th:alt="${employee.name}">
-                            <div class="card-body">
-                                <h6 class="card-title fw-bold d-flex justify-content-center"><span th:text="${employee.name}"> Title </span></h6>
-                                <h6 class="card-title d-flex justify-content-center"><span th:text="${employee.designation}"> Title </span></h6>
-                                <div class="text-center">
-                                    <button class="btn btn-warning details-button"
-                                            th:attr="data-employee-id=${employee.id}" data-bs-toggle="modal" data-bs-target="#empDetailsModel">
-                                        Details
-                                    </button>
-                                </div>
+        </div>
+        <!--            Employee Report-->
+        <div class="row p-2 m-0 ">
+            <tr th:each="employee : ${employees}">
+                <div class="col-md-3 p-2">
+                    <div class="card bg-base text-white">
+                        <img class="card-img-top" height="200px" th:alt="${employee.name}" th:src="${employee.imagePath}"
+                             width="100%">
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold d-flex justify-content-center"><span
+                                    th:text="${employee.name}"> Title </span></h6>
+                            <h6 class="card-title d-flex justify-content-center"><span
+                                    th:text="${employee.designation}"> Title </span></h6>
+                            <div class="text-center">
+                                <button class="btn btn-warning details-button"
+                                        data-bs-target="#empDetailsModel" data-bs-toggle="modal"
+                                        th:attr="data-employee-id=${employee.id}">
+                                    Details
+                                </button>
                             </div>
                         </div>
                     </div>
-                </tr>
-            </div>
+                </div>
+            </tr>
         </div>
     </div>
+</div>
 
-    <!-- Registration Modal -->
-    <div class="modal fade" id="empRegModel" tabindex="-1" aria-labelledby="empRegModelLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="empRegModelLabel">Employee Registration Form</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body px-3">
-                    <form class="row g-3" th:action= "@{/employee-registration-form}" enctype="multipart/form-data" csrf method="POST" th:object="${employee}">
-                        <div class="col-md-6 px-2">
-                            <label for="name" class="form-label">Full Name</label>
-                            <span class="text-danger">*</span>
-                            <input type="text" name="name" class="form-control" required id="name">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="image"  style="width: 100%; height: 100%; object-fit: cover;" class="form-label">Image</label>
-                            <span class="text-danger">*</span>
-                            <input type="file" accept="image/*" name="image" class="form-control" required id="image">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="email" class="form-label">Email</label>
-                            <span class="text-danger">*</span>
-                            <input type="email" name="email" class="form-control" required id="email">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="password" class="form-label">Password</label>
-                            <span class="text-danger">*</span>
-                            <input type="password" name="password" class="form-control" required id="password">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="designation" class="form-label">Designation</label>
-                            <span class="text-danger">*</span>
-                            <input type="text" name="designation" class="form-control" required id="designation">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="mobile_no" class="form-label">Mobile No.</label>
-                            <span class="text-danger">*</span>
-                            <input type="number" name="mobile_no" class="form-control" required id="mobile_no">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="salary" class="form-label">Salary.</label>
-                            <span class="text-danger">*</span>
-                            <input type="number" name="salary" class="form-control" required id="salary">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="district" class="form-label">Home District</label>
-                            <span class="text-danger">*</span>
-                            <input type="text" name="home_district" class="form-control" required id="district">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="nid" class="form-label">NID No</label>
-                            <span class="text-danger">*</span>
-                            <input type="number" name="nid" class="form-control" required id="nid">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="nationality" class="form-label">Nationality</label>
-                            <span class="text-danger">*</span>
-                            <input type="text" name="nationality" class="form-control" required id="nationality">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="passport" class="form-label">Passport No</label>
-                            <input type="text" name="passport_no" class="form-control"  id="passport">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="driving_license" class="form-label">Driving License No</label>
-                            <input type="text" name="driving_license_no" class="form-control"  id="driving_license">
-                        </div>
-                        <div class="col-md-6 px-2 date">
-                            <label for="validityOfDrivingLicense" class="form-label">Validity of Driving License</label>
-                            <input type="date" name="validity_of_driving_license" class="form-control"  id="validityOfDrivingLicense">
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="inputState" class="form-label">Gender</label>
-                            <span class="text-danger">*</span>
-                            <select id="inputState" name="gender"  required class="form-select">
-                                <option value="0" selected>Choose...</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Transgender">Transgender</option>
-                                <option value="Rather Not Say">Rather Not Say</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 px-2">
-                            <label for="inputUserRole" class="form-label">User Type</label>
-                            <span class="text-danger">*</span>
-                            <select id="inputUserRole" name="user_type"  required class="form-select">
-                                <option value="0" selected>Choose...</option>
-                                <option value="USER">USER</option>
-                                <option value="ACCOUNTS">ACCOUNTS</option>
-                                <option value="ADMIN">ADMIN</option>
-                                <option value="DRIVER">DRIVER</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 px-2 date">
-                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                            <span class="text-danger">*</span>
-                            <input type="date" name="date_of_birth" class="form-control" required id="dateOfBirth">
-                        </div>
-                        <div class="col-md-6 px-2 date" id='datetimepicker1_'>
-                            <label for="joiningDate" class="form-label">Joining Date</label>
-                            <span class="text-danger">*</span>
-                            <input type="date" name="joining_date" class="form-control date" required id="joiningDate">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Submit</button>
-                        </div>
-                    </form>
-                </div>
-
+<!-- Registration Modal -->
+<div aria-hidden="true" aria-labelledby="empRegModelLabel" class="modal fade" id="empRegModel" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="empRegModelLabel">Employee Registration Form</h1>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
+            <div class="modal-body px-3">
+                <form class="row g-3" csrf enctype="multipart/form-data" method="POST"
+                      th:action="@{/employee-registration-form}" th:object="${employee}">
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="name">Full Name</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="name" name="name" required type="text">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="image">Image</label>
+                        <span class="text-danger">*</span>
+                        <input accept="image/*" class="form-control" id="image" name="image" required type="file">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="email">Email</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="email" name="email" required type="email">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="password">Password</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="password" name="password" required type="password">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="designation">Designation</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="designation" name="designation" required type="text">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="mobile_no">Mobile No.</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="mobile_no" name="mobile_no" required type="number">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="salary">Salary.</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="salary" name="salary" required type="number">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="district">Home District</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="district" name="home_district" required type="text">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="nid">NID No</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="nid" name="nid" required type="number">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="nationality">Nationality</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="nationality" name="nationality" required type="text">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="passport">Passport No</label>
+                        <input class="form-control" id="passport" name="passport_no" type="text">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="driving_license">Driving License No</label>
+                        <input class="form-control" id="driving_license" name="driving_license_no" type="text">
+                    </div>
+                    <div class="col-md-6 px-2 date">
+                        <label class="form-label" for="validityOfDrivingLicense">Validity of Driving License</label>
+                        <input class="form-control" id="validityOfDrivingLicense" name="validity_of_driving_license"
+                               type="date">
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="inputState">Gender</label>
+                        <span class="text-danger">*</span>
+                        <select class="form-select" id="inputState" name="gender" required>
+                            <option selected value="0">Choose...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Transgender">Transgender</option>
+                            <option value="Rather Not Say">Rather Not Say</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 px-2">
+                        <label class="form-label" for="inputUserRole">User Type</label>
+                        <span class="text-danger">*</span>
+                        <select class="form-select" id="inputUserRole" name="user_type" required>
+                            <option selected value="0">Choose...</option>
+                            <option value="USER">USER</option>
+                            <option value="ACCOUNTS">ACCOUNTS</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="DRIVER">DRIVER</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 px-2 date">
+                        <label class="form-label" for="dateOfBirth">Date of Birth</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control" id="dateOfBirth" name="date_of_birth" required type="date">
+                    </div>
+                    <div class="col-md-6 px-2 date" id='datetimepicker1_'>
+                        <label class="form-label" for="joiningDate">Joining Date</label>
+                        <span class="text-danger">*</span>
+                        <input class="form-control date" id="joiningDate" name="joining_date" required type="date">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+                        <button class="btn btn-success" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
+</div>
 
 <!--  Employee Details Modal  -->
-    <div class="modal fade" id="empDetailsModel" tabindex="-1" aria-labelledby="empDetailsModelLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="empDetailsModelLabel">Employee Details</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body px-3">
-                    <div class="row card bg-base text-white">
-                        <div class="col-md-12 d-flex justify-content-center">
-                            <img id="imageView" src="" class="d-flex card-img-top-c mt-1" width="100%" height="200px" alt="">
-                        </div>
-                        <div class="col-md-12 d-flex justify-content-center">
-                            <h4 class="fw-bold text-white mt-3" id="nameView"></h4>
-                        </div>
-                        <div class="p-2 employee-details">
-                            <h6 class="d-flex" id="emp-id"></h6>
-                            <h6 class="d-flex" id="emp-name"></h6>
-                            <h6 class="d-flex" id="emp-email"></h6>
-                            <h6 class="d-flex" id="emp-designation"></h6>
-                            <h6 class="d-flex" id="emp-salary"></h6>
-                            <h6 class="d-flex" id="emp-mobile"></h6>
-                            <h6 class="d-flex" id="emp-gender"></h6>
-                            <h6 class="d-flex" id="emp-nid"></h6>
-                            <h6 class="d-flex" id="emp-birth"></h6>
-                            <h6 class="d-flex" id="joining_date"></h6>
-                        </div>
-
-                    </div>
-                </div>
-
+<div aria-hidden="true" aria-labelledby="empDetailsModelLabel" class="modal fade" id="empDetailsModel" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="empDetailsModelLabel">Employee Details</h1>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
+            <div class="modal-body px-3">
+                <div class="row card bg-base text-white">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <img alt="" class="d-flex card-img-top-c mt-1" height="200px" id="imageView" src=""
+                             width="200px">
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <h4 class="fw-bold text-white mt-3" id="nameView"></h4>
+                    </div>
+                    <div class="p-2 employee-details">
+                        <h6 class="d-flex" id="emp-id"></h6>
+                        <h6 class="d-flex" id="emp-name"></h6>
+                        <h6 class="d-flex" id="emp-email"></h6>
+                        <h6 class="d-flex" id="emp-designation"></h6>
+                        <h6 class="d-flex" id="emp-salary"></h6>
+                        <h6 class="d-flex" id="emp-mobile"></h6>
+                        <h6 class="d-flex" id="emp-gender"></h6>
+                        <h6 class="d-flex" id="emp-nid"></h6>
+                        <h6 class="d-flex" id="emp-birth"></h6>
+                        <h6 class="d-flex" id="joining_date"></h6>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
+</div>
 
 
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
+<!-- Popper.JS -->
+<script th:src="@{/js/popper.min.js}" type="text/javascript"></script>
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
-    <!-- Popper.JS -->
-    <script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
-    <!-- Bootstrap JS -->
-    <script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
-
-    <script type="text/javascript">
-        //Active Menu
-       document.getElementById('emp-registration').classList.add('active');
-        $(document).ready(function() {
-            $(".details-button").click(function() {
-                const employeeId = $(this).data("employee-id");
-                console.log(employeeId);
-                $.ajax({
-                    type: "GET",
-                    url: "/api/employee/" + employeeId,
-                    dataType: "json", // Specify JSON data type
-                    success: function(employee) {
-                        document.getElementById("imageView").src = employee.imagePath;
-                        document.getElementById("nameView").innerHTML = employee.name;
-                        document.getElementById("emp-id").innerHTML = "Employee ID: " + employee.id;
-                        document.getElementById("emp-name").innerHTML = "Name: " + employee.name;
-                        document.getElementById("emp-email").innerHTML = "Email: " + employee.email;
-                        document.getElementById("emp-designation").innerHTML = "Designation: " + employee.designation;
-                        document.getElementById("emp-salary").innerHTML = "Salary: " + new Intl.NumberFormat().format(employee.salary) + " BDT Only";
-                        document.getElementById("emp-mobile").innerHTML = "Mobile No: " + employee.mobile_no;
-                        document.getElementById("emp-gender").innerHTML = "Gender: " + employee.gender;
-                        document.getElementById("emp-nid").innerHTML = "NID: " + employee.nid;
-                        document.getElementById("emp-birth").innerHTML = "Date of Birth: " + employee.date_of_birth;
-                        document.getElementById("emp-joining_date").innerHTML = "Joining Date: " + employee.joining_date;
+<script type="text/javascript">
+    //Active Menu
+   document.getElementById('emp-registration').classList.add('active');
+    $(document).ready(function() {
+        $(".details-button").click(function() {
+            const employeeId = $(this).data("employee-id");
+            console.log(employeeId);
+            $.ajax({
+                type: "GET",
+                url: "/api/employee/" + employeeId,
+                dataType: "json", // Specify JSON data type
+                success: function(employee) {
+                    document.getElementById("imageView").src = employee.imagePath;
+                    document.getElementById("nameView").innerHTML = employee.name;
+                    document.getElementById("emp-id").innerHTML = "Employee ID: " + employee.id;
+                    document.getElementById("emp-name").innerHTML = "Name: " + employee.name;
+                    document.getElementById("emp-email").innerHTML = "Email: " + employee.email;
+                    document.getElementById("emp-designation").innerHTML = "Designation: " + employee.designation;
+                    document.getElementById("emp-salary").innerHTML = "Salary: " + new Intl.NumberFormat().format(employee.salary) + " BDT Only";
+                    document.getElementById("emp-mobile").innerHTML = "Mobile No: " + employee.mobile_no;
+                    document.getElementById("emp-gender").innerHTML = "Gender: " + employee.gender;
+                    document.getElementById("emp-nid").innerHTML = "NID: " + employee.nid;
+                    document.getElementById("emp-birth").innerHTML = "Date of Birth: " + employee.date_of_birth;
+                    document.getElementById("emp-joining_date").innerHTML = "Joining Date: " + employee.joining_date;
 
 
-                        // Show the modal
-                        $("#empDetailsModel").modal('show');
-                    }
-                });
+                    // Show the modal
+                    $("#empDetailsModel").modal('show');
+                }
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>

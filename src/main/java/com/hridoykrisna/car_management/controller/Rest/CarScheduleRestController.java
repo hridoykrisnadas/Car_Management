@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class CarScheduleRestController {
     private final EmployeeRepo employeeRepo;
 
     @GetMapping("/request/pending")
-    public List<CarSchedule> allPendingCarSchedule(){
+    public List<CarSchedule> allPendingCarSchedule() {
         return carScheduleService.getPendingList();
     }
 
@@ -30,12 +30,15 @@ public class CarScheduleRestController {
         return carScheduleService.getAllRequests();
     }
 
-    @PostMapping("/cancel/{id}")
-    public CarSchedule cancelSchedule(@PathVariable("id") int id){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Employee employee = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
-            return carScheduleService.cancelSchedule(id, employee.getId());
-
+    @GetMapping("/all-schedule")
+    public List<CarSchedule> getAllSchedule() {
+        return carScheduleService.getAllSchedule();
     }
 
+    @PostMapping("/cancel/{id}")
+    public CarSchedule cancelSchedule(@PathVariable("id") int id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Employee employee = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
+        return carScheduleService.cancelSchedule(id, employee.getId());
+    }
 }

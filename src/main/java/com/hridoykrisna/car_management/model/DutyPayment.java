@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DutyPayment extends BaseModel{
+public class DutyPayment extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "fk_driver_id")
     private Employee driver;

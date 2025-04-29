@@ -10,5 +10,6 @@ import java.io.InputStream;
 @Service
 public interface FileService {
     String uploadImage(String path, MultipartFile multipartFile, String name) throws IOException;
+
     InputStream getResources(String path, String filename) throws FileNotFoundException;
 }

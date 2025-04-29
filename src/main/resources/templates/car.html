@@ -6,12 +6,12 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
+    <link rel="icon" th:href="@{/images/car-logo.png}" type="image">
 </head>
 <body>
 <div class="row">
     <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
-         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo}, currentUserType=${user_type})}"></div>
 
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
@@ -19,9 +19,9 @@
             <h2 class="justify-content-center d-flex">Car</h2>
             <hr>
             <!--              Car Registration  Form -->
-            <div th:if="${user_type}">
-                <button type="button" class="btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
-                        data-bs-target="#carRegModel">Add New Car
+            <div th:if="${user_type == 'ADMIN'}">
+                <button class="btn py-2 mx-2 btn-dark col-md-3" data-bs-target="#carRegModel" data-bs-toggle="modal"
+                        type="button">Add New Car
                 </button>
                 <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
                     th:text="${success}"></h6>
@@ -59,54 +59,54 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="carRegModel" tabindex="-1" aria-labelledby="empRegModelLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="empRegModelLabel" class="modal fade" id="carRegModel" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="empRegModelLabel">Car Registration Form</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" th:action="@{/car-registration-form}" csrf method="POST" th:object="${car}">
+                <form class="row g-3" csrf method="POST" th:action="@{/car-registration-form}" th:object="${car}">
                     <div class="col-md-12 px-1">
-                        <label for="car_name" class="form-label">Car Name</label>
+                        <label class="form-label" for="car_name">Car Name</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="car_name" class="form-control" required id="car_name"
-                               placeholder="Enter Car Name">
+                        <input class="form-control" id="car_name" name="car_name" placeholder="Enter Car Name" required
+                               type="text">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="car_no" class="form-label">Car No</label>
+                        <label class="form-label" for="car_no">Car No</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="car_no" class="form-control" required id="car_no"
-                               placeholder="Enter Car No">
+                        <input class="form-control" id="car_no" name="car_no" placeholder="Enter Car No" required
+                               type="text">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="engine_no" class="form-label">Car Engine No</label>
+                        <label class="form-label" for="engine_no">Car Engine No</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="engine_no" class="form-control" required id="engine_no"
-                               placeholder="Enter Car Engine No">
+                        <input class="form-control" id="engine_no" name="engine_no" placeholder="Enter Car Engine No" required
+                               type="text">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="chassis_no" class="form-label">Car Chassis No</label>
+                        <label class="form-label" for="chassis_no">Car Chassis No</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="chassis_no" class="form-control" required id="chassis_no"
-                               placeholder="Enter Car Chassis No">
+                        <input class="form-control" id="chassis_no" name="chassis_no" placeholder="Enter Car Chassis No" required
+                               type="text">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="owner_name" class="form-label">Car Owner Name</label>
+                        <label class="form-label" for="owner_name">Car Owner Name</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="owner_name" class="form-control" required id="owner_name"
-                               placeholder="Enter Car Owner Name">
+                        <input class="form-control" id="owner_name" name="owner_name" placeholder="Enter Car Owner Name" required
+                               type="text">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="car_color" class="form-label">Car Color</label>
+                        <label class="form-label" for="car_color">Car Color</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="car_color" class="form-control" required id="car_color"
-                               placeholder="Enter Car Color">
+                        <input class="form-control" id="car_color" name="car_color" placeholder="Enter Car Color" required
+                               type="text">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+                        <button class="btn btn-success" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -116,11 +116,11 @@
 </div>
 
 <!-- jQuery CDN - Slim version (=without AJAX) -->
-<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
 <!-- Popper.JS -->
-<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/popper.min.js}" type="text/javascript"></script>
 <!-- Bootstrap JS -->
-<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
 
 <script type="text/javascript">
     //Active Menu

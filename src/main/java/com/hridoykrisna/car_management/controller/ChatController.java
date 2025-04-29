@@ -35,8 +35,7 @@ public class ChatController {
             model.addAttribute("currentUserLogo", user.getImagePath());
             return "chat.html";
 //            return "coming_soon";
-        }
-        else {
+        } else {
             return "redirect:login";
         }
     }
@@ -51,7 +50,7 @@ public class ChatController {
 
 //        Set Schedule Data
         CarSchedule schedule = new CarSchedule();
-        if (startLocation!=null && endLocation!=null && date!=null && time!=null){
+        if (startLocation != null && endLocation != null && date != null && time != null) {
             schedule.setPickup_point(startLocation);
             schedule.setDrop_point(endLocation);
             schedule.setSchedule_date(String.valueOf(date));

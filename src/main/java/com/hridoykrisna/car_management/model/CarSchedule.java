@@ -1,6 +1,8 @@
 package com.hridoykrisna.car_management.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
@@ -12,7 +14,7 @@ import java.text.DecimalFormat;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CarSchedule extends BaseModel{
+public class CarSchedule extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "fk_employee_id")
     private Employee employee;
@@ -36,13 +38,13 @@ public class CarSchedule extends BaseModel{
     @Comment("0==Pending, 1== Approve, 2==Cancel")
     private int status;
 
-    public void setTotal_bill(double total_bill) {
-        DecimalFormat dec = new DecimalFormat("#0.00");
-        this.total_bill = Double.parseDouble(dec.format(total_bill));
-    }
-
     public double getTotal_bill() {
         DecimalFormat dec = new DecimalFormat("#0.00");
         return Double.parseDouble(dec.format(total_bill));
+    }
+
+    public void setTotal_bill(double total_bill) {
+        DecimalFormat dec = new DecimalFormat("#0.00");
+        this.total_bill = Double.parseDouble(dec.format(total_bill));
     }
 }

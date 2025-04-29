@@ -8,4 +8,6 @@ public interface CarExpenseService {
     void save(CarExpenses expense, int id);
 
     List<CarExpenses> getAllExpenseReport();
+
+    List<CarExpenses> getDriveWiseExpenseReport(int id);
 }

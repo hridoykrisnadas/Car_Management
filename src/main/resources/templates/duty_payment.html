@@ -6,21 +6,21 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
+    <link rel="icon" th:href="@{/images/car-logo.png}" type="image">
 </head>
 <body>
 <div class="row">
     <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
-         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo}, currentUserType=${user_type})}"></div>
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
             <h2 class="justify-content-center d-flex">Driver Duty Payment</h2>
             <hr>
             <!--              Duty Payment  Form -->
-            <div th:if="${user_type}">
-                <button type="button" class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
-                        data-bs-target="#expensePaymentModal">Add Driver Duty Payment
+            <div th:if="${user_type == 'ACCOUNTS'}">
+                <button class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-target="#expensePaymentModal" data-bs-toggle="modal"
+                        type="button">Add Driver Duty Payment
                 </button>
                 <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
                     th:text="${success}">
@@ -46,12 +46,12 @@
                 <tbody>
                 <tr role="row" th:each="list, i : ${dutyPaymentList}">
                     <th scope="row" th:text="${i.count}"></th>
-                    <td class="text-center" th:text="${list.payment_date}"></td >
-                    <td class="text-center" th:text="${list.driver.name}"></td >
-                    <td class="text-center" th:text="${list.amount}"></td >
-                    <td class="text-center" th:text="${list.transaction_no}"></td >
-                    <td class="text-center" th:text="${list.transaction_fee}"></td >
-                    <td class="text-center" th:text="${list.payment_method}"></td >
+                    <td class="text-center" th:text="${list.payment_date}"></td>
+                    <td class="text-center" th:text="${list.driver.name}"></td>
+                    <td class="text-center" th:text="${list.amount}"></td>
+                    <td class="text-center" th:text="${list.transaction_no}"></td>
+                    <td class="text-center" th:text="${list.transaction_fee}"></td>
+                    <td class="text-center" th:text="${list.payment_method}"></td>
                     <td class="text-center" th:text="${list.note}"></td>
                 </tr>
                 </tbody>
@@ -61,74 +61,75 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="expensePaymentModal" tabindex="-1" aria-labelledby="dutyModalLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="dutyModalLabel" class="modal fade" id="expensePaymentModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="dutyModalLabel">Duty Payment Form</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" th:action="@{/duty-payment-form}" enctype="multipart/form-data" csrf th:method="POST" th:object="${dutyPayment}">
+                <form class="row g-3" csrf enctype="multipart/form-data" th:action="@{/duty-payment-form}"
+                      th:method="POST" th:object="${dutyPayment}">
                     <div class="col-md-6 px-2">
-                        <label for="driver_id" class="form-label">Select Driver</label>
+                        <label class="form-label" for="driver_id">Select Driver</label>
                         <span class="text-danger">*</span>
-                        <select id="driver_id" name="driver_id" required class="form-select">
+                        <select class="form-select" id="driver_id" name="driver_id" required>
                             <option th:each="driver : ${drivers}"
-                                    th:value="${driver.id}"
-                                    th:text="${driver.name}">
-                                <input type="hidden" id="driver_name" name="driver_name" th:value="${driver.name}">
+                                    th:text="${driver.name}"
+                                    th:value="${driver.id}">
+                                <input id="driver_name" name="driver_name" th:value="${driver.name}" type="hidden">
                             </option>
                         </select>
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="balance_" class="form-label">Due Amount</label>
+                        <label class="form-label" for="balance_">Due Amount</label>
                         <span class="text-danger">*</span>
-                        <input type="number" name="balance" class="form-control" readonly id="balance_">
+                        <input class="form-control" id="balance_" name="balance" readonly type="number">
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="payment_date" class="form-label">Payment Date</label>
+                        <label class="form-label" for="payment_date">Payment Date</label>
                         <span class="text-danger">*</span>
-                        <input type="date" name="payment_date" class="form-control" required id="payment_date"
-                               placeholder="Enter Date">
+                        <input class="form-control" id="payment_date" name="payment_date" placeholder="Enter Date" required
+                               type="date">
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="amount" class="form-label">Amount</label>
+                        <label class="form-label" for="amount">Amount</label>
                         <span class="text-danger">*</span>
-                        <input type="number" min="1" name="amount" class="form-control" required id="amount"
-                               placeholder="Enter Amount">
+                        <input class="form-control" id="amount" min="1" name="amount" placeholder="Enter Amount" required
+                               type="number">
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="transaction_no" class="form-label">Transaction No</label>
+                        <label class="form-label" for="transaction_no">Transaction No</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="transaction_no" class="form-control" required id="transaction_no"
-                               placeholder="Enter Transaction No">
+                        <input class="form-control" id="transaction_no" name="transaction_no" placeholder="Enter Transaction No" required
+                               type="text">
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="transaction_fee" class="form-label">Transaction Fee</label>
+                        <label class="form-label" for="transaction_fee">Transaction Fee</label>
                         <span class="text-danger">*</span>
-                        <input type="number" name="transaction_fee" class="form-control" required id="transaction_fee"
-                               placeholder="Enter Transaction Fee">
+                        <input class="form-control" id="transaction_fee" name="transaction_fee" placeholder="Enter Transaction Fee" required
+                               type="number">
                     </div>
                     <div class="col-md-6 px-2">
-                        <label for="payment_method" class="form-label">Payment Method</label>
+                        <label class="form-label" for="payment_method">Payment Method</label>
                         <span class="text-danger">*</span>
-                        <select id="payment_method" name="payment_method"  required class="form-select">
-                            <option value="0" selected>Choose...</option>
+                        <select class="form-select" id="payment_method" name="payment_method" required>
+                            <option selected value="0">Choose...</option>
                             <option value="Cash">Cash</option>
                             <option value="Mobile Banking">Mobile Banking</option>
                             <option value="Bank">Bank</option>
                         </select>
                     </div>
                     <div class="col-md-6 px-1">
-                        <label for="note" class="form-label">Note</label>
+                        <label class="form-label" for="note">Note</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="note" class="form-control" required id="note"
-                               placeholder="Enter Note">
+                        <input class="form-control" id="note" name="note" placeholder="Enter Note" required
+                               type="text">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+                        <button class="btn btn-success" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -138,11 +139,11 @@
 </div>
 
 <!-- jQuery CDN - Slim version (=without AJAX) -->
-<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
 <!-- Popper.JS -->
-<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/popper.min.js}" type="text/javascript"></script>
 <!-- Bootstrap JS -->
-<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
 
 <script type="text/javascript">
     //Active Menu

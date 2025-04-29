@@ -7,6 +7,7 @@ import com.hridoykrisna.car_management.service.LoginService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Optional;
 
@@ -15,17 +16,22 @@ import java.util.Optional;
 public class LoginIMPL implements LoginService {
     private final EmployeeRepo employeeRepo;
     private final HttpSession session;
+
     @Override
     public int makeLogin(Employee employee) {
         Optional<Employee> data = employeeRepo.findByEmailAndPassword(employee.getEmail(), employee.getPassword());
-        if (data.isPresent()){
+        if (data.isPresent()) {
             CommonUtils.isAuthenticate = true;
             CommonUtils.employee = data.get();
-            session.setAttribute("user", employee);
-//            System.out.println(data.get());
             return 1;
         } else {
             return 0;
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Clear session
+        return "redirect:/login?logout";
     }
 }

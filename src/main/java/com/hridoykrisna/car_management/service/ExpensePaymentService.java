@@ -7,5 +7,7 @@ import java.util.List;
 public interface ExpensePaymentService {
     void save(ExpensePayment expensePayment, int id);
 
-    List<ExpensePayment> ExpenseList();
+    List<ExpensePayment> expenseList();
+
+    List<ExpensePayment> expenseListByDriver(int id);
 }

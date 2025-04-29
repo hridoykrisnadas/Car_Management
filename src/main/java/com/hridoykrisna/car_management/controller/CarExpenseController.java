@@ -3,10 +3,10 @@ package com.hridoykrisna.car_management.controller;
 import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.model.CarExpenses;
+import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarExpenseService;
 import com.hridoykrisna.car_management.service.CarService;
-import com.hridoykrisna.car_management.model.Employee;
 import com.hridoykrisna.car_management.service.EmployeeService;
 import com.hridoykrisna.car_management.service.util.FileService;
 import jakarta.validation.Valid;
@@ -32,9 +32,8 @@ public class CarExpenseController {
     private final CarService carService;
     private final FileService fileService;
     private final CarExpenseService carExpenseService;
-
-    private Employee user;
     private final String path = CommonUtils.ImagePath;
+    private Employee user;
 
     @GetMapping({"/car-expense", "/car-expense/"})
     public String getCarExpense(Model model) {
@@ -43,14 +42,21 @@ public class CarExpenseController {
             user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
             model.addAttribute("currentUserName", user.getName());
             model.addAttribute("currentUserLogo", user.getImagePath());
-            List<Employee> driverList = employeeService.driverList();
-            driverList.add(0, new Employee("Select Driver"));
-            model.addAttribute("drivers", driverList);
+
             List<CarExpenses> carExpensesList = carExpenseService.getAllExpenseReport();
+            List<Employee> driverList = employeeService.driverList();
+            if (user.getUser_type().equals("DRIVER")) {
+                driverList.removeIf(driver -> driver.getId() != user.getId());
+                carExpensesList = carExpenseService.getDriveWiseExpenseReport(user.getId());
+            }
+            model.addAttribute("drivers", driverList);
             model.addAttribute("expenseList", carExpensesList);
+
             List<Car> carList = carService.getAllCar();
             carList.add(0, new Car("Select Car"));
             model.addAttribute("cars", carList);
+            model.addAttribute("user_type", user.getUser_type());
+
             return "car_expense.html";
         } else {
             return "redirect:/login";
@@ -58,7 +64,7 @@ public class CarExpenseController {
     }
 
     @PostMapping("/car-expense-form")
-    public String saveCarExpense(@Valid  @ModelAttribute("carExpense") CarExpenses carExpenses, @RequestParam MultipartFile image, RedirectAttributes redirectAttributes) throws IOException {
+    public String saveCarExpense(@Valid @ModelAttribute("carExpense") CarExpenses carExpenses, @RequestParam MultipartFile image, RedirectAttributes redirectAttributes) throws IOException {
 
         // Save Image & Set Image Path
         String imagePath = fileService.uploadImage(path, image, carExpenses.getInvoice_no());

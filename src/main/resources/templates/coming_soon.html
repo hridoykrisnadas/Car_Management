@@ -6,26 +6,26 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
+    <link rel="icon" th:href="@{/images/car-logo.png}" type="image">
 </head>
 <body>
 <div class="row">
-    <div class = "col-md-2 col-sm-2 col-lg-2"
+    <div class="col-md-2 col-sm-2 col-lg-2"
          th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
     <div class="col-md-10 col-sm-10 col-lg-10">
-        <div class = ""  th:insert="~{navbar :: navbar}"></div>
+        <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
-            <marquee class="fs-1 fw-bold d-flex" behavior="alternate" direction="right">Coming Soon.....</marquee>
+            <marquee behavior="alternate" class="fs-1 fw-bold d-flex" direction="right">Coming Soon.....</marquee>
         </div>
     </div>
 </div>
 
 <!-- jQuery CDN - Slim version (=without AJAX) -->
-<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
 <!-- Popper.JS -->
-<script type="text/javascript"  th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/popper.min.js}" type="text/javascript"></script>
 <!-- Bootstrap JS -->
-<script type="text/javascript"  th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
 
 <script type="text/javascript">
     // document.getElementById('dashboard').classList.add('active');

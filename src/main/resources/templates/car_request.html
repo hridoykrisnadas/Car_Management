@@ -6,12 +6,12 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="icon" type="image" th:href="@{/images/car-logo.png}" >
+    <link rel="icon" th:href="@{/images/car-logo.png}" type="image">
 </head>
 <body>
 <div class="row">
     <div class="col-md-2 col-sm-2 col-lg-2 h-auto min-vh-100" id="sidebar_div"
-         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo})}"></div>
+         th:insert="~{sidebar :: sidebar(currentUserName=${currentUserName}, currentUserLogo=${currentUserLogo}, currentUserType=${user_type})}"></div>
     <div class="col-md-10" id="content_div">
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
@@ -19,21 +19,25 @@
             <hr>
             <!--              Car Request  Form -->
             <div>
-                <button type="button" class=" btn py-2 mx-2 btn-dark col-md-2" data-bs-toggle="modal"
-                        data-bs-target="#carReqModel">Add Car Request
+                <button class=" btn py-2 mx-2 btn-dark col-md-2" data-bs-target="#carReqModel" data-bs-toggle="modal"
+                        th:unless="${user_type == 'DRIVER'}"
+                        type="button">Add Car Request
                 </button>
-                <button th:if="${user_type}" type="button" class="btn py-2 mx-2 btn-warning fw-bold col-md-2 approve-button"
-                        data-bs-toggle="modal" data-bs-target="#approveReqModel">Car Request (<span th:text="${pendingCount}">0</span>)
+                <button class="btn py-2 mx-2 btn-warning fw-bold col-md-2 approve-button" data-bs-target="#approveReqModel"
+                        data-bs-toggle="modal"
+                        th:if="${user_type == 'ADMIN'}" type="button">Car Request (<span
+                        th:text="${pendingCount}">0</span>)
                 </button>
                 <button
-                        th:if="${user_type}"
-                        type="button"
-                        class="btn py-2 mx-2 btn-success fw-bold col-md-2 all-request-button" onclick="loadAllRequests()">
+                        class="btn py-2 mx-2 btn-success fw-bold col-md-2 all-request-button"
+                        onclick="loadAllRequests()"
+                        th:if="${user_type == 'ADMIN' or user_type == 'ACCOUNTS'}"
+                        type="button">
                     All Request
                 </button>
                 <button
-                        type="button"
-                        class="btn py-2 mx-2 btn-info fw-bold col-md-2 all-request-button" onclick="myRequests()">
+                        class="btn py-2 mx-2 btn-info fw-bold col-md-2 all-request-button"
+                        onclick="myRequests()" type="button">
                     My Request
                 </button>
                 <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
@@ -41,7 +45,9 @@
                 <hr>
             </div>
         </div>
+
         <!--            Car Report-->
+
         <div class="row p-2 m-0 ">
             <table class="table table-hover table-striped table-bordered dataTable no-footer">
                 <thead class="bg-primary text-center">
@@ -56,21 +62,21 @@
                 </tr>
                 </thead>
                 <tbody id="requestTableBody">
-                    <tr role="row" th:each="request, i : ${requestList}">
-                        <th scope="row" th:text="${i.count}"></th>
-                        <td th:text="${request.employee.name}"></td>
-                        <td th:text="${request.schedule_date}"></td>
-                        <td th:text="${request.schedule_time}"></td>
-                        <td th:text="${request.pickup_point}"></td>
-                        <td th:text="${request.drop_point}"></td>
-                        <td>
-                            <span th:if="${request.status == 0}" th:class="bg-warning">Pending</span>
-                            <span th:if="${request.status == 1}" th:class="bg-success">Approve</span>
-                            <span th:if="${request.status == 2}" th:class="bg-danger">Cancel</span>
-                            <span th:if="${request.status == 3}" th:class="bg-success">Running</span>
-                            <span th:if="${request.status == 4}" th:class="bg-success">Complete</span>
-                        </td>
-                    </tr>
+                <tr role="row" th:each="request, i : ${requestList}">
+                    <th scope="row" th:text="${i.count}"></th>
+                    <td th:text="${request.employee.name}"></td>
+                    <td th:text="${request.schedule_date}"></td>
+                    <td th:text="${request.schedule_time}"></td>
+                    <td th:text="${request.pickup_point}"></td>
+                    <td th:text="${request.drop_point}"></td>
+                    <td>
+                        <span th:class="bg-warning" th:if="${request.status == 0}">Pending</span>
+                        <span th:class="bg-success" th:if="${request.status == 1}">Approve</span>
+                        <span th:class="bg-danger" th:if="${request.status == 2}">Cancel</span>
+                        <span th:class="bg-success" th:if="${request.status == 3}">Running</span>
+                        <span th:class="bg-success" th:if="${request.status == 4}">Complete</span>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -78,42 +84,42 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="carReqModel" tabindex="-1" aria-labelledby="carReqModelLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="carReqModelLabel" class="modal fade" id="carReqModel" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="carReqModelLabel">Car Request Form</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" th:action="@{/car-request-form}" csrf method="POST" th:object="${carRequest}">
+                <form class="row g-3" csrf method="POST" th:action="@{/car-request-form}" th:object="${carRequest}">
                     <div class="col-md-12 px-1">
-                        <label for="schedule_date" class="form-label">Schedule Date</label>
+                        <label class="form-label" for="schedule_date">Schedule Date</label>
                         <span class="text-danger">*</span>
-                        <input type="date" name="schedule_date" class="form-control" required id="schedule_date"
-                               placeholder="Enter Schedule Date">
+                        <input class="form-control" id="schedule_date" name="schedule_date" placeholder="Enter Schedule Date" required
+                               type="date">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="schedule_time" class="form-label">Schedule Time</label>
+                        <label class="form-label" for="schedule_time">Schedule Time</label>
                         <span class="text-danger">*</span>
-                        <input type="time" name="schedule_time" class="form-control" required id="schedule_time"
-                               placeholder="Enter Schedule Time">
+                        <input class="form-control" id="schedule_time" name="schedule_time" placeholder="Enter Schedule Time" required
+                               type="time">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="pickup_point" class="form-label">Pickup Point</label>
+                        <label class="form-label" for="pickup_point">Pickup Point</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="pickup_point" class="form-control" required id="pickup_point"
-                               placeholder="Enter Pickup Point">
+                        <input class="form-control" id="pickup_point" name="pickup_point" placeholder="Enter Pickup Point" required
+                               type="text">
                     </div>
                     <div class="col-md-12 px-1">
-                        <label for="drop_paint" class="form-label">Drop Point</label>
+                        <label class="form-label" for="drop_paint">Drop Point</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="drop_point" class="form-control" required id="drop_paint"
-                               placeholder="Enter Drop Point">
+                        <input class="form-control" id="drop_paint" name="drop_point" placeholder="Enter Drop Point" required
+                               type="text">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+                        <button class="btn btn-success" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -123,12 +129,12 @@
 </div>
 
 <!-- Approve Report Modal -->
-<div class="modal fade" id="approveReqModel" tabindex="-1" aria-labelledby="approveReqModelLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="approveReqModelLabel" class="modal fade" id="approveReqModel" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="approveReqModelLabel">Car Approve Report</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body px-3">
                 <div class="row p-2 m-0 ">
@@ -164,15 +170,15 @@
                                 <div th:if="${list.status} == 0">
                                     <div class="text-center m-1">
                                         <button class="btn btn-success approve-request-button"
-                                                th:attr="data-request-id=${list.id}" data-bs-toggle="modal"
-                                                data-bs-target="#approveBtnModal">
+                                                data-bs-target="#approveBtnModal" data-bs-toggle="modal"
+                                                th:attr="data-request-id=${list.id}">
                                             Approve
                                         </button>
                                     </div>
                                     <div class="text-center m-1">
                                         <button class="btn btn-danger cancel-request-button"
-                                                th:attr="data-request-id=${list.id}" data-bs-toggle="modal"
-                                                data-bs-target="#cancelBtnModal">
+                                                data-bs-target="#cancelBtnModal" data-bs-toggle="modal"
+                                                th:attr="data-request-id=${list.id}">
                                             Reject
                                         </button>
                                     </div>
@@ -188,45 +194,46 @@
 </div>
 
 <!-- Approve Btn Modal -->
-<div class="modal fade" id="approveBtnModal" tabindex="-1" aria-labelledby="approveBtnModalLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="approveBtnModalLabel" class="modal fade" id="approveBtnModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="approveBtnModalLabel">Approve Request</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body px-3">
-                <form class="row g-3" th:action="@{/request-approve-form}" csrf th:method="POST" th:name="carRequestApprove" th:onsubmit="return validateForm()" th:object="${carRequestApprove}">
+                <form class="row g-3" csrf th:action="@{/request-approve-form}" th:method="POST"
+                      th:name="carRequestApprove" th:object="${carRequestApprove}" th:onsubmit="return validateForm()">
                     <div class="col-md-12 px-1">
-                        <label for="schedule_id" class="form-label">Schedule ID</label>
+                        <label class="form-label" for="schedule_id">Schedule ID</label>
                         <span class="text-danger">*</span>
-                        <input type="text" name="id" class="form-control" th:required="true" id="schedule_id" readonly>
+                        <input class="form-control" id="schedule_id" name="id" readonly th:required="true" type="text">
                     </div>
                     <div class="col-md-12 px-2">
-                        <label for="driver_id" class="form-label">Select Driver</label>
+                        <label class="form-label" for="driver_id">Select Driver</label>
                         <span class="text-danger">*</span>
-                        <select id="driver_id" name="driver_id" th:required class="form-select">
+                        <select class="form-select" id="driver_id" name="driver_id" th:required>
                             <option th:each="driver : ${drivers}"
-                                    th:value="${driver.id}"
-                                    th:text="${driver.name}">
-                                <input type="hidden" id="driver_name" name="driver_name" th:value="${driver.name}">
+                                    th:text="${driver.name}"
+                                    th:value="${driver.id}">
+                                <input id="driver_name" name="driver_name" th:value="${driver.name}" type="hidden">
                             </option>
                         </select>
                     </div>
                     <div class="col-md-12 px-2">
-                        <label for="car_id" class="form-label">Select Car</label>
+                        <label class="form-label" for="car_id">Select Car</label>
                         <span class="text-danger">*</span>
-                        <select id="car_id" name="car_id" th:required class="form-select">
+                        <select class="form-select" id="car_id" name="car_id" th:required>
                             <option th:each="car : ${cars}"
-                                    th:value="${car.id}"
-                                    th:text="${car.car_name} + ' ('+${car.car_no}+')'">
-                                <input type="hidden" id="car_name" name="car_name" th:value="${car.car_name}">
+                                    th:text="${car.car_name} + ' ('+${car.car_no}+')'"
+                                    th:value="${car.id}">
+                                <input id="car_name" name="car_name" th:value="${car.car_name}" type="hidden">
                             </option>
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+                        <button class="btn btn-success" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -236,11 +243,11 @@
 </div>
 
 <!-- jQuery CDN - Slim version (=without AJAX) -->
-<script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
 <!-- Popper.JS -->
-<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/popper.min.js}" type="text/javascript"></script>
 <!-- Bootstrap JS -->
-<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
 
 <script type="text/javascript">
     //Active Menu
