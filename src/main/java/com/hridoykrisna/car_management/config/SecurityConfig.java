@@ -31,6 +31,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers(antMatcher("/api/**")) // Disable CSRF for API
+                )
                 .formLogin(form->form
                         .loginPage("/login")
                         .defaultSuccessUrl("/", true)

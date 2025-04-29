@@ -52,18 +52,30 @@
                     <td th:text="${schedule.pickup_point}"></td>
                     <td th:text="${schedule.drop_point}"></td>
                     <td>
-                        <button th:if="${schedule.status==1}" th:attr="data-schedule-id=${schedule.id}" type="button"
-                                class="btn py-2 btn-warning fw-bolder start-button"
-                                data-bs-toggle="modal" data-bs-target="#addStartTimeModel">Add Time
-                        </button>
+                        <span th:if="${user_type} != 'DRIVER'">
+                             <button th:if="${schedule.status==1}"
+                                     th:attr="data-schedule-id=${schedule.id}"
+                                     type="button"
+                                     class="btn py-2 btn-warning fw-bolder start-button"
+                                     data-bs-toggle="modal"
+                                     data-bs-target="#addStartTimeModel">
+                                Add Time
+                            </button>
+                        </span>
+                        <span th:if="${user_type == 'DRIVER' and schedule.status == 1}" th:text="'Not Start'"></span>
                         <span th:if="${schedule.status == 3}" th:text="${schedule.start_time}"></span>
                         <span th:if="${schedule.status == 4}" th:text="${schedule.start_time}"></span>
                     </td>
                     <td>
-                        <button th:if="${schedule.status==3}" th:attr="data-schedule-id=${schedule.id}" type="button"
-                                class="btn py-2 btn-warning fw-bolder stop-button"
-                                data-bs-toggle="modal" data-bs-target="#addStopTimeModel">Add Time
+                        <button th:if="${schedule.status == 3 and schedule.employee.user_type != 'DRIVER'}"
+                                th:attr="data-schedule-id=${schedule.id}"
+                                type="button"
+                                class="btn py-2 btn-warning fw-bolder start-button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#addStartTimeModel">
+                            Add Time
                         </button>
+
                         <span th:if="${schedule.status == 4}" th:text="${schedule.stop_time}"></span>
                     </td>
                     <td th:text="${schedule.total_duty_time}"></td>

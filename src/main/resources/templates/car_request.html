@@ -19,11 +19,22 @@
             <hr>
             <!--              Car Request  Form -->
             <div>
-                <button type="button" class=" btn py-2 mx-2 btn-dark col-md-3" data-bs-toggle="modal"
+                <button type="button" class=" btn py-2 mx-2 btn-dark col-md-2" data-bs-toggle="modal"
                         data-bs-target="#carReqModel">Add Car Request
                 </button>
-                <button th:if="${user_type}" type="button" class="btn py-2 mx-2 btn-warning fw-bold col-md-3 approve-button"
-                        data-bs-toggle="modal" data-bs-target="#approveReqModel">Pending Car Request (<span th:text="${pendingCount}">0</span>)
+                <button th:if="${user_type}" type="button" class="btn py-2 mx-2 btn-warning fw-bold col-md-2 approve-button"
+                        data-bs-toggle="modal" data-bs-target="#approveReqModel">Car Request (<span th:text="${pendingCount}">0</span>)
+                </button>
+                <button
+                        th:if="${user_type}"
+                        type="button"
+                        class="btn py-2 mx-2 btn-success fw-bold col-md-2 all-request-button" onclick="loadAllRequests()">
+                    All Request
+                </button>
+                <button
+                        type="button"
+                        class="btn py-2 mx-2 btn-info fw-bold col-md-2 all-request-button" onclick="myRequests()">
+                    My Request
                 </button>
                 <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
                     th:text="${success}"></h6>
@@ -44,22 +55,22 @@
                     <th class="align-middle">Status</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr role="row" th:each="request, i : ${requestList}">
-                    <th scope="row" th:text="${i.count}"></th>
-                    <td th:text="${request.employee.name}"></td>
-                    <td th:text="${request.schedule_date}"></td>
-                    <td th:text="${request.schedule_time}"></td>
-                    <td th:text="${request.pickup_point}"></td>
-                    <td th:text="${request.drop_point}"></td>
-                    <td>
-                        <span th:if="${request.status == 0}" th:class="bg-warning">Pending</span>
-                        <span th:if="${request.status == 1}" th:class="bg-success">Approve</span>
-                        <span th:if="${request.status == 2}" th:class="bg-danger">Cancel</span>
-                        <span th:if="${request.status == 3}" th:class="bg-success">Running</span>
-                        <span th:if="${request.status == 4}" th:class="bg-success">Complete</span>
-                    </td>
-                </tr>
+                <tbody id="requestTableBody">
+                    <tr role="row" th:each="request, i : ${requestList}">
+                        <th scope="row" th:text="${i.count}"></th>
+                        <td th:text="${request.employee.name}"></td>
+                        <td th:text="${request.schedule_date}"></td>
+                        <td th:text="${request.schedule_time}"></td>
+                        <td th:text="${request.pickup_point}"></td>
+                        <td th:text="${request.drop_point}"></td>
+                        <td>
+                            <span th:if="${request.status == 0}" th:class="bg-warning">Pending</span>
+                            <span th:if="${request.status == 1}" th:class="bg-success">Approve</span>
+                            <span th:if="${request.status == 2}" th:class="bg-danger">Cancel</span>
+                            <span th:if="${request.status == 3}" th:class="bg-success">Running</span>
+                            <span th:if="${request.status == 4}" th:class="bg-success">Complete</span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -263,15 +274,66 @@
             const scheduleId = $(this).data("request-id");
             console.log(scheduleId);
             $.ajax({
-                type: "PUT",
-                url: "/api/carSchedule/" + scheduleId,
+                type: "POST",
+                url: "/api/carSchedule/cancel/" + scheduleId,
                 dataType: "json", // Specify JSON data type
                 success: function() {
                     console.log("Success");
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        responseText: xhr.responseText,
+                        error: error
+                    });
+                    location.reload();
                 }
             });
         });
     });
+
+    function myRequests() {
+        location.reload();
+    }
+    function loadAllRequests() {
+        fetch('/api/carSchedule/all-requests')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('requestTableBody');
+                tbody.innerHTML = ""; // Clear previous content
+
+                data.forEach((request, index) => {
+                    const statusMap = {
+                        0: { text: 'Pending', class: 'bg-warning' },
+                        1: { text: 'Approve', class: 'bg-success' },
+                        2: { text: 'Cancel', class: 'bg-danger' },
+                        3: { text: 'Running', class: 'bg-success' },
+                        4: { text: 'Complete', class: 'bg-success' }
+                    };
+
+                    const status = statusMap[request.status] || { text: 'Unknown', class: 'bg-secondary' };
+
+                    const row = `
+                        <tr>
+                            <th scope="row">${index + 1}</th>
+                            <td>${request.employee.name}</td>
+                            <td>${request.schedule_date}</td>
+                            <td>${request.schedule_time}</td>
+                            <td>${request.pickup_point}</td>
+                            <td>${request.drop_point}</td>
+                            <td><span class="${status.class}">${status.text}</span></td>
+                        </tr>
+                    `;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching requests:', error);
+                alert("Failed to load requests.");
+            });
+    }
 
 
 </script>

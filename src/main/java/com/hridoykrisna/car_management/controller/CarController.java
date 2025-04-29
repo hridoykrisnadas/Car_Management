@@ -37,9 +37,7 @@ public class CarController {
             List<Car> carList = carService.getAllCar();
             model.addAttribute("cars", carList);
             model.addAttribute("currentUserName", user.getName());
-            if (Objects.equals(user.getUser_type(), "ADMIN")){
-                model.addAttribute("user_type", "ADMIN");
-            }
+            model.addAttribute("user_type", user.getUser_type());
             return "car.html";
         } else {
             return "redirect:/login";

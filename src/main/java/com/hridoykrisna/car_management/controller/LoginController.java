@@ -26,6 +26,7 @@ public class LoginController {
     public String loginForm(HttpSession session, @Valid @ModelAttribute("login") Employee employee, Model model, RedirectAttributes redirectAttributes){
         int result = loginService.makeLogin(employee);
         if (result==1){
+            CommonUtils.employee = employee;
             session.setAttribute("user", employee);
             return "redirect:/";
         } else {

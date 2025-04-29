@@ -1,12 +1,12 @@
 package com.hridoykrisna.car_management.service.impl;
 
-import com.hridoykrisna.car_management.Utils.CommonUtils;
 import com.hridoykrisna.car_management.model.Car;
 import com.hridoykrisna.car_management.model.CarSchedule;
 import com.hridoykrisna.car_management.repository.CarRepo;
 import com.hridoykrisna.car_management.repository.CarScheduleRepo;
 import com.hridoykrisna.car_management.repository.EmployeeRepo;
 import com.hridoykrisna.car_management.service.CarScheduleService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.hridoykrisna.car_management.model.Employee;
@@ -23,6 +23,8 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     private final CarScheduleRepo carScheduleRepo;
     private final EmployeeRepo employeeRepo;
     private final CarRepo carRepo;
+    private final HttpSession httpSession;
+
     @Override
     public void saveCarSchedule(CarSchedule carSchedule) {
         carSchedule.setStatus(0);
@@ -46,7 +48,7 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     @Override
     public void requestApprove(CarSchedule carSchedule) {
         Optional<CarSchedule> getSchedule = carScheduleRepo.findById(carSchedule.getId());
-        if (getSchedule.isPresent()){
+        if (getSchedule.isPresent()) {
             Car car = new Car(carSchedule.getCar_id());
             getSchedule.get().setCar(car);
             getSchedule.get().setCar_id(carSchedule.getCar_id());
@@ -59,12 +61,11 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     }
 
     @Override
-    public CarSchedule cancelSchedule(int id) {
-       Optional<CarSchedule> carSchedule =  carScheduleRepo.findById(id);
-       System.out.println("Car Request Reject: "+carSchedule.get().getEmployee().getName());
+    public CarSchedule cancelSchedule(int id, int employeeId) {
+        Optional<CarSchedule> carSchedule = carScheduleRepo.findById(id);
+        System.out.println("Car Request Reject: " + carSchedule.get().getEmployee().getName());
         carSchedule.get().setStatus(2);
-        carSchedule.get().setUpdateBy(CommonUtils.employee.getId());
-
+        carSchedule.get().setUpdateBy(employeeId);
         return carScheduleRepo.save(carSchedule.get());
     }
 
@@ -74,10 +75,20 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     }
 
     @Override
+    public List<CarSchedule> getAllScheduleByDriver(int id) {
+        return carScheduleRepo.findAllByDriverIsNotNullAndDriverIdOrderByCreatedAtDesc(id);
+    }
+
+    @Override
+    public List<CarSchedule> getAllRequests() {
+        return carScheduleRepo.findAllByIsActiveTrue();
+    }
+
+    @Override
     public void addStartTime(String startScheduleDate, String startTime, int scheduleId, int id) {
-        Optional<CarSchedule> carSchedule =  carScheduleRepo.findById(scheduleId);
-        if (carSchedule.isPresent()){
-            carSchedule.get().setStart_time(startScheduleDate + " "+ startTime);
+        Optional<CarSchedule> carSchedule = carScheduleRepo.findById(scheduleId);
+        if (carSchedule.isPresent()) {
+            carSchedule.get().setStart_time(startScheduleDate + " " + startTime);
             carSchedule.get().setStatus(3);
             carSchedule.get().setUpdateBy(id);
             carScheduleRepo.save(carSchedule.get());
@@ -86,8 +97,8 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
 
     @Override
     public void addStopTime(String stopScheduleDate, String stopTime, int scheduleId, int id) {
-        Optional<CarSchedule> carSchedule =  carScheduleRepo.findById(scheduleId);
-        if (carSchedule.isPresent()){
+        Optional<CarSchedule> carSchedule = carScheduleRepo.findById(scheduleId);
+        if (carSchedule.isPresent()) {
 //            Set Data
 
 
@@ -99,10 +110,10 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
 
             try {
                 start_Date_time = dateFormat.parse(carSchedule.get().getStart_time());
-                stop_Date_time = dateFormat.parse(stopScheduleDate + " "+ stopTime);
-                System.out.println(stop_Date_time + " : "+ start_Date_time);
+                stop_Date_time = dateFormat.parse(stopScheduleDate + " " + stopTime);
+                System.out.println(stop_Date_time + " : " + start_Date_time);
             } catch (ParseException e) {
-                System.out.println("Exception: "+e.getMessage());
+                System.out.println("Exception: " + e.getMessage());
             }
 
             assert stop_Date_time != null;
@@ -114,17 +125,17 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
             minutes = minutes % 60;
 
             float perHour = 100;
-            float perMinutes = (float) 100 /60;
+            float perMinutes = (float) 100 / 60;
             float totalBill = 0;
-            totalBill += hours*perHour;
+            totalBill += hours * perHour;
             totalBill += minutes * perMinutes;
 
             // Print the hours and minutes
             System.out.println("Hours: " + hours);
             System.out.println("Minutes: " + minutes);
-            String totalDutyTime = hours+":"+minutes;
+            String totalDutyTime = hours + ":" + minutes;
 
-            carSchedule.get().setStop_time(stopScheduleDate + " "+ stopTime);
+            carSchedule.get().setStop_time(stopScheduleDate + " " + stopTime);
             carSchedule.get().setTotal_duty_time(totalDutyTime);
             carSchedule.get().setTotal_bill(totalBill);
             carSchedule.get().setStatus(4);
@@ -133,10 +144,12 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
 
 //          Set on Driver Billing:
             Employee employee = carSchedule.get().getDriver();
-            employee.setTotal_bill(employee.getTotal_bill()+totalBill);
-            employee.setTotal_due_amount(employee.getTotal_due_amount()+totalBill);
+            employee.setTotal_bill(employee.getTotal_bill() + totalBill);
+            employee.setTotal_due_amount(employee.getTotal_due_amount() + totalBill);
             employee.setUpdateBy(id);
             employeeRepo.save(employee);
         }
     }
+
+
 }

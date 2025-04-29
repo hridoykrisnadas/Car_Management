@@ -18,7 +18,6 @@ public class CarManagementApplication {
 	private final RoleRepo roleRepo;
 	private final EmployeeRepo employeeRepo;
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(CarManagementApplication.class, args);
 	}

@@ -36,10 +36,17 @@ public class CarScheduleController {
         if (authentication.isAuthenticated()) {
             user = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
 
-            List<CarSchedule> carSchedules = carScheduleService.getAllScheduleByEmp(user.getId());
+//            Need to collect Driver Wise
+            List<CarSchedule> carSchedules;
+            if (user.getUser_type().equals("DRIVER")){
+                carSchedules = carScheduleService.getAllScheduleByDriver(user.getId());
+            } else {
+              carSchedules = carScheduleService.getAllScheduleByEmp(user.getId());
+            }
             model.addAttribute("scheduleList", carSchedules);
             model.addAttribute("currentUserName", user.getName());
             model.addAttribute("currentUserLogo", user.getImagePath());
+            model.addAttribute("user_type", user.getUser_type());
             return "car_schedule.html";
         } else {
             return "redirect:/login";

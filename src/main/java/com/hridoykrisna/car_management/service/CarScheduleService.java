@@ -15,7 +15,7 @@ public interface CarScheduleService {
 
     void requestApprove(CarSchedule carSchedule);
 
-    CarSchedule cancelSchedule(int id);
+    CarSchedule cancelSchedule(int id, int employeeId);
 
 //    Car Schedule
 
@@ -24,4 +24,8 @@ public interface CarScheduleService {
     void addStartTime(String startScheduleDate, String startTime, int scheduleId, int id);
 
     void addStopTime(String stopScheduleDate, String stopTime, int scheduleId, int id);
+
+    List<CarSchedule> getAllScheduleByDriver(int id);
+
+    List<CarSchedule> getAllRequests();
 }
