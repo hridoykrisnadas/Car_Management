@@ -101,7 +101,7 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
     }
 
     @Override
-    public void addStopTime(String stopScheduleDate, String stopTime, int scheduleId, int id) {
+    public CarSchedule addStopTime(String stopScheduleDate, String stopTime, int scheduleId, int id) {
         Optional<CarSchedule> carSchedule = carScheduleRepo.findById(scheduleId);
         if (carSchedule.isPresent()) {
 //            Set Data
@@ -153,7 +153,9 @@ public class CarScheduleServiceIMPL implements CarScheduleService {
             employee.setTotal_due_amount(employee.getTotal_due_amount() + totalBill);
             employee.setUpdateBy(id);
             employeeRepo.save(employee);
+            return carSchedule.get();
         }
+        return carSchedule.get();
     }
 
 

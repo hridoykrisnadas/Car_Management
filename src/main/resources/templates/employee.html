@@ -69,11 +69,12 @@
                         <label class="form-label" for="name">Full Name</label>
                         <span class="text-danger">*</span>
                         <input class="form-control" id="name" name="name" required type="text">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     </div>
                     <div class="col-md-6 px-2">
                         <label class="form-label" for="image">Image</label>
                         <span class="text-danger">*</span>
-                        <input accept="image/*" class="form-control" id="image" name="image" required type="file">
+                        <input accept="image/png, image/jpeg" class="form-control" id="image" name="image" required type="file">
                     </div>
                     <div class="col-md-6 px-2">
                         <label class="form-label" for="email">Email</label>

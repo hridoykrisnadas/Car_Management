@@ -45,6 +45,7 @@ public class CarExpenseController {
 
             List<CarExpenses> carExpensesList = carExpenseService.getAllExpenseReport();
             List<Employee> driverList = employeeService.driverList();
+            driverList.add(0, new Employee("Select Driver"));
             if (user.getUser_type().equals("DRIVER")) {
                 driverList.removeIf(driver -> driver.getId() != user.getId());
                 carExpensesList = carExpenseService.getDriveWiseExpenseReport(user.getId());

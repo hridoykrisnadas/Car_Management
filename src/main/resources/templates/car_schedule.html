@@ -38,8 +38,6 @@
                         onclick="myRequests()" type="button">
                     My Request
                 </button>
-                <h6 class="bg-success justify-content-center d-flex text-white p-2 mt-2" th:if="${success}"
-                    th:text="${success}"></h6>
                 <hr>
             </div>
         </div>
@@ -84,8 +82,8 @@
                         <span th:if="${schedule.status == 4}" th:text="${schedule.start_time}"></span>
                     </td>
                     <td>
-                        <button class="btn py-2 btn-warning fw-bolder start-button"
-                                data-bs-target="#addStartTimeModel"
+                        <button class="btn py-2 btn-warning fw-bolder stop-button"
+                                data-bs-target="#addStopTimeModel"
                                 data-bs-toggle="modal"
                                 th:attr="data-schedule-id=${schedule.id}"
                                 th:if="${schedule.status==3 && (user_type == 'ADMIN' || schedule.employee_id == currentUserId)}"

@@ -28,7 +28,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div th:unless="${user_type == 'USER'}" class="col-md-4">
                 <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
                     <span class="d-flex align-middle p-1 justify-content-center">Total Car: &nbsp;<span class="fw-bold"
                                                                                                         th:text="${totalCar}"></span></span>
@@ -48,7 +48,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div th:unless="${user_type == 'USER'}" class="col-md-4">
                 <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
                     <span class="d-flex align-middle p-1 justify-content-center">Total Car Expense (BDT): &nbsp;<span
                             class="fw-bold" th:text="${totalCarExpense}"></span></span>
@@ -62,7 +62,7 @@
                     <span class="d-flex align-middle p-1 justify-content-center">Total Driver Duty Bill (BDT): &nbsp;<span
                             class="fw-bold" th:text="${totalDriverBill}"></span></span>
                     <a href="/duty-payment">
-                        <button class="btn align-middle btn w-100 p-1 btn-dark">Goto Report</button>
+                        <button th:unless="${user_type == 'USER'}" class="btn align-middle btn w-100 p-1 btn-dark">Goto Report</button>
                     </a>
                 </div>
             </div>

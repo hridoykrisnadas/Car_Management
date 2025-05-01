@@ -23,7 +23,7 @@ public interface CarScheduleService {
 
     void addStartTime(String startScheduleDate, String startTime, int scheduleId, int id);
 
-    void addStopTime(String stopScheduleDate, String stopTime, int scheduleId, int id);
+    CarSchedule addStopTime(String stopScheduleDate, String stopTime, int scheduleId, int id);
 
     List<CarSchedule> getAllScheduleByDriver(int id);
 

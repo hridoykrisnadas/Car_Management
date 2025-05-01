@@ -62,8 +62,9 @@ public class CarScheduleController {
 
     @PostMapping("/add-stop-time")
     public String addStopTime(RedirectAttributes attribute, @RequestParam("stop_schedule_date") String stopScheduleDate, @RequestParam("stop_stop_time") String stopTime, @RequestParam("id") int scheduleId) {
-        carScheduleService.addStopTime(stopScheduleDate, stopTime, scheduleId, user.getId());
-        attribute.addFlashAttribute("success", "Schedule Update Successfully");
+        CarSchedule carSchedule = carScheduleService.addStopTime(stopScheduleDate, stopTime, scheduleId, user.getId());
+        attribute.addFlashAttribute("success", carSchedule.getStop_time());
+        System.out.println("Car Schedule 1: "+ carSchedule.toString());
         return "redirect:/car-schedule";
     }
 }

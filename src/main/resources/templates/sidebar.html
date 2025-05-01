@@ -40,7 +40,7 @@
                         <span class="px-1">Employee</span>
                     </a>
                 </li>
-                <li class="nav-item my-1">
+                <li th:unless="${currentUserType} == 'USER'" class="nav-item my-1">
                     <a class="nav-link text-white fs-700" href="/car" id="car-registration">
                         <span class="px-1">Car</span>
                     </a>
@@ -55,17 +55,17 @@
                         <span class="px-1">Car Schedule</span>
                     </a>
                 </li>
-                <li class="nav-item my-1">
+                <li th:unless="${currentUserType} == 'USER'" class="nav-item my-1">
                     <a class="nav-link text-white fs-700" href="/car-expense" id="car-expense">
                         <span class="px-1">Car Expense</span>
                     </a>
                 </li>
-                <li class="nav-item my-1">
+                <li th:unless="${currentUserType} == 'USER'" class="nav-item my-1">
                     <a class="nav-link text-white fs-700" href="/expense-payment" id="expense-payment">
                         <span class="px-1">Expense Payment</span>
                     </a>
                 </li>
-                <li class="nav-item my-1">
+                <li th:unless="${currentUserType} == 'USER'" class="nav-item my-1">
                     <a class="nav-link text-white fs-700" href="/duty-payment" id="duty-payment">
                         <span class="px-1">Duty Payment</span>
                     </a>

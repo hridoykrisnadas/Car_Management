@@ -46,6 +46,9 @@ public class EmployeeServiceIMPL implements EmployeeService, UserDetailsService 
     @Override
     public Employee getEmployeeById(int id) {
         Optional<Employee> employee = employeeRepo.findById(id);
+        for (Employee emp : employeeList()) {
+            emp.setPassword(null);
+        }
         return employee.orElse(null);
     }
 
