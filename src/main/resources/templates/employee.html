@@ -32,7 +32,7 @@
             <tr th:each="employee : ${employees}">
                 <div class="col-md-3 p-2">
                     <div class="card bg-base text-white">
-                        <img class="card-img-top" height="200px" th:alt="${employee.name}" th:src="${employee.imagePath}"
+                        <img class="card-img-top" th:width="auto" th:height="300px" th:alt="${employee.name}" th:src="${employee.imagePath}"
                              width="100%">
                         <div class="card-body">
                             <h6 class="card-title fw-bold d-flex justify-content-center"><span
