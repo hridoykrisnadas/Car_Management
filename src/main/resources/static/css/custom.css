@@ -2,7 +2,7 @@
 
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Century Gothic', sans-serif;
     font-size: 13px;
     background: #cfe9ff;
 }
@@ -12,7 +12,7 @@ body {
     padding: 100px;
 }
 .bg-base{
-    background-color: #2D0A31;
+    background-color: #136166;
 }
 
 p {
@@ -38,7 +38,7 @@ a:hover{
 }
 .navbar {
     padding: 15px 10px;
-    background: #2D0A31;
+    background: #136166;
     border: none;
     border-radius: 0;
     margin-bottom: 10px;
@@ -69,8 +69,11 @@ a:hover{
     border-radius: 0.75rem;
 }
 .dashboard-bg{
-    background-color: #2D0A31;
+    background-color: #136166;
 }
 .dashboard-card-min-height-100{
     min-height: 150px;
+}
+.min-height-card{
+    min-height: 200px;
 }

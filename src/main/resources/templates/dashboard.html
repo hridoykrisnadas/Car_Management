@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard | Car Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
@@ -15,55 +16,182 @@
     <div class="col-md-10 col-sm-10 col-lg-10">
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0 px-2 text-white">
-            <div class="col-md-4">
-                <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
-                    <span class="d-flex p-1 justify-content-center">Total Employee: &nbsp;<span class="fw-bold"
-                                                                                                th:text="${totalEmployee}"></span></span>
-                    <span class="d-flex p-1 justify-content-center">Total Officer: &nbsp;<span class="fw-bold"
-                                                                                               th:text="${totalOfficer}"></span></span>
-                    <span class="d-flex p-1 justify-content-center">Total Driver: &nbsp;<span class="fw-bold"
-                                                                                              th:text="${totalDriver}"></span></span>
-                    <a href="/employee">
-                        <button class="btn align-middle btn w-100 p-1 btn-warning">Goto Report</button>
-                    </a>
+            <div class="col-md-12 p-3 min-height-card">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="row g-0 h-100">
+
+                        <div class="col-4 d-flex align-items-center justify-content-center bg-primary text-white">
+                            <div class="text-center">
+                                <i class="fas fa-users fa-2x mb-2"></i>
+                                <div class="small fw-bold">EMPLOYEES</div>
+                            </div>
+                        </div>
+
+                        <div class="col-8">
+                            <div class="card-body d-flex flex-column p-3">
+
+                                <h6 class="text-muted text-uppercase small fw-bold mb-0">Total Employee</h6>
+                                <h2 class="fw-bold text-dark mb-2" th:text="${totalEmployee}">0</h2>
+
+                                <div class="d-flex w-100 border-top pt-2 mb-3">
+
+                                    <div class="text-center w-50">
+                                        <span class="d-block text-secondary small" style="font-size: 0.75rem;">Officers</span>
+                                        <span class="fw-bold text-dark" th:text="${totalOfficer}">0</span>
+                                    </div>
+
+                                    <div class="text-center border-start w-50">
+                                        <span class="d-block text-secondary small" style="font-size: 0.75rem;">Drivers</span>
+                                        <span class="fw-bold text-dark" th:text="${totalDriver}">0</span>
+                                    </div>
+
+                                </div>
+
+                                <a href="/employee" class="btn btn-sm mt-auto btn-outline-primary w-100 rounded-pill">
+                                    View Report <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div th:unless="${user_type == 'USER'}" class="col-md-4">
-                <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
-                    <span class="d-flex align-middle p-1 justify-content-center">Total Car: &nbsp;<span class="fw-bold"
-                                                                                                        th:text="${totalCar}"></span></span>
-                    <a href="/car">
-                        <button class="btn align-middle btn w-100 p-1 btn-warning">Goto Report</button>
-                    </a>
+            <div class="col-md-12 p-3 min-height-card" th:unless="${user_type == 'USER'}">
+                <!-- Card Container -->
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="row g-0 h-100">
+
+                        <!-- 30% LEFT SIDE: Visual/Icon Area -->
+                        <!-- Using bg-success (Green) to represent Assets/Cars -->
+                        <div class="col-4 d-flex align-items-center justify-content-center bg-success text-white">
+                            <div class="text-center">
+                                <!-- Car Icon -->
+                                <i class="fas fa-car fa-2x mb-2"></i>
+                                <div class="small fw-bold">CARS</div>
+                            </div>
+                        </div>
+
+                        <!-- 70% RIGHT SIDE: Data Area -->
+                        <div class="col-8">
+                            <div class="card-body d-flex flex-column p-3">
+
+                                <!-- HERO SECTION: Main Metric -->
+                                <h6 class="text-muted text-uppercase small fw-bold mb-0">Registered Cars</h6>
+
+                                <!-- Large Number -->
+                                <h2 class="fw-bold text-dark mb-3" th:text="${totalCar}">0</h2>
+
+                                <!-- BUTTON SECTION -->
+                                <!-- using btn-outline-success to match the icon color -->
+                                <a href="/car" class="btn btn-sm mt-auto btn-outline-success w-100 rounded-pill">
+                                    View All Cars <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
-                    <span class="d-flex align-middle p-1 justify-content-center">Total Approve Schedule: &nbsp;<span
-                            class="fw-bold" th:text="${totalApproveSchedule}"></span></span>
-                    <span class="d-flex align-middle p-1 justify-content-center fw-bold">Total Non-Approve Schedule: &nbsp;<span
-                            class="fw-bold" th:text="${totalNonApproveSchedule}"></span></span>
-                    <a href="/car-request">
-                        <button class="btn align-middle btn w-100 p-1 btn-warning">Goto Report</button>
-                    </a>
+            <div class="col-md-12 p-3 min-height-card">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="row g-0 h-100">
+
+                        <div class="col-4 d-flex align-items-center justify-content-center bg-warning text-dark">
+                            <div class="text-center">
+                                <i class="fas fa-calendar-check fa-2x mb-2"></i>
+                                <div class="small fw-bold">TRIPS</div>
+                            </div>
+                        </div>
+
+                        <div class="col-8">
+                            <div class="card-body d-flex flex-column p-3">
+
+                                <h6 class="text-muted text-uppercase small fw-bold mb-3">Schedule Status</h6>
+
+                                <div class="row text-center mb-3">
+                                    <div class="col border-end">
+                                        <h3 class="fw-bold text-success mb-0" th:text="${totalApproveSchedule}">0</h3>
+                                        <small class="text-muted" style="font-size: 0.7rem;">Approved</small>
+                                    </div>
+
+                                    <div class="col">
+                                        <h3 class="fw-bold text-danger mb-0" th:text="${totalNonApproveSchedule}">0</h3>
+                                        <small class="text-muted" style="font-size: 0.7rem;">Pending</small>
+                                    </div>
+                                </div>
+
+                                <a href="/car-request" class="btn btn-sm mt-auto btn-outline-warning w-100 rounded-pill text-dark">
+                                    View Reports <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div th:unless="${user_type == 'USER'}" class="col-md-4">
-                <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
-                    <span class="d-flex align-middle p-1 justify-content-center">Total Car Expense (BDT): &nbsp;<span
-                            class="fw-bold" th:text="${totalCarExpense}"></span></span>
-                    <a href="/car-expense">
-                        <button class="btn align-middle btn w-100 p-1 btn-warning">Goto Report</button>
-                    </a>
+            <div class="col-md-12 p-3 min-height-card" th:unless="${user_type == 'USER'}">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="row g-0 h-100">
+
+                        <div class="col-4 d-flex align-items-center justify-content-center bg-danger text-white">
+                            <div class="text-center">
+                                <i class="fas fa-coins fa-2x mb-2"></i>
+                                <div class="small fw-bold">COSTS</div>
+                            </div>
+                        </div>
+
+                        <div class="col-8">
+                            <div class="card-body d-flex flex-column p-3">
+
+                                <h6 class="text-muted text-uppercase small fw-bold mb-0">Total Expenses</h6>
+
+                                <h2 class="fw-bold text-danger mb-3">
+                                    <span class="small align-top" style="font-size: 1rem;">৳</span>
+                                    <span th:text="${totalCarExpense}">0</span>
+                                </h2>
+
+                                <a href="/car-expense" class="btn btn-sm mt-auto btn-outline-danger w-100 rounded-pill">
+                                    View Report <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="dashboard-bg text-white card dashboard-card-min-height-100 shadow rounded-4 m-2 p-3">
-                    <span class="d-flex align-middle p-1 justify-content-center">Total Driver Duty Bill (BDT): &nbsp;<span
-                            class="fw-bold" th:text="${totalDriverBill}"></span></span>
-                    <a href="/duty-payment">
-                        <button th:unless="${user_type == 'USER'}" class="btn align-middle btn w-100 p-1 btn-warning">Goto Report</button>
-                    </a>
+            <div class="col-md-12 p-3 min-height-card">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="row g-0 h-100">
+
+                        <div class="col-4 d-flex align-items-center justify-content-center bg-info text-white">
+                            <div class="text-center">
+                                <i class="fas fa-file-invoice-dollar fa-2x mb-2"></i>
+                                <div class="small fw-bold">BILLS</div>
+                            </div>
+                        </div>
+
+                        <div class="col-8">
+                            <div class="card-body d-flex flex-column p-3">
+
+                                <h6 class="text-muted text-uppercase small fw-bold mb-0">Driver Duty Bills</h6>
+
+                                <h2 class="fw-bold text-dark mb-3">
+                                    <span class="small align-top" style="font-size: 1rem;">৳</span>
+                                    <span th:text="${totalDriverBill}">0</span>
+                                </h2>
+
+                                <div th:unless="${user_type == 'USER'}">
+                                    <a href="/duty-payment" class="btn btn-sm mt-auto btn-outline-info w-100 rounded-pill">
+                                        View Details <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+
+                                <div th:if="${user_type == 'USER'}" class="text-muted small text-center pt-1">
+                                    <i class="fas fa-lock me-1"></i> Report Restricted
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
