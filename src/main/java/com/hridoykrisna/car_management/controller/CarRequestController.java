@@ -40,6 +40,7 @@ public class CarRequestController {
             List<CarSchedule> carSchedules = carScheduleService.getAllRequest(user.getId());
             model.addAttribute("requestList", carSchedules);
             model.addAttribute("currentUserName", user.getName());
+            model.addAttribute("currentUserId", user.getId());
             model.addAttribute("currentUserLogo", user.getImagePath());
 
             if (Objects.equals(user.getUser_type(), "ADMIN")) {

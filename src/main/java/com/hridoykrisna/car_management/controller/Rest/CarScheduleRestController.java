@@ -36,9 +36,10 @@ public class CarScheduleRestController {
     }
 
     @PostMapping("/cancel/{id}")
-    public CarSchedule cancelSchedule(@PathVariable("id") int id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Employee employee = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
-        return carScheduleService.cancelSchedule(id, employee.getId());
+    public CarSchedule cancelSchedule(@PathVariable("id") int id, @RequestParam("userId") int userId) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Employee employee = CommonUtils.getEmployeeByEmail(authentication.getName(), employeeRepo);
+        System.out.println("id : " + id + " userId : " + userId);
+        return carScheduleService.cancelSchedule(id, userId);
     }
 }

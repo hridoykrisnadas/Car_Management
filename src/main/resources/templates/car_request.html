@@ -7,6 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
     <link rel="icon" th:href="@{/images/car-logo.png}" type="image">
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div class="row">
@@ -16,6 +19,7 @@
         <div class="" th:insert="~{navbar :: navbar}"></div>
         <div class="row p-1 m-0">
             <h2 class="justify-content-center d-flex">Car Request</h2>
+            <input type="hidden" id="currentUserId" th:value="${currentUserId}" />
             <hr>
             <!--              Car Request  Form -->
             <div>
@@ -280,10 +284,25 @@
         $(".cancel-request-button").click(function (){
             const scheduleId = $(this).data("request-id");
             console.log(scheduleId);
+
+            const userId = document.getElementById("currentUserId").value;
+            console.log(userId);
+
+            // 1. Get the Token from the HTML head
+            const token = $("meta[name='_csrf']").attr("content");
+            const header = $("meta[name='_csrf_header']").attr("content");
+
             $.ajax({
                 type: "POST",
-                url: "/api/carSchedule/cancel/" + scheduleId,
+                url: "/api/carSchedule/cancel/" + scheduleId+"?userId=" + userId,
+
                 dataType: "json", // Specify JSON data type
+
+                // 2. Add this block to send the token in the header
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+
                 success: function() {
                     console.log("Success");
                     // location.reload();

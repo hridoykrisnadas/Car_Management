@@ -35,7 +35,8 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         antMatcher("/css/**"),
                                         antMatcher("/js/**"),
-                                        antMatcher("/images/**")
+                                        antMatcher("/images/**"),
+                                        antMatcher("/api/**")
                                 ).permitAll()
 //                                .requestMatchers(
 //                                        AntPathRequestMatcher.antMatcher("/api/**")
